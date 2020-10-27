@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/row_notification">
+    android:background="@color/row_blue">
 
     <ImageView
-        android:id="@+id/icon_notification"
+        android:id="@+id/icon_bimbingan"
         android:layout_width="23.27dp"
         android:layout_height="28.36dp"
         android:layout_marginStart="2dp"
@@ -21,28 +21,28 @@
         app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/tv_label_notification"
+        android:id="@+id/tv_label_bimbingan"
         style="@style/myfont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:text="Portal Akademik Dibuka"
-        app:layout_constraintStart_toEndOf="@+id/icon_notification"
+        app:layout_constraintStart_toEndOf="@+id/icon_bimbingan"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/icon_date_notification"
+        android:id="@+id/icon_date_bimbingan"
         android:layout_width="9.29dp"
         android:layout_height="10.33dp"
         android:layout_marginBottom="3dp"
         android:src="@drawable/baseline_date_range_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_notification"
+        app:layout_constraintStart_toEndOf="@+id/icon_bimbingan"
         app:tint="@color/white"
         android:alpha = ".6"/>
 
     <TextView
-        android:id="@+id/tv_date_notification"
+        android:id="@+id/tv_date_bimbingan"
         style="@style/myfont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,10 +51,10 @@
         android:textSize="10sp"
         android:alpha = ".6"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_date_notification" />
+        app:layout_constraintStart_toEndOf="@+id/icon_date_bimbingan" />
 
     <ImageView
-        android:id="@+id/icon_time_notification"
+        android:id="@+id/icon_chat_bimbingan"
         android:layout_width="10.65dp"
         android:layout_height="10.65dp"
         android:layout_marginStart="8dp"
@@ -63,11 +63,11 @@
         android:alpha = ".6"
         android:src="@drawable/baseline_access_time_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_date_notification"
+        app:layout_constraintStart_toEndOf="@+id/tv_date_bimbingan"
         app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/tv_time_notification"
+        android:id="@+id/tv_chat_bimbingan"
         style="@style/myfont"
         android:alpha = ".6"
         android:layout_width="wrap_content"
@@ -76,5 +76,5 @@
         android:text="13:00 WIB"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_time_notification" />
+        app:layout_constraintStart_toEndOf="@+id/icon_chat_bimbingan" />
 </androidx.constraintlayout.widget.ConstraintLayout>
