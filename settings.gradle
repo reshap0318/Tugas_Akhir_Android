@@ -1,0 +1,4 @@
+include ':m_mahasiswa'
+include ':m_dosen'
+include ':app'
+rootProject.name = "myTa"
