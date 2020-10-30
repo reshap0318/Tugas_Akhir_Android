@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/row_blue">
+    android:layout_marginBottom="2dp"
+    android:background="@drawable/bg_row_blue">
 
     <ImageView
-        android:id="@+id/icon_bimbingan"
-        android:layout_width="23.27dp"
-        android:layout_height="28.36dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
+        android:id="@+id/icon_notification"
+        android:layout_width="27.27dp"
+        android:layout_height="32.36dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="3dp"
         android:src="@drawable/baseline_notifications_none_24"
@@ -21,60 +22,68 @@
         app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/tv_label_bimbingan"
+        android:id="@+id/tv_label_notification"
         style="@style/myfont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         android:text="Portal Akademik Dibuka"
-        app:layout_constraintStart_toEndOf="@+id/icon_bimbingan"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/icon_notification"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/icon_date_bimbingan"
+        android:id="@+id/icon_date_notification"
         android:layout_width="9.29dp"
         android:layout_height="10.33dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginBottom="3dp"
+        android:alpha=".6"
         android:src="@drawable/baseline_date_range_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_bimbingan"
-        app:tint="@color/white"
-        android:alpha = ".6"/>
-
-    <TextView
-        android:id="@+id/tv_date_bimbingan"
-        style="@style/myfont"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:text="Agustus 17, 2020"
-        android:textSize="10sp"
-        android:alpha = ".6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_date_bimbingan" />
-
-    <ImageView
-        android:id="@+id/icon_chat_bimbingan"
-        android:layout_width="10.65dp"
-        android:layout_height="10.65dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginBottom="3dp"
-        android:alpha = ".6"
-        android:src="@drawable/baseline_access_time_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_date_bimbingan"
+        app:layout_constraintStart_toEndOf="@+id/icon_notification"
         app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/tv_chat_bimbingan"
+        android:id="@+id/tv_date_notification"
         style="@style/myfont"
-        android:alpha = ".6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginBottom="2dp"
+        android:alpha=".6"
+        android:text="Agustus 17, 2020"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_date_notification" />
+
+    <ImageView
+        android:id="@+id/icon_time_notification"
+        android:layout_width="10.65dp"
+        android:layout_height="10.65dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="3dp"
+        android:alpha=".6"
+        android:src="@drawable/baseline_access_time_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_date_notification"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_time_notification"
+        style="@style/myfont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="2dp"
+        android:alpha=".6"
         android:text="13:00 WIB"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_chat_bimbingan" />
+        app:layout_constraintStart_toEndOf="@+id/icon_time_notification" />
 </androidx.constraintlayout.widget.ConstraintLayout>
