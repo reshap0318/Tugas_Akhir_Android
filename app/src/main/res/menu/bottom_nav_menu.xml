@@ -14,10 +14,10 @@
         android:title="@string/announcement" />
 
     <item
-        android:id="@+id/navigation_resource"
+        android:id="@+id/navigation_topic"
         android:icon="@drawable/baseline_supervisor_account_24"
         android:iconTint="@color/white"
-        android:title="@string/resource" />
+        android:title="@string/topic" />
 
     <item
         android:id="@+id/navigation_profile"
