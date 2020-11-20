@@ -1,5 +1,6 @@
 package com.minangdev.myta.API
 
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -11,7 +12,7 @@ interface ApiInterface {
     fun login(
         @Field("login") login: String,
         @Field("password") password: String,
-        @Field("device_id") device_id: String = ""
+        @Field("device_id") device_id: String? = null
     ): Call<ResponseBody>
 
     @POST("/user/isLogin")
@@ -21,6 +22,40 @@ interface ApiInterface {
 
     @GET("/user/profile")
     fun profile(
+            @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @PATCH("/user/change-profile")
+    fun changeProfile(
+        @Header("Authorization") token: String,
+        @Field("name") name: String,
+        @Field("email") email: String
+    ): Call<ResponseBody>
+
+    @Multipart
+    @POST("/user/change-avatar")
+    fun changeAvatar(
+        @Header("Authorization") token: String,
+        @Part avatar: MultipartBody.Part,
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @PATCH("/user/change-password")
+    fun changePassword(
+        @Header("Authorization") token: String,
+        @Field("old_password") old_password: String,
+        @Field("new_password") new_password: String,
+        @Field("confirm_password") confirm_password: String
+    ): Call<ResponseBody>
+
+    @POST("/user/logout")
+    fun logout(
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @GET("/sia/period")
+    fun periods(
             @Header("Authorization") token: String
     ): Call<ResponseBody>
 
@@ -50,7 +85,7 @@ interface ApiInterface {
     ): Call<ResponseBody>
 
     @FormUrlEncoded
-    @POST("/sia/news/{id}/update")
+    @PATCH("/sia/news/{id}/update")
     fun announcementUpdate(
             @Header("Authorization") token: String,
             @Path("id") id: String,
@@ -60,6 +95,44 @@ interface ApiInterface {
 
     @DELETE("/sia/news/{id}/delete")
     fun announcementDelete(
+            @Header("Authorization") token: String,
+            @Path("id") id: String,
+    ): Call<ResponseBody>
+
+    @GET("/sia/topic")
+    fun topics(
+            @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @GET("/sia/topic/{id}")
+    fun topic(
+            @Header("Authorization") token: String,
+            @Path("id") id: String
+    ): Call<ResponseBody>
+
+    @GET("/sia/topic/{id}/edit")
+    fun topicEdit(
+            @Header("Authorization") token: String,
+            @Path("id") id: String
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("/sia/topic/save")
+    fun topicSave(
+            @Header("Authorization") token: String,
+            @Field("name") name: String,
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @PATCH("/sia/topic/{id}/update")
+    fun topicUpdate(
+            @Header("Authorization") token: String,
+            @Path("id") id: String,
+            @Field("name") name: String,
+    ): Call<ResponseBody>
+
+    @DELETE("/sia/topic/{id}/delete")
+    fun topicDelete(
             @Header("Authorization") token: String,
             @Path("id") id: String,
     ): Call<ResponseBody>

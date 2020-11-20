@@ -12,6 +12,7 @@ import com.minangdev.myta.R
 import com.minangdev.myta.View.annaouncement.AnnouncementFragment
 import com.minangdev.myta.View.home.HomeFragment
 import com.minangdev.myta.View.profile.ProfileFragment
+import com.minangdev.myta.View.topic.TopicFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.actionbar_main.*
 
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         val sharePreference = SharePreferenceManager(this)
         sharePreference.isLogin()
+        semester.text = sharePreference.getSemester();
 
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         menu_notification.setOnClickListener{
@@ -47,19 +49,23 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                changeFragment(1)
+                val fragment = HomeFragment()
+                addFragment(fragment)
                 true
             }
             R.id.navigation_announcement -> {
-                changeFragment(2)
+                val fragment = AnnouncementFragment()
+                addFragment(fragment)
                 true
             }
             R.id.navigation_topic -> {
-                Toast.makeText(this, "Topic", Toast.LENGTH_SHORT).show()
+                val fragment = TopicFragment()
+                addFragment(fragment)
                 true
             }
             R.id.navigation_profile -> {
-                changeFragment(4)
+                val fragment = ProfileFragment()
+                addFragment(fragment)
                 true
             }
             else -> false
@@ -69,22 +75,19 @@ class MainActivity : AppCompatActivity() {
     private fun changeFragment(idFragment:Int){
         when(idFragment){
             1 -> {
-                val fragment = HomeFragment()
-                addFragment(fragment)
+                bottom_navigation.selectedItemId = R.id.navigation_home
                 true
             }
             2 -> {
-                val fragment = AnnouncementFragment()
-                addFragment(fragment)
+                bottom_navigation.selectedItemId = R.id.navigation_announcement
                 true
             }
             3 -> {
-                Toast.makeText(this, "Topic", Toast.LENGTH_SHORT).show()
+                bottom_navigation.selectedItemId = R.id.navigation_topic
                 true
             }
             4 -> {
-                val fragment = ProfileFragment()
-                addFragment(fragment)
+                bottom_navigation.selectedItemId = R.id.navigation_profile
                 true
             }
             else -> false

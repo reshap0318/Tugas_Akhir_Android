@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "810974521259",
+    "firebase_url": "https://myta-84541.firebaseio.com",
+    "project_id": "myta-84541",
+    "storage_bucket": "myta-84541.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810974521259:android:06c47929d326552b5f14ee",
+        "android_client_info": {
+          "package_name": "com.minangdev.m_dosen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "810974521259-o5h931f6qppdb8nkaorpcou7gsrqur06.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR6BSearJkw3luq0mpgr3EAfRiqnTqTfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "810974521259-o5h931f6qppdb8nkaorpcou7gsrqur06.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810974521259:android:91f2e2ce33e803c95f14ee",
+        "android_client_info": {
+          "package_name": "com.minangdev.myta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "810974521259-o5h931f6qppdb8nkaorpcou7gsrqur06.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR6BSearJkw3luq0mpgr3EAfRiqnTqTfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "810974521259-o5h931f6qppdb8nkaorpcou7gsrqur06.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

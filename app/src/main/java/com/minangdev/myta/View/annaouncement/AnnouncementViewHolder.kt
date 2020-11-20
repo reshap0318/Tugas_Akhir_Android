@@ -35,12 +35,12 @@ class AnnouncementViewHolder: ViewModel() {
                        e.printStackTrace()
                    }
                 }else{
-                    Log.e("Response_AnnouncementL", "Ada Error di server Code : "+response.code().toString())
+                    Log.e("Res_AnnouncementL", "Ada Error di server Code : "+response.code().toString())
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("Failure_AnnouncementL", "onFailure: ERROR > " + t.toString());
+                Log.e("Fail_AnnouncementL", "onFailure: ERROR > " + t.toString());
             }
 
         })
@@ -61,18 +61,18 @@ class AnnouncementViewHolder: ViewModel() {
                         e.printStackTrace()
                     }
                 }else{
-                    Log.e("Response_Announcement", "Ada Error di server Code : "+response.code().toString())
+                    Log.e("Res_Announcement", "Ada Error di server Code : "+response.code().toString())
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("Failure_Announcement", "onFailure: ERROR > " + t.toString());
+                Log.e("Fail_Announcement", "onFailure: ERROR > " + t.toString());
             }
 
         })
     }
 
-    fun setedit(token: String, id: String){
+    fun setEdit(token: String, id: String){
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val announcement = apiBuilder.announcementEdit(token, id)
         announcement.enqueue(object: Callback<ResponseBody> {
@@ -82,17 +82,17 @@ class AnnouncementViewHolder: ViewModel() {
                         val result = response.body()?.string()
                         val responseObject = JSONObject(result)
                         val item = responseObject.getJSONObject("data")
-                        data.postValue(item)
+                        edit.postValue(item)
                     }catch (e: Exception){
                         e.printStackTrace()
                     }
                 }else{
-                    Log.e("Response_AnnouncementE", "Ada Error di server Code : "+response.code().toString())
+                    Log.e("Resp_AnnouncementE", "Ada Error di server Code : "+response.code().toString())
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("Failure_AnnouncementE", "onFailure: ERROR > " + t.toString());
+                Log.e("Fail_AnnouncementE", "onFailure: ERROR > " + t.toString());
             }
 
         })

@@ -15,7 +15,7 @@ import java.lang.Exception
 
 class ProfileViewModel: ViewModel() {
 
-    private val listData = MutableLiveData<JSONObject>()
+    private val mData = MutableLiveData<JSONObject>()
 
     fun setData(token: String){
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
@@ -27,23 +27,21 @@ class ProfileViewModel: ViewModel() {
                         val result = response.body()?.string()
                         val responseObject = JSONObject(result)
                         val item = responseObject.getJSONObject("data")
-                        listData.postValue(item)
+                        mData.postValue(item)
                     }catch (e: Exception){
                         e.printStackTrace()
                     }
                 }else{
-                    Log.e("Response_Home", "Ada Error di server Code : "+response.code().toString())
+                    Log.e("Res_Profile", "Ada Error di server Code : "+response.code().toString())
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("Failure_Home", "onFailure: ERROR > " + t.toString());
+                Log.e("Fail_Profile", "onFailure: ERROR > " + t.toString());
             }
 
         });
     }
 
-    fun getData(): LiveData<JSONObject>{
-        return listData
-    }
+    fun getData(): LiveData<JSONObject> = mData
 }

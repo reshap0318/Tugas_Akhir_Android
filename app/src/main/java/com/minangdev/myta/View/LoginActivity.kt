@@ -32,6 +32,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     fun moveActifity(){
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     override fun onClick(view: View) {
@@ -55,8 +56,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 if (response.code() == 200) {
                     val dataJson = JSONObject(response.body()?.string())
                     val token = dataJson.getJSONObject("data").getString("token")
+                    val semester = dataJson.getJSONObject("data").getString("semester_aktif")
                     val sharePreferece = SharePreferenceManager(this@LoginActivity)
-                    sharePreferece.SaveToken(token)
+                    sharePreferece.SaveToken(token, semester)
                     moveActifity()
                 } else if (response.code() == 422) {
                         try {

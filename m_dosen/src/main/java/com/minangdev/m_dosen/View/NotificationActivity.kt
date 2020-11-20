@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.minangdev.m_dosen.R
 import kotlinx.android.synthetic.main.actionbar_onlyback.*
 
-class notificationActivity : AppCompatActivity() {
+class NotificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification)

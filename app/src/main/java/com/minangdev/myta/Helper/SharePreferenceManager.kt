@@ -19,21 +19,26 @@ class SharePreferenceManager {
     var context : Context
     val PREFERANCENAME: String = "setting"
     val TOKEN : String = "token"
-    var ISLOGIN : Boolean = false
+    val SEMESTER : String = "semester"
 
     constructor(context: Context){
         this.context = context
         this.sharedPreferences = context.getSharedPreferences(this.PREFERANCENAME, Context.MODE_PRIVATE)
     }
 
-    fun SaveToken(token: String){
+    fun SaveToken(token: String, semester: String){
         val editor = sharedPreferences!!.edit()
         editor.putString(this.TOKEN, "Bearer "+token)
+        editor.putString(this.SEMESTER, semester)
         editor.commit()
     }
 
     fun getToken(): String {
         return sharedPreferences!!.getString(this.TOKEN, "").toString()
+    }
+
+    fun getSemester(): String {
+        return sharedPreferences!!.getString(this.SEMESTER, "").toString()
     }
 
     fun isLogin(){
@@ -44,6 +49,8 @@ class SharePreferenceManager {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if(response.code()!=200){
                     val intent = Intent( context, LoginActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     logout()
                     context.startActivity(intent)
                 }
