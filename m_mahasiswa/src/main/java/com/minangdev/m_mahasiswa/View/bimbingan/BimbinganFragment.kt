@@ -1,4 +1,4 @@
-package com.minangdev.m_mahasiswa.View.annaouncement
+package com.minangdev.m_mahasiswa.View.bimbingan
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,13 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.minangdev.m_mahasiswa.R
 
-class AnnouncementFragment : Fragment() {
+class BimbinganFragment : Fragment() {
+
+    private lateinit var root : View
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_announcement, container, false)
+        root = inflater.inflate(R.layout.fragment_bimbingan, container, false)
         return root
     }
 }

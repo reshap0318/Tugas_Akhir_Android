@@ -9,6 +9,7 @@ import com.minangdev.myta.API.ApiInterface
 import com.minangdev.myta.View.LoginActivity
 import com.minangdev.myta.View.MainActivity
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,17 +20,22 @@ class SharePreferenceManager {
     var context : Context
     val PREFERANCENAME: String = "setting"
     val TOKEN : String = "token"
+    val FCMID : String = "fcmToken"
+    val UNITID : String = "unitId"
     val SEMESTER : String = "semester"
+    val IDSEMESTER : String = "idSemester"
+    val TAHUNSEMESTER : String = "tahunSemester"
 
     constructor(context: Context){
         this.context = context
         this.sharedPreferences = context.getSharedPreferences(this.PREFERANCENAME, Context.MODE_PRIVATE)
     }
 
-    fun SaveToken(token: String, semester: String){
+    fun SaveToken(token: String, unitId: String, fcmToken: String){
         val editor = sharedPreferences!!.edit()
         editor.putString(this.TOKEN, "Bearer "+token)
-        editor.putString(this.SEMESTER, semester)
+        editor.putString(this.UNITID, unitId)
+        editor.putString(this.FCMID, fcmToken)
         editor.commit()
     }
 
@@ -37,8 +43,28 @@ class SharePreferenceManager {
         return sharedPreferences!!.getString(this.TOKEN, "").toString()
     }
 
-    fun getSemester(): String {
-        return sharedPreferences!!.getString(this.SEMESTER, "").toString()
+    fun getUnitId(): String {
+        return sharedPreferences!!.getString(this.UNITID, "").toString()
+    }
+
+    fun getFCMTOKEN(): String{
+        return sharedPreferences!!.getString(this.FCMID, "").toString()
+    }
+
+    fun setSemesterActive(data: JSONObject){
+        val editor = sharedPreferences!!.edit()
+        editor.putString(this.SEMESTER, data.getString("periode"))
+        editor.putString(this.IDSEMESTER, data.getString("id"))
+        editor.putString(this.TAHUNSEMESTER, data.getString("tahun"))
+        editor.commit()
+    }
+
+    fun getSemesterActive(): HashMap<String, String>{
+        val data = HashMap<String, String>()
+        data.put(this.SEMESTER, sharedPreferences!!.getString(this.SEMESTER, "").toString())
+        data.put(this.IDSEMESTER, sharedPreferences!!.getString(this.IDSEMESTER, "").toString())
+        data.put(this.TAHUNSEMESTER, sharedPreferences!!.getString(this.TAHUNSEMESTER, "").toString())
+        return data
     }
 
     fun isLogin(){

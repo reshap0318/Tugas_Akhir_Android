@@ -5,18 +5,23 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.R
 import com.minangdev.m_dosen.View.NotificationActivity
+import com.minangdev.m_dosen.View.bimbingan.BimbinganFragment
 import com.minangdev.m_dosen.View.home.HomeFragment
 import com.minangdev.m_dosen.View.profile.ProfileFragment
+import com.minangdev.m_dosen.ViewModel.SemesterViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.actionbar_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var mFrameLayout: FrameLayout? = null
+    private lateinit var token : String
+    private lateinit var sharePreference : SharePreferenceManager
 
     companion object {
         const val EXTRA_FRAGMENT = "extra_fragment"
@@ -26,9 +31,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val sharePreference = SharePreferenceManager(this)
+        sharePreference = SharePreferenceManager(this)
         sharePreference.isLogin()
-        semester.text = sharePreference.getSemester()
+        token = sharePreference.getToken()
+        setSemesterActive()
 
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         menu_notification.setOnClickListener{
@@ -56,6 +62,11 @@ class MainActivity : AppCompatActivity() {
                 addFragment(fragment)
                 true
             }
+            R.id.navigation_bimbingan -> {
+                val fragment = BimbinganFragment()
+                addFragment(fragment)
+                true
+            }
             else -> false
         }
     }
@@ -67,6 +78,10 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             2 -> {
+                bottom_navigation.selectedItemId = R.id.navigation_bimbingan
+                true
+            }
+            3 -> {
                 bottom_navigation.selectedItemId = R.id.navigation_profile
                 true
             }
@@ -80,5 +95,14 @@ class MainActivity : AppCompatActivity() {
                 //.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace(R.id.frame_layout, fragment, fragment.javaClass.getSimpleName())
                 .commit()
+    }
+
+    private fun setSemesterActive(){
+        val semesterViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SemesterViewModel::class.java)
+        semesterViewModel.setDataActive(token)
+        semesterViewModel.getDataActive().observe(this, Observer {data ->
+            semester.text = data.getString("periode")
+            sharePreference.setSemesterActive(data)
+        })
     }
 }

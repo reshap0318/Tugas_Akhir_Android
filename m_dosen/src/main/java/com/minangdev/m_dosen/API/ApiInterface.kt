@@ -54,4 +54,57 @@ interface ApiInterface {
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 
+    @GET("/user/semester-active")
+    fun semesterActive(
+            @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
+    @GET("/dosen/bimbingan")
+    fun mahasiswaBimbingan(
+            @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
+    @GET("/dosen/mahasiswa/{nim}")
+    fun mahasiswaBimbinganDetail(
+            @Header("Authorization") token: String,
+            @Path("nim") nim: String
+    ) : Call<ResponseBody>
+
+    @GET("/dosen/mahasiswa/{nim}/krs")
+    fun mahasiswaBimbinganKrs(
+            @Header("Authorization") token: String,
+            @Path("nim") nim: String
+    ) : Call<ResponseBody>
+
+    @GET("/dosen/mahasiswa/{nim}/krs/{semester}")
+    fun mahasiswaBimbinganKrsSemester(
+            @Header("Authorization") token: String,
+            @Path("nim") nim: String,
+            @Path("semester") semester: String
+    ) : Call<ResponseBody>
+
+    @GET("/dosen/mahasiswa/{nim}/transkrip")
+    fun mahasiswaBimbinganTranskrip(
+            @Header("Authorization") token: String,
+            @Path("nim") nim: String
+    ) : Call<ResponseBody>
+
+    @GET("/dosen/mahasiswa/{nim}/transkrip/staticA")
+    fun mahasiswaBimbinganStaticA(
+            @Header("Authorization") token: String,
+            @Path("nim") nim: String
+    ) : Call<ResponseBody>
+
+    @GET("/dosen/mahasiswa/{nim}/transkrip/staticB")
+    fun mahasiswaBimbinganStaticB(
+            @Header("Authorization") token: String,
+            @Path("nim") nim: String
+    ) : Call<ResponseBody>
+
+    @GET("/dosen/mahasiswa/{nim}/sks/sum")
+    fun mahasiswaBimbinganSksSum(
+            @Header("Authorization") token: String,
+            @Path("nim") nim: String
+    ) : Call<ResponseBody>
+
 }

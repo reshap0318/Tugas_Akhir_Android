@@ -65,8 +65,12 @@ dependencies {
 
     //firebase
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.google.firebase:firebase-database:19.5.1'
 
     //couruntime
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
+
+    //chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.FileUtils
 import android.provider.OpenableColumns
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -21,17 +20,16 @@ import com.minangdev.myta.Helper.SharePreferenceManager
 import com.minangdev.myta.Helper.UploadImage
 import com.minangdev.myta.R
 import com.minangdev.myta.View.ChangePasswordActivity
+import com.minangdev.myta.ViewModel.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.lang.Exception
 
 
 class ProfileFragment : Fragment() {

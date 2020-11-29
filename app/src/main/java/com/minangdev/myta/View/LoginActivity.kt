@@ -56,9 +56,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 if (response.code() == 200) {
                     val dataJson = JSONObject(response.body()?.string())
                     val token = dataJson.getJSONObject("data").getString("token")
-                    val semester = dataJson.getJSONObject("data").getString("semester_aktif")
+                    val fcmToken = dataJson.getJSONObject("data").getString("uid")
+                    val unit_id = dataJson.getJSONObject("data").getString("unit_id")
                     val sharePreferece = SharePreferenceManager(this@LoginActivity)
-                    sharePreferece.SaveToken(token, semester)
+                    sharePreferece.SaveToken(token, unit_id, fcmToken)
                     moveActifity()
                 } else if (response.code() == 422) {
                         try {

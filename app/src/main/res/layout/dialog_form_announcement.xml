@@ -47,6 +47,7 @@
             style="@style/myfont"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:layout_gravity="center_vertical|end"
             android:gravity="top" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -75,6 +76,28 @@
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description_form_announcement" />
+
+    <TextView
+        android:id="@+id/tv_date_news"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="3dp"
+        android:text="November 25, 2020"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sending_news" />
+
+    <TextView
+        android:id="@+id/tv_sending_news"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="By Admin Universitas Andalas"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description_form_announcement" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,14 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.minangdev.m_dosen.R
 import kotlinx.android.synthetic.main.row_notification.view.*
-import org.json.JSONArray
 import org.json.JSONObject
 
-class NotificationAdapter(private val onItemClickListener : onItemClick) : RecyclerView.Adapter<NotificationAdapter.viewHolder>() {
+class NotificationAdapter() : RecyclerView.Adapter<NotificationAdapter.viewHolder>() {
 
-    var datas = JSONArray()
+    var datas = ArrayList<HashMap<String, Any>>()
 
-    fun setData(datas: JSONArray) {
+    fun setData(datas: ArrayList<HashMap<String, Any>>) {
         this.datas = datas
         notifyDataSetChanged()
     }
@@ -24,23 +23,26 @@ class NotificationAdapter(private val onItemClickListener : onItemClick) : Recyc
     }
 
     override fun onBindViewHolder(viewHolder: viewHolder, position: Int) {
-        viewHolder.onBind(datas.getJSONObject(position))
+        viewHolder.onBind(datas.get(position))
     }
 
     override fun getItemCount(): Int {
-        return datas.length()
+        return datas.size
     }
 
     inner class viewHolder(private val view : View) : RecyclerView.ViewHolder(view){
-        fun onBind (jsonObject : JSONObject) = view.apply{
-            tv_label_notification.text = jsonObject.getString("title")
-            tv_date_notification.text = jsonObject.getString("tanggal")
-            tv_time_notification.text = jsonObject.getString("waktu")
-            setOnClickListener{
-                onItemClickListener(jsonObject)
+        fun onBind (data: HashMap<String, Any>) = view.apply{
+            tv_label_notification.text = data.get("title").toString()
+            var date = data.get("tanggal").toString()
+            var time = data.get("waktu").toString()
+            if(date=="null"){
+                date = ""
             }
+            if(time=="null"){
+                time = ""
+            }
+            tv_date_notification.text = date
+            tv_time_notification.text = time
         }
     }
 }
-
-typealias onItemClick = (JSONObject) -> Unit

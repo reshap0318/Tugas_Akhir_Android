@@ -8,6 +8,12 @@
         android:title="@string/title_home" />
 
     <item
+        android:id="@+id/navigation_bimbingan"
+        android:icon="@drawable/baseline_assignment_24"
+        android:iconTint="@color/white"
+        android:title="@string/bimbingan" />
+
+    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/baseline_perm_identity_24"
         android:iconTint="@color/white"

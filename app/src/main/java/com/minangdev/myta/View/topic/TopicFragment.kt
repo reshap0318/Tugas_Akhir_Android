@@ -17,6 +17,7 @@ import com.minangdev.myta.API.ApiInterface
 import com.minangdev.myta.Adapter.OneAdapter
 import com.minangdev.myta.Helper.SharePreferenceManager
 import com.minangdev.myta.R
+import com.minangdev.myta.ViewModel.TopicViewModel
 import kotlinx.android.synthetic.main.dialog_form_topic.view.*
 import kotlinx.android.synthetic.main.fragment_topic.view.*
 import okhttp3.ResponseBody

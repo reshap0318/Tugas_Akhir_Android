@@ -54,10 +54,10 @@ interface ApiInterface {
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 
-    @GET("/sia/period")
-    fun periods(
+    @GET("/user/semester-active")
+    fun semesterActive(
             @Header("Authorization") token: String
-    ): Call<ResponseBody>
+    ) : Call<ResponseBody>
 
     @GET("/sia/news")
     fun announcements(
@@ -99,21 +99,20 @@ interface ApiInterface {
             @Path("id") id: String,
     ): Call<ResponseBody>
 
+    //topic
     @GET("/sia/topic")
     fun topics(
             @Header("Authorization") token: String
     ): Call<ResponseBody>
 
-    @GET("/sia/topic/{id}")
-    fun topic(
-            @Header("Authorization") token: String,
-            @Path("id") id: String
+    @GET("/sia/topic/active")
+    fun topicActiv(
+            @Header("Authorization") token: String
     ): Call<ResponseBody>
 
-    @GET("/sia/topic/{id}/edit")
-    fun topicEdit(
-            @Header("Authorization") token: String,
-            @Path("id") id: String
+    @GET("/sia/topic/deactive")
+    fun topicDeactiv(
+            @Header("Authorization") token: String
     ): Call<ResponseBody>
 
     @FormUrlEncoded
@@ -135,6 +134,31 @@ interface ApiInterface {
     fun topicDelete(
             @Header("Authorization") token: String,
             @Path("id") id: String,
+    ): Call<ResponseBody>
+
+    @GET("/sia/period")
+    fun periods(
+            @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @POST("/sia/period/syn")
+    fun periodSyn(
+            @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("/sia/period/{periodId}/add-topic")
+    fun periodAddTopic(
+            @Header("Authorization") token: String,
+            @Path("periodId") periodId: String,
+            @Field("topics[]") topics: ArrayList<String>
+    ): Call<ResponseBody>
+
+    @DELETE("/sia/period/{periodId}/delete-topic/{topicId}")
+    fun periodDeleteTopic(
+            @Header("Authorization") token: String,
+            @Path("periodId") periodId: String,
+            @Path("topicId") topic: String,
     ): Call<ResponseBody>
 
 }

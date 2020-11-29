@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.R
-import com.minangdev.m_dosen.View.profile.ProfileViewModel
+import com.minangdev.m_dosen.ViewModel.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {

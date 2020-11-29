@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -25,6 +26,7 @@ class FirebaseNotificationService : FirebaseMessagingService()  {
 
         val title = remote.notification?.title
         val message = remote.notification?.body
+        val dataId = remote.data.get("id").toString()
 
         val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val mBuilder = NotificationCompat.Builder(this, CHANNEL_ID)

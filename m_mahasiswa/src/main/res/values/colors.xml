@@ -12,4 +12,5 @@
     <color name="green_primary">#009A4B</color>
     <color name="menu_non_active">#A1A1A1</color>
     <color name="row_blue">#6A88F5</color>
+    <color name="row_red">#FF4242</color>
 </resources>

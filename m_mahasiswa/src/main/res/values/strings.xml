@@ -1,11 +1,10 @@
 <resources>
-    <string name="app_name">m_dosen</string>
+    <string name="app_name">m_mahasiswa</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="reset_password">Reset Password</string>
     <string name="title_home">Home</string>
     <string name="profile">Profile</string>
-    <string name="resource">Resource</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="announcement">Announcement</string>
@@ -15,4 +14,13 @@
     <string name="save">Save</string>
     <string name="krs_unand_logo">KRS - UNAND</string>
     <string name="semester_ganjil_logo">Semester Ganjil</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="logout">Logout</string>
+    <string name="topic">Topic</string>
+    <string name="cancel">Cancel</string>
+    <string name="period">Period</string>
+    <string name="bimbingan">Bimbingan</string>
+    <string name="krs">Krs</string>
+    <string name="semester">Semester</string>
 </resources>

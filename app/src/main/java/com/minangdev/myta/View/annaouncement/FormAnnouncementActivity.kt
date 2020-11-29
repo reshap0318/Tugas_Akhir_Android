@@ -1,16 +1,11 @@
 package com.minangdev.myta.View.annaouncement
 
-import android.R.attr.fragment
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.minangdev.myta.API.ApiBuilder
@@ -18,6 +13,7 @@ import com.minangdev.myta.API.ApiInterface
 import com.minangdev.myta.Helper.SharePreferenceManager
 import com.minangdev.myta.R
 import com.minangdev.myta.View.MainActivity
+import com.minangdev.myta.ViewModel.AnnouncementViewHolder
 import kotlinx.android.synthetic.main.actionbar_onlyback.*
 import kotlinx.android.synthetic.main.activity_form_announcement.*
 import okhttp3.ResponseBody

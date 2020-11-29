@@ -20,4 +20,6 @@
     <string name="topic">Topic</string>
     <string name="cancel">Cancel</string>
     <string name="period">Period</string>
+    <string name="bimbingan">Guidance</string>
+    <string name="search">Search</string>
 </resources>
