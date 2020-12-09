@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.minangdev.myta.API.ApiBuilder
 import com.minangdev.myta.API.ApiInterface
 import com.minangdev.myta.Adapter.NotificationAdapter
+import com.minangdev.myta.Helper.LoadingDialog
 import com.minangdev.myta.Helper.SharePreferenceManager
 import com.minangdev.myta.R
 import com.minangdev.myta.ViewModel.AnnouncementViewHolder
@@ -37,6 +38,7 @@ class AnnouncementFragment : Fragment() {
 
     private lateinit var mCreateDialogView : View
     private lateinit var mCreate : AlertDialog
+    private lateinit var loadingDialog: LoadingDialog
 
     var announcement_id : String? = null
     private lateinit var token: String
@@ -68,7 +70,7 @@ class AnnouncementFragment : Fragment() {
         //adapter
         val layoutManager = LinearLayoutManager(activity)
         announcementAdapter= NotificationAdapter {jsonObject ->
-            iniRowMenu(jsonObject)
+            initRowMenu(jsonObject)
         }
         announcementAdapter.notifyDataSetChanged()
         root.rv_pengumuman.adapter = announcementAdapter
@@ -76,11 +78,12 @@ class AnnouncementFragment : Fragment() {
 
         //load data
         announcementViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(AnnouncementViewHolder::class.java)
+        loadingDialog = LoadingDialog(activity!!)
         loadData()
         return root
     }
 
-    private fun iniRowMenu(jsonObject: JSONObject) {
+    private fun initRowMenu(jsonObject: JSONObject) {
         var mMenu : Array<String> = arrayOf("Detail", "Edit", "Delete")
         //kondisi
         val unitId = sharePreference.getUnitId()
@@ -147,6 +150,7 @@ class AnnouncementFragment : Fragment() {
     }
 
     fun update(id : String, title : String, description : String){
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val announcement = apiBuilder.announcementUpdate(token, id, title, description)
         announcement.enqueue(object : Callback<ResponseBody> {
@@ -165,6 +169,7 @@ class AnnouncementFragment : Fragment() {
                 } else {
                     Log.e("Response_AnnouncementE", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -175,6 +180,7 @@ class AnnouncementFragment : Fragment() {
     }
 
     fun simpan(title : String, description : String){
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val announcement = apiBuilder.announcementSave(token, title, description)
         announcement.enqueue(object : Callback<ResponseBody> {
@@ -191,25 +197,29 @@ class AnnouncementFragment : Fragment() {
                     val dataError = JSONObject(response.errorBody()?.string())
                     validationForm(dataError)
                 } else {
-                    Log.e("Response_AnnouncementE", "Ada Error di server Code : " + response.code().toString())
+                    Log.e("Response_AnnouncementS", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("Failure_AnnouncementE", "onFailure: ERROR > " + t.toString());
+                Log.e("Failure_AnnouncementS", "onFailure: ERROR > " + t.toString());
             }
 
         })
     }
 
     fun loadData(){
+        loadingDialog.showLoading()
         announcementViewModel.setListData(token)
         announcementViewModel.getListData().observe(this, Observer {datas ->
             announcementAdapter.setData(datas)
+            loadingDialog.hideLoading()
         })
     }
 
     fun delete(id: String){
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val announcement = apiBuilder.announcementDelete(token, id)
         announcement.enqueue(object : Callback<ResponseBody> {
@@ -224,6 +234,7 @@ class AnnouncementFragment : Fragment() {
                 } else {
                     Log.e("Res_AnnouncementD", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

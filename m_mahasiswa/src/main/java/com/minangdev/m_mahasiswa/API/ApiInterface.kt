@@ -100,10 +100,28 @@ interface ApiInterface {
             @Header("Authorization") token: String
     ) : Call<ResponseBody>
 
-    @GET("/mahasiswa/krs/{kelasId}")
+    @GET("/mahasiswa/kelas/{kelasId}")
     fun kelasDetail(
             @Header("Authorization") token: String,
             @Path("kelasId") kelasId: String
+    ) : Call<ResponseBody>
+
+    @GET("/mahasiswa/krs/isCanEntry")
+    fun isCanEntry(
+            @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("/mahasiswa/krs/entry")
+    fun entry(
+            @Header("Authorization") token: String,
+            @Field("klsId") klsId: String,
+    ): Call<ResponseBody>
+
+    @DELETE("/mahasiswa/krs/delete/{krsdtId}")
+    fun krsDelete(
+            @Header("Authorization") token: String,
+            @Path("krsdtId") krsdtId: String
     ) : Call<ResponseBody>
 
 }

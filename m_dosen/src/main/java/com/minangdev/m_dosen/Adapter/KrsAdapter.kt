@@ -36,9 +36,12 @@ class KrsAdapter(private val onItemClickListener : onItemClick) : RecyclerView.A
             tv_kode_matkul_krs_bimbingan.text = jsonObject.getJSONObject("kelas").getString("kode_matkul")
             tv_nama_matkul_krs_bimbingan.text = jsonObject.getJSONObject("kelas").getString("nama_matkul")
             tv_sks_matkul_krs_bimbingan.text = jsonObject.getJSONObject("kelas").getString("sks_matkul") + " SKS"
-            var status = "DiTolak"
-            if(jsonObject.getString("status")=="1"){
-                status = "Disetujui"
+            var status = "Disetujui"
+            if(jsonObject.getString("status")=="0"){
+                status = "DiTolak"
+                row_krs_layout.setBackgroundResource(R.drawable.bg_row_red)
+            }else{
+                row_krs_layout.setBackgroundResource(R.drawable.bg_row_blue)
             }
             tv_status_krs_bimbingan.text = status
             var jadwal = ""
@@ -51,7 +54,6 @@ class KrsAdapter(private val onItemClickListener : onItemClick) : RecyclerView.A
                 }else{
                     jadwal += " & "+mdata
                 }
-//                jadwal += " #"+jadwalObject.getString("ruangan")
             }
             tv_jadwal_matkul_krs_bimbingan.text = jadwal
 

@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.minangdev.myta.API.ApiBuilder
 import com.minangdev.myta.API.ApiInterface
 import com.minangdev.myta.Adapter.OneAdapter
+import com.minangdev.myta.Helper.LoadingDialog
 import com.minangdev.myta.Helper.SharePreferenceManager
 import com.minangdev.myta.R
 import com.minangdev.myta.ViewModel.TopicViewModel
@@ -35,6 +36,7 @@ class TopicActiveFragment : Fragment() {
 
     private lateinit var root : View
     private lateinit var sharePreference : SharePreferenceManager
+    private lateinit var loadingDialog: LoadingDialog
     private lateinit var token: String
 
     private var initialCheckedItems =  mutableListOf<Boolean>()
@@ -56,6 +58,7 @@ class TopicActiveFragment : Fragment() {
         initDataDeactive()
 
         root.fab_add_topic_active.setOnClickListener{
+            initDataDeactive()
             if(dataDeactive.size > 0){
                 val checkedItems = initialCheckedItems.toBooleanArray()
                 MaterialAlertDialogBuilder(context!!)
@@ -99,6 +102,7 @@ class TopicActiveFragment : Fragment() {
         val layoutManager = LinearLayoutManager(activity)
         root.rv_topic_active.adapter = topicAdapter
         root.rv_topic_active.layoutManager = layoutManager
+        loadingDialog = LoadingDialog(activity!!)
         loadData()
         return root
     }
@@ -120,6 +124,7 @@ class TopicActiveFragment : Fragment() {
 
     private fun simpanData(){
         if(mCheckData.size>0){
+            loadingDialog.showLoading()
             val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
             val semester = sharePreference.getSemesterActive().get(sharePreference.IDSEMESTER).toString()
             val mBuilder = apiBuilder.periodAddTopic(token, semester, mCheckData)
@@ -130,6 +135,7 @@ class TopicActiveFragment : Fragment() {
                             Toast.makeText(activity, "Berhasil Menambahkan Data", Toast.LENGTH_SHORT).show()
                             loadData()
                             initDataDeactive()
+                            loadingDialog.hideLoading()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -152,6 +158,7 @@ class TopicActiveFragment : Fragment() {
     }
 
     private fun deleteData(periodId: String, topicId: String) {
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val announcement = apiBuilder.periodDeleteTopic(token, periodId, topicId)
         announcement.enqueue(object : Callback<ResponseBody> {
@@ -161,6 +168,7 @@ class TopicActiveFragment : Fragment() {
                         Toast.makeText(activity, "Berhasil Menghapus Data", Toast.LENGTH_SHORT).show()
                         loadData()
                         initDataDeactive()
+                        loadingDialog.hideLoading()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -177,9 +185,11 @@ class TopicActiveFragment : Fragment() {
     }
 
     private fun loadData() {
+        loadingDialog.showLoading()
         topicViewModel.setListDataActive(token)
         topicViewModel.getListDataActive().observe(this, Observer { datas ->
             topicAdapter.setData(datas)
+            loadingDialog.hideLoading()
         })
     }
 

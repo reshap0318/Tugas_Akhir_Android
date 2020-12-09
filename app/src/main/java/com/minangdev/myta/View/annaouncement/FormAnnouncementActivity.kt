@@ -25,12 +25,14 @@ import retrofit2.Response
 
 class FormAnnouncementActivity : AppCompatActivity() {
 
-    var edit : Boolean = false
     private lateinit var announcementViewModel: AnnouncementViewHolder
+    private lateinit var action : String
+    private lateinit var id : String
+    private lateinit var token : String
 
     companion object {
-        const val EXTRA_EDIT = "extra_edit"
-        const val EXTRA_DETAIL = "extra_detail"
+        const val EXTRA_ACTION = "extra_action"
+        const val EXTRA_ID = "extra_id"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,54 +42,50 @@ class FormAnnouncementActivity : AppCompatActivity() {
         val sharePreference = SharePreferenceManager(this)
         sharePreference.isLogin()
 
-        val token = sharePreference.getToken()
+        token = sharePreference.getToken()
 
         btn_appbar_back.setOnClickListener{
             onBackPressed()
         }
 
-        val edit_id = intent.getStringExtra(EXTRA_EDIT)
-        val detail_id = intent.getStringExtra(EXTRA_DETAIL)
+        action = intent.getStringExtra(EXTRA_ACTION)!!
+        id = intent.getStringExtra(EXTRA_ID).toString()
+
         announcementViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(AnnouncementViewHolder::class.java)
 
-        if(detail_id != null){
-            announcementViewModel.setData(token, detail_id)
-            announcementViewModel.getData().observe(this, Observer { data ->
-                val title = data.getString("title")
-                val description = data.getString("description")
-                title_form_announcement.editText?.setText(title)
-                description_form_announcement.editText?.setText(description)
-                title_form_announcement.isEnabled = false
-                description_form_announcement.isEnabled = false
-                btn_simpan_form_announcement.isVisible = false
-            })
-        }
 
-        if(edit_id != null){
-            edit = true
-            announcementViewModel.setEdit(token, edit_id)
-            announcementViewModel.getEdit().observe(this, Observer { data ->
-                val title = data.getString("title")
-                val description = data.getString("description")
-                title_form_announcement.editText?.setText(title)
-                description_form_announcement.editText?.setText(description)
-            })
+        if(action == "detail"){
+            getDetail()
+        }
+        else if(action == "edit"){
+            edit()
         }
 
         btn_simpan_form_announcement.setOnClickListener{
             val title = title_form_announcement.editText?.text.toString()
             val description = description_form_announcement.editText?.text.toString()
-            if(edit){
-                if (edit_id != null) {
-                    update(token, edit_id, title, description)
-                }
+            if(action=="edit"){
+                update(title, description)
             }else{
-                simpan(token, title, description)
+                simpan(title, description)
             }
         }
     }
 
-    fun simpan(token: String, title: String, description: String){
+    fun getDetail(){
+        announcementViewModel.setData(token, id)
+        announcementViewModel.getData().observe(this, Observer { data ->
+            val title = data.getString("title")
+            val description = data.getString("description")
+            title_form_announcement.editText?.setText(title)
+            description_form_announcement.editText?.setText(description)
+            title_form_announcement.isEnabled = false
+            description_form_announcement.isEnabled = false
+            btn_simpan_form_announcement.isVisible = false
+        })
+    }
+
+    fun simpan(title: String, description: String){
         title_form_announcement.error = ""
         description_form_announcement.error = ""
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
@@ -118,7 +116,17 @@ class FormAnnouncementActivity : AppCompatActivity() {
         })
     }
 
-    fun update(token: String, id: String, title: String, description: String){
+    fun edit(){
+        announcementViewModel.setEdit(token, id)
+        announcementViewModel.getEdit().observe(this, Observer { data ->
+            val title = data.getString("title")
+            val description = data.getString("description")
+            title_form_announcement.editText?.setText(title)
+            description_form_announcement.editText?.setText(description)
+        })
+    }
+
+    fun update(title: String, description: String){
         title_form_announcement.error = ""
         description_form_announcement.error = ""
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)

@@ -15,6 +15,7 @@ import com.minangdev.m_mahasiswa.ViewModel.SKSViewModel
 import com.minangdev.m_mahasiswa.ViewModel.TranskripViewModel
 import kotlinx.android.synthetic.main.fragment_transkrip.*
 import kotlinx.android.synthetic.main.fragment_transkrip.view.*
+import java.text.DecimalFormat
 
 class TranskripFragment : Fragment() {
 
@@ -49,8 +50,11 @@ class TranskripFragment : Fragment() {
         })
 
         sksViewModel.setData(token)
+        val df = DecimalFormat("#.##")
         sksViewModel.getData().observe(this, Observer {data ->
+            val ipk = data.getString("ipk").toFloat()
             tv_total_sks.text = "Total SKS : "+data.getString("total_sks")
+            tv_ipk_transkrip.text = "IPK : "+df.format(ipk).toString()
         })
 
         return root

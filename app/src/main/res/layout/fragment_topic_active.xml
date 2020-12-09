@@ -27,7 +27,7 @@
         android:layout_margin="16dp"
         android:contentDescription="add"
         android:src="@drawable/baseline_add_24"
-        android:backgroundTint="@color/row_blue"
+        android:backgroundTint="@color/green_sencond"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.minangdev.m_dosen.Adapter.TranskripMainAdapter
 import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.R
+import com.minangdev.m_dosen.ViewModel.SKSViewModel
 import com.minangdev.m_dosen.ViewModel.TranskripViewModel
 import kotlinx.android.synthetic.main.fragment_bimbingan_transkrip.view.*
+import java.text.DecimalFormat
 
 class BimbinganTranskripFragment : Fragment() {
     private lateinit var root : View
@@ -21,6 +23,7 @@ class BimbinganTranskripFragment : Fragment() {
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var transkripViewModel : TranskripViewModel
     private lateinit var transkripMainAdapter: TranskripMainAdapter
+    private lateinit var sksViewModel : SKSViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +43,8 @@ class BimbinganTranskripFragment : Fragment() {
         val semester = sharePreference.getSemesterActive().get(sharePreference.IDSEMESTER).toString()
 
         transkripViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(TranskripViewModel::class.java)
+        sksViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SKSViewModel::class.java)
+
         transkripMainAdapter = TranskripMainAdapter(context!!)
         val layoutManager = LinearLayoutManager(activity)
         root.rv_transkrip_bimbingan.adapter = transkripMainAdapter
@@ -48,6 +53,14 @@ class BimbinganTranskripFragment : Fragment() {
         transkripViewModel.setData(token, nim!!)
         transkripViewModel.getData().observe(this, Observer { datas ->
             transkripMainAdapter.setData(datas)
+        })
+
+        sksViewModel.setData(token, nim!!)
+        val df = DecimalFormat("#.##")
+        sksViewModel.getData().observe(this, Observer {data ->
+            val ipk = data.getString("ipk").toFloat()
+            root.tv_total_sks.text = "Total SKS : "+data.getString("total_sks")
+            root.tv_ipk_transkrip.text = "IPK : "+df.format(ipk).toString()
         })
 
         return root

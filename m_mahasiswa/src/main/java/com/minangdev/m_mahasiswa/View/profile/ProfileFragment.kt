@@ -32,6 +32,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.text.DecimalFormat
 
 
 class ProfileFragment : Fragment() {
@@ -91,8 +92,8 @@ class ProfileFragment : Fragment() {
         sksViewModel.setData(token)
         sksViewModel.getData().observe(this, Observer { data ->
             val total = data.getString("total_sks")
-            val sks = data.getString("sks_diambil") + "/" + data.getString("jatah_sks")
-            profileSetData2(total,sks)
+            val ipk = data.getString("ipk")
+            profileSetData2(total,ipk)
         })
 
         semesterViewModel.setData(token)
@@ -112,8 +113,9 @@ class ProfileFragment : Fragment() {
             .into(root.img_profile)
     }
 
-    private fun profileSetData2(total:String, sks:String){
-        root.tv_sks.text = sks
+    private fun profileSetData2(total:String, ipk:String){
+        val df = DecimalFormat("#.##")
+        root.tv_ipk.text = df.format(ipk.toFloat()).toString()
         root.tv_sks_total.text = total
     }
 

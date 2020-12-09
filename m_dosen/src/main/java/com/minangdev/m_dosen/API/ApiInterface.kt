@@ -107,4 +107,30 @@ interface ApiInterface {
             @Path("nim") nim: String
     ) : Call<ResponseBody>
 
+    @GET("/dosen/mahasiswa/{nim}/kelas/{klsId}")
+    fun mahasiswaKelasDetail(
+            @Header("Authorization") token: String,
+            @Path("nim") nim: String,
+            @Path("klsId") klsId: String
+    ) : Call<ResponseBody>
+
+    @POST("/dosen/mahasiswa/{nim}/krs/{krsdtId}/chage-status/1")
+    fun mahasiswaKrsSetujui(
+            @Header("Authorization") token: String,
+            @Path("nim") nim: String,
+            @Path("krsdtId") krsdtId: String
+    ) : Call<ResponseBody>
+
+    @POST("/dosen/mahasiswa/{nim}/krs/{krsdtId}/chage-status/0")
+    fun mahasiswaKrsTolak(
+            @Header("Authorization") token: String,
+            @Path("nim") nim: String,
+            @Path("krsdtId") krsdtId: String
+    ) : Call<ResponseBody>
+
+    @GET("/dosen/mahasiswa/1611522012/krs/isCanChange")
+    fun isCanChangeStatus(
+            @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
 }

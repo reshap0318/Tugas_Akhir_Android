@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.minangdev.myta.API.ApiBuilder
 import com.minangdev.myta.API.ApiInterface
 import com.minangdev.myta.Adapter.OneAdapter
+import com.minangdev.myta.Helper.LoadingDialog
 import com.minangdev.myta.Helper.SharePreferenceManager
 import com.minangdev.myta.R
 import com.minangdev.myta.ViewModel.TopicViewModel
@@ -35,6 +36,7 @@ class TopicFragment : Fragment() {
     private lateinit var root : View
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var mCreate : AlertDialog
+    private lateinit var loadingDialog: LoadingDialog
 
     private lateinit var mCreateDialogView : View
 
@@ -58,6 +60,7 @@ class TopicFragment : Fragment() {
 
         //set btn to open dialog
         root.fab_add_topic.setOnClickListener{
+            topic_id = null
             mCreateDialogView.name_form_topic.error = ""
             mCreateDialogView.name_form_topic.editText?.setText("")
             mCreate.show()
@@ -92,6 +95,7 @@ class TopicFragment : Fragment() {
 
         //load data
         topicViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(TopicViewModel::class.java)
+        loadingDialog = LoadingDialog(activity!!)
         loadData()
         return root
     }
@@ -117,6 +121,7 @@ class TopicFragment : Fragment() {
     }
 
     private fun simpanData(name: String) {
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val topic = apiBuilder.topicSave(token, name)
         topic.enqueue(object : Callback<ResponseBody> {
@@ -135,6 +140,7 @@ class TopicFragment : Fragment() {
                 } else {
                     Log.e("Resp_TopicS", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -145,6 +151,7 @@ class TopicFragment : Fragment() {
     }
 
     private fun updateData(topicId: String, name: String) {
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val topic = apiBuilder.topicUpdate(token, topicId, name)
         topic.enqueue(object : Callback<ResponseBody> {
@@ -163,6 +170,7 @@ class TopicFragment : Fragment() {
                 } else {
                     Log.e("Res_TopicE", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -182,13 +190,16 @@ class TopicFragment : Fragment() {
     }
 
     private fun loadData() {
+        loadingDialog.showLoading()
         topicViewModel.setListData(token)
         topicViewModel.getListData().observe(this, Observer { datas ->
             topicAdapter.setData(datas)
+            loadingDialog.hideLoading()
         })
     }
 
     private fun delete(id: String) {
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val announcement = apiBuilder.topicDelete(token, id)
         announcement.enqueue(object : Callback<ResponseBody> {
@@ -204,6 +215,7 @@ class TopicFragment : Fragment() {
                 } else {
                     Log.e("Res_TopicD", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

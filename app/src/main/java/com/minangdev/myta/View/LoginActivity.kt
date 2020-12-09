@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.iid.FirebaseInstanceId
 import com.minangdev.myta.API.ApiBuilder
 import com.minangdev.myta.API.ApiInterface
+import com.minangdev.myta.Helper.LoadingDialog
 import com.minangdev.myta.Helper.SharePreferenceManager
 import com.minangdev.myta.R
 import kotlinx.android.synthetic.main.activity_login.*
@@ -19,9 +20,12 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
+    private lateinit var loadingDialog: LoadingDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        loadingDialog = LoadingDialog(this)
         btn_login.setOnClickListener(this)
 
         if(isLogin()){
@@ -44,6 +48,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun submitLogin() {
+        loadingDialog.showLoading()
         login_admin.error = ""
         password_admin.error = ""
         val token = FirebaseInstanceId.getInstance().getToken().toString()
@@ -60,6 +65,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     val unit_id = dataJson.getJSONObject("data").getString("unit_id")
                     val sharePreferece = SharePreferenceManager(this@LoginActivity)
                     sharePreferece.SaveToken(token, unit_id, fcmToken)
+                    loadingDialog.hideLoading()
                     moveActifity()
                 } else if (response.code() == 422) {
                         try {

@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.minangdev.myta.API.ApiBuilder
 import com.minangdev.myta.API.ApiInterface
+import com.minangdev.myta.Helper.LoadingDialog
 import com.minangdev.myta.Helper.SharePreferenceManager
 import com.minangdev.myta.Helper.UploadImage
 import com.minangdev.myta.R
@@ -35,6 +36,7 @@ import java.io.FileOutputStream
 class ProfileFragment : Fragment() {
 
     private lateinit var profileViewModel : ProfileViewModel
+    private lateinit var loadingDialog: LoadingDialog
     private lateinit var root : View
     private lateinit var sharePreference : SharePreferenceManager
     lateinit var token: String
@@ -48,6 +50,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.fragment_profile, container, false)
+        loadingDialog = LoadingDialog(activity!!)
         sharePreference = SharePreferenceManager(root.context)
         sharePreference.isLogin()
 
@@ -75,12 +78,14 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadData() {
+        loadingDialog.showLoading()
         profileViewModel.setData(token)
         profileViewModel.getData().observe(this, Observer {data ->
             val name = data.getString("name")
             val nip = data.getString("username")
             val img = data.getString("avatar")
             profileSetData(name=name, nip=nip, img=img)
+            loadingDialog.hideLoading()
         })
     }
 
@@ -132,11 +137,13 @@ class ProfileFragment : Fragment() {
         val profile = apiBuilder.changeAvatar(token, formAvatar)
         profile.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                loadingDialog.showLoading()
                 if (response.code() == 200) {
                     loadData()
                 } else {
                     Log.e("Res_Change_Avatar", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -158,12 +165,14 @@ class ProfileFragment : Fragment() {
     }
 
     fun logout(){
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val profile = apiBuilder.logout(token)
         profile.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
                     Toast.makeText(activity, "Berhasil LogOut", Toast.LENGTH_SHORT).show()
+                    loadingDialog.hideLoading()
                     sharePreference.isLogin()
                 } else {
                     Log.e("Res_Logout", "Ada Error di server Code : " + response.code().toString())

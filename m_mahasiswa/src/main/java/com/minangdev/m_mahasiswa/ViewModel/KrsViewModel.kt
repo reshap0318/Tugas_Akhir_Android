@@ -17,6 +17,7 @@ import java.lang.Exception
 class KrsViewModel: ViewModel()  {
     private val listData = MutableLiveData<JSONArray>()
     private val listDataSemester = MutableLiveData<JSONObject>()
+    private val isCanEntry = MutableLiveData<Boolean>()
 
     fun setData(token: String){
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
@@ -73,4 +74,31 @@ class KrsViewModel: ViewModel()  {
     }
 
     fun getDataSemester(): LiveData<JSONObject> = listDataSemester
+
+    fun isCanEntry(token:String){
+        val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
+        val profile = apiBuilder.isCanEntry(token)
+        profile.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if(response.code()==200){
+                    try {
+                        isCanEntry.postValue(true)
+                    }catch (e: Exception){
+                        e.printStackTrace()
+                    }
+                }else{
+                    Log.e("Res_KRSisEntry", "Ada Error di server Code : "+response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("Fail_KRSisEntry", "onFailure: ERROR > " + t.toString());
+            }
+
+        });
+    }
+
+    fun canEntry(): LiveData<Boolean> = isCanEntry
+
+
 }
