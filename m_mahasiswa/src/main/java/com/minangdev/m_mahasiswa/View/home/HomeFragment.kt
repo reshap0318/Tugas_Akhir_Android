@@ -14,13 +14,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.minangdev.m_mahasiswa.Adapter.KrsAdapter
+import com.minangdev.m_mahasiswa.Helper.LoadingDialog
 import com.minangdev.m_mahasiswa.Helper.SharePreferenceManager
 import com.minangdev.m_mahasiswa.R
 import com.minangdev.m_mahasiswa.View.NotificationActivity
-import com.minangdev.m_mahasiswa.ViewModel.FirebaseViewModel
-import com.minangdev.m_mahasiswa.ViewModel.KelasViewModel
-import com.minangdev.m_mahasiswa.ViewModel.KrsViewModel
-import com.minangdev.m_mahasiswa.ViewModel.ProfileViewModel
+import com.minangdev.m_mahasiswa.ViewModel.*
 import kotlinx.android.synthetic.main.dialog_detail_kelas.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -36,8 +34,9 @@ class HomeFragment : Fragment() {
     private lateinit var krsAdapter : KrsAdapter
     private lateinit var krsViewModel: KrsViewModel
     private lateinit var homeViewModel : ProfileViewModel
-    private lateinit var firebaseViewModel: FirebaseViewModel
+    private lateinit var announcementViewHolder: AnnouncementViewHolder
     private lateinit var kelasViewModel: KelasViewModel
+    private lateinit var loadingDialog: LoadingDialog
 
     private lateinit var mDetailDialogView : View
     private lateinit var mDetailAlertDialog : AlertDialog
@@ -55,14 +54,15 @@ class HomeFragment : Fragment() {
         sharePreference.isLogin()
         token = sharePreference.getToken()
         semesterActive = sharePreference.getSemesterActive().get(sharePreference.IDSEMESTER).toString()
-        val api_fcm = sharePreference.getFCMTOKEN()
 
         homeSetData(name="", nip="")
 
         homeViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ProfileViewModel::class.java)
         krsViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(KrsViewModel::class.java)
-        firebaseViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(FirebaseViewModel::class.java)
+        announcementViewHolder = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(AnnouncementViewHolder::class.java)
         kelasViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(KelasViewModel::class.java)
+
+        loadingDialog = LoadingDialog(activity!!)
 
         krsAdapter = KrsAdapter{
             val klsId =  it.getJSONObject("kelas").getString("kelas_id")
@@ -73,17 +73,21 @@ class HomeFragment : Fragment() {
         root.rv_krs_home.adapter = krsAdapter
         root.rv_krs_home.layoutManager = layoutManager
 
+        loadingDialog.showLoading()
         homeViewModel.setData(token)
         homeViewModel.getData().observe(this, Observer {data ->
             val name = data.getString("name")
             val nip = data.getString("username")
             val img = data.getString("avatar")
             homeSetData(name=name, nip=nip, img=img)
+            loadingDialog.hideLoading()
         })
 
+        loadingDialog.showLoading()
         krsViewModel.setDataSemester(token, semesterActive!!)
         krsViewModel.getDataSemester().observe(this, Observer { datas ->
             krsAdapter.setData(datas.getJSONArray("krs"))
+            loadingDialog.hideLoading()
         })
 
         root.tv_announcement_home.setOnClickListener{
@@ -97,14 +101,16 @@ class HomeFragment : Fragment() {
 
         root.row_notification_home.isVisible = false
         root.label_notification_home.isVisible = false
-        firebaseViewModel.setData(api_fcm)
-        firebaseViewModel.getData().observe(this, Observer { datas ->
+        loadingDialog.showLoading()
+        announcementViewHolder.setListData(token)
+        announcementViewHolder.getListData().observe(this, Observer { datas ->
             if(datas.length()>0){
                 root.row_notification_home.isVisible = true
                 root.label_notification_home.isVisible = true
                 root.tv_label_notification.text = datas.getJSONObject(0).getString("title")
                 root.tv_date_notification.text = datas.getJSONObject(0).getString("tanggal")
                 root.tv_time_notification.text = datas.getJSONObject(0).getString("waktu")
+                loadingDialog.hideLoading()
             }
         })
 
@@ -122,6 +128,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showDetailDialog(klsId: String) {
+        loadingDialog.showLoading()
         mDetailDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_detail_kelas, null)
         mDetailAlertDialog = AlertDialog.Builder(activity).setView(mDetailDialogView).create()
 
@@ -157,6 +164,7 @@ class HomeFragment : Fragment() {
             }
             mDetailDialogView.tv_dosen_kelas.text = ": "+dosen
             mDetailDialogView.tv_waktu_kelas.text = ": "+jadwal
+            loadingDialog.hideLoading()
             mDetailAlertDialog.show()
         })
     }

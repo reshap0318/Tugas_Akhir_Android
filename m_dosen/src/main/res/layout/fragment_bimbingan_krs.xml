@@ -3,9 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/green_primary"
     tools:context=".View.bimbingan.BimbinganKrsFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sp_semester_krs_bimmbingan"
+        android:layout_width="match_parent"
+        style="@style/SelectInputLayoutStyle"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:hintTextColor="@color/white"
+        android:hint="Semester">
+
+        <AutoCompleteTextView
+            android:id="@+id/sp_semester_krs_tv_bimmbingan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:importantForAutofill="no"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_bimbingan_krs"

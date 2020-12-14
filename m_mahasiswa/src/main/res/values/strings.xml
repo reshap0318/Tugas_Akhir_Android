@@ -24,4 +24,5 @@
     <string name="krs">Krs</string>
     <string name="semester">Semester</string>
     <string name="confirm">Confirm</string>
+    <string name="defaultValue">-</string>
 </resources>

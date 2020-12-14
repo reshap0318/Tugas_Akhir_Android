@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.iid.FirebaseInstanceId
 import com.minangdev.m_dosen.API.ApiBuilder
 import com.minangdev.m_dosen.API.ApiInterface
+import com.minangdev.m_dosen.Helper.LoadingDialog
 import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.R
 import kotlinx.android.synthetic.main.activity_login.*
@@ -19,11 +20,14 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
+    lateinit var loadingDialog: LoadingDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         btn_login.setOnClickListener(this)
 
+        loadingDialog = LoadingDialog(this)
         if(isLogin()){
             moveActifity()
         }
@@ -44,6 +48,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun submitLogin() {
+        loadingDialog.showLoading()
         login_admin.error = ""
         password_admin.error = ""
         val token = FirebaseInstanceId.getInstance().getToken().toString()
@@ -58,10 +63,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     val token = dataJson.getJSONObject("data").getString("token")
                     val fcmToken = dataJson.getJSONObject("data").getString("uid")
                     val unit_id = dataJson.getJSONObject("data").getString("unit_id")
+                    val user_id = dataJson.getJSONObject("data").getString("user_id")
                     val sharePreferece = SharePreferenceManager(this@LoginActivity)
-                    sharePreferece.SaveToken(token, unit_id, fcmToken)
+                    sharePreferece.SaveToken(token, unit_id, fcmToken, user_id)
                     moveActifity()
-                } else if (response.code() == 422) {
+                }
+                else if (response.code() == 422) {
                         try {
                             val dataError = JSONObject(response.errorBody()?.string())
                             if(dataError.getJSONObject("errors").has("login")){
@@ -83,6 +90,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     Log.e("submitLogin", "Error Code : "+response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.minangdev.m_dosen.Helper.LoadingDialog
 import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.R
 import com.minangdev.m_dosen.ViewModel.ProfileViewModel
@@ -16,8 +17,10 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel : ProfileViewModel
-    private lateinit var root : View
     private lateinit var sharePreference : SharePreferenceManager
+    lateinit var loadingDialog: LoadingDialog
+
+    private lateinit var root : View
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,12 +35,16 @@ class HomeFragment : Fragment() {
         homeSetData(name="", nip="")
 
         homeViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ProfileViewModel::class.java)
+        loadingDialog = LoadingDialog(activity!!)
+
+        loadingDialog.showLoading()
         homeViewModel.setData(token)
         homeViewModel.getData().observe(this, Observer {data ->
             val name = data.getString("name")
             val nip = data.getString("username")
             val img = data.getString("avatar")
             homeSetData(name=name, nip=nip, img=img)
+            loadingDialog.hideLoading()
         })
         return root
     }

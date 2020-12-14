@@ -13,6 +13,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.minangdev.m_dosen.Helper.LoadingDialog
 import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.R
 import com.minangdev.m_dosen.ViewModel.TranskripViewModel
@@ -26,6 +27,8 @@ class BimbinganGraficFragment : Fragment() {
     private lateinit var token : String
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var transkripViewModel : TranskripViewModel
+    lateinit var loadingDialog: LoadingDialog
+
     private val barLabel = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,14 +49,19 @@ class BimbinganGraficFragment : Fragment() {
 
         transkripViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(TranskripViewModel::class.java)
 
+        loadingDialog = LoadingDialog(activity!!)
+        loadingDialog.showLoading()
         transkripViewModel.setDataStaticA(token, nim!!)
         transkripViewModel.getDataStaticA().observe(this, Observer { datas ->
             showChartA(convertDataA(datas))
+            loadingDialog.hideLoading()
         })
 
+        loadingDialog.showLoading()
         transkripViewModel.setDataStaticB(token, nim!!)
         transkripViewModel.getDataStaticB().observe(this, Observer { datas ->
             showChartB(convertDataB(datas))
+            loadingDialog.hideLoading()
         })
         return root
     }

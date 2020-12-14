@@ -36,6 +36,11 @@ class KrsAdapter(private val onItemClickListener : onItemClick) : RecyclerView.A
             tv_kode_matkul_krs_bimbingan.text = jsonObject.getJSONObject("kelas").getString("kode_matkul")
             tv_nama_matkul_krs_bimbingan.text = jsonObject.getJSONObject("kelas").getString("nama_matkul")
             tv_sks_matkul_krs_bimbingan.text = jsonObject.getJSONObject("kelas").getString("sks_matkul") + " SKS"
+            var nilai = "-"
+            if(!jsonObject.getString("nilai").equals("null")){
+                nilai = jsonObject.getString("nilai")
+            }
+            tv_nilai_matkul_krs_bimbingan.text = nilai
             var status = "Disetujui"
             if(jsonObject.getString("status")=="0"){
                 status = "DiTolak"

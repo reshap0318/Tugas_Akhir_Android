@@ -17,7 +17,7 @@ class LoadingDialog {
         val builder = AlertDialog.Builder(activity)
         val mLayout = LayoutInflater.from(activity).inflate(R.layout.dialog_loading, null)
         builder.setView(mLayout)
-        builder.setCancelable(false)
+        builder.setCancelable(true)
         this.dialog = builder.create()
     }
 

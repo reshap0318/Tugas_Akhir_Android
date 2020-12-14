@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_add_krs.*
 import kotlinx.android.synthetic.main.dialog_detail_kelas_add_krs.view.*
 import com.minangdev.m_mahasiswa.API.ApiBuilder
 import com.minangdev.m_mahasiswa.API.ApiInterface
+import com.minangdev.m_mahasiswa.Helper.LoadingDialog
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,10 +36,12 @@ class AddKrsActivity : AppCompatActivity() {
     private lateinit var krsViewModel : KrsViewModel
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var addKrsAdapter: AddKrsAdapter
+
     lateinit var token: String
 
     private lateinit var mDetailDialogView : View
     private lateinit var mDetailAlertDialog : AlertDialog
+    private lateinit var loadingDialog: LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,11 +54,17 @@ class AddKrsActivity : AppCompatActivity() {
         kelasViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(KelasViewModel::class.java)
         sksViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SKSViewModel::class.java)
         krsViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(KrsViewModel::class.java)
+
+        mDetailDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_detail_kelas_add_krs, null)
+        mDetailAlertDialog = AlertDialog.Builder(this).setView(mDetailDialogView).create()
+        loadingDialog = LoadingDialog(this)
+
         krsViewModel.isCanEntry(token)
         krsViewModel.canEntry().observe(this, Observer {
-            if(!it){
+            if (!it) {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra(MainActivity.EXTRA_FRAGMENT, 3)
+                Toast.makeText(this, "Not Time to Entry KRS", Toast.LENGTH_SHORT).show()
                 startActivity(intent)
             }
         })
@@ -68,16 +77,20 @@ class AddKrsActivity : AppCompatActivity() {
         rv_add_krs.adapter = addKrsAdapter
         rv_add_krs.layoutManager = layoutManager
 
+        loadingDialog.showLoading()
         kelasViewModel.setDatas(token)
         kelasViewModel.getDatas().observe(this, Observer { datas ->
             addKrsAdapter.setData(datas)
+            loadingDialog.hideLoading()
         })
 
+        loadingDialog.showLoading()
         sksViewModel.setData(token)
         sksViewModel.getData().observe(this, Observer { data ->
             tv_max_sks_add_krs.text = data.getString("jatah_sks")
             tv_sks_active_add_krs.text = data.getString("sks_diambil")
             tv_total_sks_add_krs.text = data.getString("total_sks")
+            loadingDialog.hideLoading()
         })
 
         btn_appbar_back.setOnClickListener{
@@ -89,12 +102,10 @@ class AddKrsActivity : AppCompatActivity() {
     }
 
     private fun showDetailDialog(id: String) {
-        mDetailDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_detail_kelas_add_krs, null)
-        mDetailAlertDialog = AlertDialog.Builder(this).setView(mDetailDialogView).create()
+        loadingDialog.showLoading()
         mDetailDialogView.btn_cancel_add_krs.setOnClickListener{
             mDetailAlertDialog.hide()
         }
-
         kelasViewModel.setData(token, id)
         kelasViewModel.getData().observe(this, Observer {data->
             mDetailDialogView.tv_kode_kelas_add_krs.text = ": "+data.getJSONObject("kelas").getString("nama")
@@ -132,11 +143,13 @@ class AddKrsActivity : AppCompatActivity() {
                 submitKrsData(data.getJSONObject("kelas").getString("id"))
                 mDetailAlertDialog.hide()
             }
+            loadingDialog.hideLoading()
             mDetailAlertDialog.show()
         })
     }
 
     private fun submitKrsData(id: String) {
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val profile = apiBuilder.entry(token, id)
         profile.enqueue(object : Callback<ResponseBody> {
@@ -150,6 +163,7 @@ class AddKrsActivity : AppCompatActivity() {
                     Toast.makeText(this@AddKrsActivity, "Gagal Menambahkan Data", Toast.LENGTH_SHORT).show()
                     Log.e("Res_KRSEntry", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

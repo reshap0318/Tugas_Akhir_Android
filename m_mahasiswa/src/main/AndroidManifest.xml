@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTa"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.krs.AddKrsActivity"></activity>
+        <activity android:name=".View.bimbingan.BimbinganDetailActivity"></activity>
+        <activity android:name=".View.krs.AddKrsActivity" />
 
         <service
             android:name=".Helper.FirebaseNotificationService"
@@ -26,6 +27,7 @@
 
         <activity android:name=".View.ChangePasswordActivity" />
         <activity android:name=".View.NotificationActivity" />
+        <activity android:name=".View.NotificationDetailActivity" />
         <activity android:name=".View.MainActivity" />
         <activity android:name=".View.LoginActivity">
             <intent-filter>

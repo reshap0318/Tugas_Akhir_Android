@@ -22,6 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.minangdev.m_mahasiswa.API.ApiBuilder
 import com.minangdev.m_mahasiswa.API.ApiInterface
 import com.minangdev.m_mahasiswa.Adapter.KrsAdapter
+import com.minangdev.m_mahasiswa.Helper.LoadingDialog
 import com.minangdev.m_mahasiswa.Helper.SharePreferenceManager
 import com.minangdev.m_mahasiswa.R
 import com.minangdev.m_mahasiswa.ViewModel.KelasViewModel
@@ -47,26 +48,16 @@ class KrsFragment : Fragment() {
     private lateinit var semesterViewModel : SemesterViewModel
     private lateinit var krsViewModel : KrsViewModel
     private lateinit var kelasViewModel: KelasViewModel
+    private lateinit var loadingDialog: LoadingDialog
 
     private lateinit var mDetailDialogView : View
     private lateinit var mDetailAlertDialog : AlertDialog
 
-    private var isLoaded = false
-    private var isVisibleToUser = true
     var isCanDelete = false
     var dataSpinner = ArrayList<String>()
     var idSpinner = ArrayList<String>()
     lateinit var token: String
     lateinit var semesterActive: String
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        this.isVisibleToUser=isVisibleToUser;
-        if(isVisibleToUser && isAdded()){
-            loadSemester()
-            isLoaded = true
-        }
-    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -78,17 +69,17 @@ class KrsFragment : Fragment() {
         sharePreference.isLogin()
         token = sharePreference.getToken()
         semesterActive = sharePreference.getSemesterActive().get(sharePreference.IDSEMESTER).toString()
+
         semesterViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SemesterViewModel::class.java)
         kelasViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(KelasViewModel::class.java)
+        krsViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(KrsViewModel::class.java)
+        loadingDialog = LoadingDialog(activity!!)
 
-
-        if(isVisibleToUser && (!isLoaded)){
-            loadSemester();
-            isLoaded=true;
-        }
+        loadSemester();
         initSpinner()
 
         krsAdapter = KrsAdapter {
+            loadingDialog.showLoading()
             val klsId =  it.getJSONObject("kelas").getString("kelas_id")
             val krsdtid = it.getString("idKrs")
             val semester = it.getString("semesterId")
@@ -99,14 +90,16 @@ class KrsFragment : Fragment() {
         root.rv_krs.adapter = krsAdapter
         root.rv_krs.layoutManager = layoutManager
 
-        krsViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(KrsViewModel::class.java)
 
+        loadingDialog.showLoading()
         krsViewModel.setDataSemester(token, semesterActive)
         krsViewModel.getDataSemester().observe(this, Observer { datas ->
             root.tv_sks_krs.text = datas.getJSONObject("sks").getString("sks_diambil")+"/"+datas.getJSONObject("sks").getString("jatah_sks")
             krsAdapter.setData(datas.getJSONArray("krs"))
+            loadingDialog.hideLoading()
         })
 
+        loadingDialog.showLoading()
         krsViewModel.isCanEntry(token)
         krsViewModel.canEntry().observe(this, Observer {
             if(!it){
@@ -116,6 +109,7 @@ class KrsFragment : Fragment() {
                 isCanDelete = true
                 root.fab_add_krs.isVisible = true
             }
+            loadingDialog.hideLoading()
         })
 
         root.fab_add_krs.setOnClickListener{
@@ -139,6 +133,7 @@ class KrsFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
+                loadingDialog.showLoading()
                 val index = dataSpinner.indexOf(p0.toString())
                 if(index>=0){
                     val idSemester = idSpinner.get(index)
@@ -150,16 +145,19 @@ class KrsFragment : Fragment() {
     }
 
     private fun loadSemester() {
+        loadingDialog.showLoading()
         semesterViewModel.setData(token)
         semesterViewModel.getData().observe(this, Observer {datas ->
             for (i in 0 until datas.length()) {
                 dataSpinner.add(datas.getJSONObject(i).getString("periode")+" "+ datas.getJSONObject(i).getString("tahun"))
                 idSpinner.add(datas.getJSONObject(i).getString("id").toString())
+                loadingDialog.hideLoading()
             }
         })
     }
 
     private fun deleteKrs(krsdtId: String) {
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val announcement = apiBuilder.krsDelete(token, krsdtId)
         announcement.enqueue(object : Callback<ResponseBody> {
@@ -174,6 +172,7 @@ class KrsFragment : Fragment() {
                 } else {
                     Log.e("Res_TopicD", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -184,6 +183,7 @@ class KrsFragment : Fragment() {
     }
 
     private fun showDetailDialog(klsId: String, krsdtid: String, semester: String) {
+        loadingDialog.showLoading()
         mDetailDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_detail_kelas, null)
         mDetailAlertDialog = AlertDialog.Builder(activity).setView(mDetailDialogView).create()
         mDetailDialogView.btn_hapus_krs.setOnClickListener{
@@ -227,6 +227,7 @@ class KrsFragment : Fragment() {
             }
             mDetailDialogView.tv_dosen_kelas.text = ": "+dosen
             mDetailDialogView.tv_waktu_kelas.text = ": "+jadwal
+            loadingDialog.hideLoading()
             mDetailAlertDialog.show()
         })
     }

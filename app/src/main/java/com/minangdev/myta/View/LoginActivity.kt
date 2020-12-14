@@ -63,8 +63,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     val token = dataJson.getJSONObject("data").getString("token")
                     val fcmToken = dataJson.getJSONObject("data").getString("uid")
                     val unit_id = dataJson.getJSONObject("data").getString("unit_id")
+                    val user_id = dataJson.getJSONObject("data").getString("user_id")
                     val sharePreferece = SharePreferenceManager(this@LoginActivity)
-                    sharePreferece.SaveToken(token, unit_id, fcmToken)
+                    sharePreferece.SaveToken(token, unit_id, fcmToken, user_id)
                     loadingDialog.hideLoading()
                     moveActifity()
                 } else if (response.code() == 422) {

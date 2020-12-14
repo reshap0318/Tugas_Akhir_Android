@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.minangdev.m_dosen.Helper.LoadingDialog
 import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.R
 import com.minangdev.m_dosen.ViewModel.MahasiswaBimbinganViewModel
@@ -20,7 +21,9 @@ class BimbinganDetailFragment : Fragment() {
     private lateinit var root : View
     private var nim: String? = null
     private lateinit var token : String
+
     private lateinit var sharePreference : SharePreferenceManager
+    lateinit var loadingDialog: LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +41,7 @@ class BimbinganDetailFragment : Fragment() {
         sharePreference.isLogin()
         token = sharePreference.getToken()
 
+        loadingDialog = LoadingDialog(activity!!)
         return root
     }
 

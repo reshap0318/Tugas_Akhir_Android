@@ -12,9 +12,9 @@ class FirebaseViewModel: ViewModel(){
     lateinit var ref: DatabaseReference
     private val listData = MutableLiveData<JSONArray>()
 
-    fun setData(api_token: String){
+    fun setDataNotification(api_token: String){
         val mData = JSONArray()
-        ref = FirebaseDatabase.getInstance().getReference("User-Notification").child(api_token).child("Notification")
+        ref = FirebaseDatabase.getInstance().getReference("Users").child(api_token).child("Notification")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot!!.exists()){
@@ -34,5 +34,5 @@ class FirebaseViewModel: ViewModel(){
         })
     }
 
-    fun getData(): LiveData<JSONArray> = listData
+    fun getDataNotification(): LiveData<JSONArray> = listData
 }

@@ -2,6 +2,7 @@ package com.minangdev.myta.View.annaouncement
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -36,11 +37,8 @@ class AnnouncementFragment : Fragment() {
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var root : View
 
-    private lateinit var mCreateDialogView : View
-    private lateinit var mCreate : AlertDialog
     private lateinit var loadingDialog: LoadingDialog
 
-    var announcement_id : String? = null
     private lateinit var token: String
 
     override fun onCreateView(
@@ -53,18 +51,11 @@ class AnnouncementFragment : Fragment() {
         sharePreference.isLogin()
         token = sharePreference.getToken()
 
-        initDialogCreate()
-
         root.fab_add_pengumuman.setOnClickListener{
-            announcement_id = null
-            mCreateDialogView.btn_simpan_form_announcement.isVisible = true
-            mCreateDialogView.tv_date_news.isVisible = false
-            mCreateDialogView.tv_sending_news.isVisible = false
-            mCreateDialogView.title_form_announcement.error = ""
-            mCreateDialogView.description_form_announcement.error = ""
-            mCreateDialogView.title_form_announcement.editText?.setText("")
-            mCreateDialogView.description_form_announcement.editText?.setText("")
-            mCreate.show()
+            val intent = Intent(activity, FormAnnouncementActivity::class.java)
+            intent.putExtra(FormAnnouncementActivity.EXTRA_ID,"0")
+            intent.putExtra(FormAnnouncementActivity.EXTRA_ACTION, "create")
+            startActivity(intent)
         }
 
         //adapter
@@ -84,40 +75,31 @@ class AnnouncementFragment : Fragment() {
     }
 
     private fun initRowMenu(jsonObject: JSONObject) {
-        var mMenu : Array<String> = arrayOf("Detail", "Edit", "Delete")
+        var mMenu : Array<String> = arrayOf("Detail")
+
         //kondisi
         val unitId = sharePreference.getUnitId()
-        if(!jsonObject.getString("unit_id").equals(unitId)){
-            mMenu = arrayOf("Detail")
+
+        if(jsonObject.getString("unit_id").equals(unitId)){
+            mMenu = arrayOf("Detail", "Edit", "Delete")
         }
-        val sender = "By Admin "+jsonObject.getString("unit")
         AlertDialog.Builder(root.context)
         .setTitle("Select Option")
         .setItems(mMenu, DialogInterface.OnClickListener { dialog, which ->
             when(which){
                 0 -> {
-                    mCreateDialogView.title_form_announcement.error = ""
-                    mCreateDialogView.description_form_announcement.error = ""
-                    mCreateDialogView.title_form_announcement.editText?.setText(jsonObject.getString("title"))
-                    mCreateDialogView.description_form_announcement.editText?.setText(jsonObject.getString("description"))
-                    mCreateDialogView.tv_date_news.text = jsonObject.getString("tanggal")
-                    mCreateDialogView.tv_sending_news.text = sender
-                    mCreateDialogView.btn_simpan_form_announcement.isVisible = false
-                    mCreateDialogView.tv_date_news.isVisible = true
-                    mCreateDialogView.tv_sending_news.isVisible = true
-                    mCreateDialogView.et_description_form_announcement.height = ViewGroup.LayoutParams.WRAP_CONTENT
-                    mCreate.show()
+                    //detail
+                    val intent = Intent(activity, FormAnnouncementActivity::class.java)
+                    intent.putExtra(FormAnnouncementActivity.EXTRA_ID,jsonObject.getString("id"))
+                    intent.putExtra(FormAnnouncementActivity.EXTRA_ACTION, "detail")
+                    startActivity(intent)
                 }
                 1 -> {
-                    mCreateDialogView.btn_simpan_form_announcement.isVisible = true
-                    mCreateDialogView.tv_date_news.isVisible = false
-                    mCreateDialogView.tv_sending_news.isVisible = false
-                    announcement_id = jsonObject.getString("id")
-                    mCreateDialogView.title_form_announcement.error = ""
-                    mCreateDialogView.description_form_announcement.error = ""
-                    mCreateDialogView.title_form_announcement.editText?.setText(jsonObject.getString("title"))
-                    mCreateDialogView.description_form_announcement.editText?.setText(jsonObject.getString("description"))
-                    mCreate.show()
+                    //edit
+                    val intent = Intent(activity, FormAnnouncementActivity::class.java)
+                    intent.putExtra(FormAnnouncementActivity.EXTRA_ID,jsonObject.getString("id"))
+                    intent.putExtra(FormAnnouncementActivity.EXTRA_ACTION, "edit")
+                    startActivity(intent)
                 }
                 2 -> {
                     delete(jsonObject.getString("id"))
@@ -126,87 +108,6 @@ class AnnouncementFragment : Fragment() {
             }
         })
         .show()
-    }
-
-    private fun initDialogCreate() {
-        mCreateDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_form_announcement, null)
-        val mCreateDialog = AlertDialog.Builder(activity)
-                .setView(mCreateDialogView)
-        mCreate = mCreateDialog.create()
-        mCreateDialogView.btn_cancel_form_announcement.setOnClickListener{
-            mCreate.dismiss()
-        }
-        mCreateDialogView.btn_simpan_form_announcement.setOnClickListener{
-            val title = mCreateDialogView.title_form_announcement.editText?.text.toString()
-            val description = mCreateDialogView.description_form_announcement.editText?.text.toString()
-            if(announcement_id==null){
-                simpan(title, description)
-            }else{
-                update(announcement_id.toString(), title, description)
-            }
-            announcement_id = null
-
-        }
-    }
-
-    fun update(id : String, title : String, description : String){
-        loadingDialog.showLoading()
-        val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
-        val announcement = apiBuilder.announcementUpdate(token, id, title, description)
-        announcement.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.code() == 200) {
-                    try {
-                        Toast.makeText(activity, "Berhasil Merubah Data", Toast.LENGTH_SHORT).show()
-                        loadData()
-                        mCreate.dismiss()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                } else if (response.code() == 422) {
-                    val dataError = JSONObject(response.errorBody()?.string())
-                    validationForm(dataError)
-                } else {
-                    Log.e("Response_AnnouncementE", "Ada Error di server Code : " + response.code().toString())
-                }
-                loadingDialog.hideLoading()
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("Failure_AnnouncementE", "onFailure: ERROR > " + t.toString());
-            }
-
-        })
-    }
-
-    fun simpan(title : String, description : String){
-        loadingDialog.showLoading()
-        val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
-        val announcement = apiBuilder.announcementSave(token, title, description)
-        announcement.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.code() == 200) {
-                    try {
-                        Toast.makeText(activity, "Berhasil Menambahkan Data", Toast.LENGTH_SHORT).show()
-                        loadData()
-                        mCreate.dismiss()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                } else if (response.code() == 422) {
-                    val dataError = JSONObject(response.errorBody()?.string())
-                    validationForm(dataError)
-                } else {
-                    Log.e("Response_AnnouncementS", "Ada Error di server Code : " + response.code().toString())
-                }
-                loadingDialog.hideLoading()
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("Failure_AnnouncementS", "onFailure: ERROR > " + t.toString());
-            }
-
-        })
     }
 
     fun loadData(){
@@ -242,21 +143,5 @@ class AnnouncementFragment : Fragment() {
             }
 
         })
-    }
-
-    private fun validationForm(dataError: JSONObject) {
-        if(dataError.getJSONObject("errors").has("title")){
-            val titleError = dataError.getJSONObject("errors").getJSONArray("title")
-            for (i in 0 until titleError.length()) {
-                mCreateDialogView.title_form_announcement.error = titleError.getString(i).toString()
-            }
-        }
-
-        if(dataError.getJSONObject("errors").has("description")){
-            val descriptionError = dataError.getJSONObject("errors").getJSONArray("description")
-            for (i in 0 until descriptionError.length()) {
-                mCreateDialogView.description_form_announcement.error = descriptionError.getString(i).toString()
-            }
-        }
     }
 }

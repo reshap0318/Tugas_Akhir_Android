@@ -28,9 +28,10 @@ class BaseDetailBimbinganActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_detail_bimbingan)
         btn_appbar_back.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra(MainActivity.EXTRA_FRAGMENT, 2)
-            startActivity(intent)
+//            val intent = Intent(this, MainActivity::class.java)
+//            intent.putExtra(MainActivity.EXTRA_FRAGMENT, 2)
+//            startActivity(intent)
+            onBackPressed()
         }
 
         nim = intent.getStringExtra("nim").toString()

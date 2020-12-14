@@ -21,10 +21,9 @@ class AddKrsAdapter(private val onItemClickListener : onItemClick) : RecyclerVie
 
     inner class viewHolder(private val view : View) : RecyclerView.ViewHolder(view){
         fun onBind (jsonObject : JSONObject) = view.apply{
-            tv_kode_matkul_krs.text = jsonObject.getString("kode_matkul")
+            tv_kode_matkul_krs.text = jsonObject.getString("kode_matkul")+" - "+jsonObject.getString("sks_matkul") + " SKS"
             tv_nama_matkul_krs.text = jsonObject.getString("nama_matkul")
-            tv_sks_matkul_krs.text = jsonObject.getString("sks_matkul") + " SKS"
-            tv_status_krs.isVisible = false
+            nilai_layout.isVisible = false
             var jadwal = ""
             val jadwalJson = jsonObject.getJSONArray("jadwal")
             for(i in 0 until jadwalJson.length()){

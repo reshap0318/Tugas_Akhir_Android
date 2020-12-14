@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.minangdev.m_dosen.R
 import kotlinx.android.synthetic.main.row_notification.view.*
+import org.json.JSONArray
 import org.json.JSONObject
 
-class NotificationAdapter() : RecyclerView.Adapter<NotificationAdapter.viewHolder>() {
+class NotificationAdapter(private val onItemClickListener : onItemClick) : RecyclerView.Adapter<NotificationAdapter.viewHolder>() {
 
-    var datas = ArrayList<HashMap<String, Any>>()
+    var datas = JSONArray()
 
-    fun setData(datas: ArrayList<HashMap<String, Any>>) {
+    fun setData(datas: JSONArray) {
         this.datas = datas
         notifyDataSetChanged()
     }
@@ -23,26 +24,21 @@ class NotificationAdapter() : RecyclerView.Adapter<NotificationAdapter.viewHolde
     }
 
     override fun onBindViewHolder(viewHolder: viewHolder, position: Int) {
-        viewHolder.onBind(datas.get(position))
+        viewHolder.onBind(datas.getJSONObject(position))
     }
 
     override fun getItemCount(): Int {
-        return datas.size
+        return datas.length()
     }
 
     inner class viewHolder(private val view : View) : RecyclerView.ViewHolder(view){
-        fun onBind (data: HashMap<String, Any>) = view.apply{
-            tv_label_notification.text = data.get("title").toString()
-            var date = data.get("tanggal").toString()
-            var time = data.get("waktu").toString()
-            if(date=="null"){
-                date = ""
+        fun onBind (jsonObject : JSONObject) = view.apply{
+            tv_label_notification.text = jsonObject.getString("title")
+            tv_date_notification.text = jsonObject.getString("tanggal")
+            tv_time_notification.text = jsonObject.getString("waktu")
+            setOnClickListener{
+                onItemClickListener(jsonObject)
             }
-            if(time=="null"){
-                time = ""
-            }
-            tv_date_notification.text = date
-            tv_time_notification.text = time
         }
     }
 }

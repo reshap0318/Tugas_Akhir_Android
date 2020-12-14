@@ -22,4 +22,5 @@
     <string name="period">Period</string>
     <string name="bimbingan">Guidance</string>
     <string name="search">Search</string>
+    <string name="default_value">-</string>
 </resources>

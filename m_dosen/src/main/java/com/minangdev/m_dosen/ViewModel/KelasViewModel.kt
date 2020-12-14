@@ -16,7 +16,6 @@ import java.lang.Exception
 
 class KelasViewModel : ViewModel() {
 
-    private val listData = MutableLiveData<JSONArray>()
 
     private val mData = MutableLiveData<JSONObject>()
 

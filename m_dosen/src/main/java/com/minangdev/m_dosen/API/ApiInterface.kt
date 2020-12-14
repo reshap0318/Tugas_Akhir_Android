@@ -59,6 +59,12 @@ interface ApiInterface {
             @Header("Authorization") token: String
     ) : Call<ResponseBody>
 
+    @GET("/dosen/mahasiswa/{nim}/list-semester")
+    fun mahasiswaSemester(
+        @Header("Authorization") token: String,
+        @Path("nim") nim: String
+    ) : Call<ResponseBody>
+
     @GET("/dosen/bimbingan")
     fun mahasiswaBimbingan(
             @Header("Authorization") token: String
@@ -132,5 +138,16 @@ interface ApiInterface {
     fun isCanChangeStatus(
             @Header("Authorization") token: String
     ) : Call<ResponseBody>
+
+    @GET("/user/news")
+    fun announcements(
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @GET("/user/news/{id}")
+    fun announcement(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): Call<ResponseBody>
 
 }

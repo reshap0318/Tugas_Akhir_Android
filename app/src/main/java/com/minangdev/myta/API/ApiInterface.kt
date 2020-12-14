@@ -59,12 +59,12 @@ interface ApiInterface {
             @Header("Authorization") token: String
     ) : Call<ResponseBody>
 
-    @GET("/sia/news")
+    @GET("/user/news")
     fun announcements(
             @Header("Authorization") token: String
     ): Call<ResponseBody>
 
-    @GET("/sia/news/{id}")
+    @GET("/user/news/{id}")
     fun announcement(
             @Header("Authorization") token: String,
             @Path("id") id: String

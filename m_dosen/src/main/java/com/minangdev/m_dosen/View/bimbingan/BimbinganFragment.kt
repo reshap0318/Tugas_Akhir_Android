@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minangdev.m_dosen.Adapter.MahasiswaBimbinganAdapter
+import com.minangdev.m_dosen.Helper.LoadingDialog
 import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.R
 import com.minangdev.m_dosen.ViewModel.MahasiswaBimbinganViewModel
@@ -22,6 +23,8 @@ class BimbinganFragment : Fragment() {
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var mahasiswaBimbinganAdapter: MahasiswaBimbinganAdapter
     private lateinit var mahasiswaBimbinganViewModel: MahasiswaBimbinganViewModel
+    lateinit var loadingDialog: LoadingDialog
+
     lateinit var token: String
 
     override fun onCreateView(
@@ -43,9 +46,13 @@ class BimbinganFragment : Fragment() {
         root.rv_bimbingan.layoutManager = layoutManager
 
         mahasiswaBimbinganViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MahasiswaBimbinganViewModel::class.java)
+
+        loadingDialog = LoadingDialog(activity!!)
+        loadingDialog.showLoading()
         mahasiswaBimbinganViewModel.setData(token)
         mahasiswaBimbinganViewModel.getData().observe(this, Observer { datas ->
           mahasiswaBimbinganAdapter.setData(datas)
+          loadingDialog.hideLoading()
         })
         return root
     }

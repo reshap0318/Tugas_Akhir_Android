@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.minangdev.m_dosen.API.ApiBuilder
 import com.minangdev.m_dosen.API.ApiInterface
+import com.minangdev.m_dosen.Helper.LoadingDialog
 import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.Helper.UploadImage
 import com.minangdev.m_dosen.R
@@ -35,8 +36,9 @@ import java.io.FileOutputStream
 class ProfileFragment : Fragment() {
 
     private lateinit var profileViewModel : ProfileViewModel
-    private lateinit var root : View
     private lateinit var sharePreference : SharePreferenceManager
+    lateinit var loadingDialog: LoadingDialog
+    private lateinit var root : View
     lateinit var token: String
     companion object {
         const val REQUEST_CODE_IMAGE_PICKER = 101
@@ -70,17 +72,20 @@ class ProfileFragment : Fragment() {
 
         profileViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ProfileViewModel::class.java)
 
+        loadingDialog = LoadingDialog(activity!!)
         loadData()
         return root
     }
 
     private fun loadData() {
+        loadingDialog.showLoading()
         profileViewModel.setData(token)
         profileViewModel.getData().observe(this, Observer {data ->
             val name = data.getString("name")
             val nip = data.getString("username")
             val img = data.getString("avatar")
             profileSetData(name=name, nip=nip, img=img)
+            loadingDialog.hideLoading()
         })
     }
 
@@ -116,7 +121,7 @@ class ProfileFragment : Fragment() {
     }
 
     fun changeProfile(data: Uri?) {
-
+        loadingDialog.showLoading()
         val parcelFileDescriptor = activity!!.contentResolver.openFileDescriptor(data!!, "r", null) ?: null
 
         val inputStream = FileInputStream(parcelFileDescriptor!!.fileDescriptor)
@@ -137,6 +142,7 @@ class ProfileFragment : Fragment() {
                 } else {
                     Log.e("Res_Change_Avatar", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -158,6 +164,7 @@ class ProfileFragment : Fragment() {
     }
 
     fun logout(){
+        loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val profile = apiBuilder.logout(token)
         profile.enqueue(object : Callback<ResponseBody> {
@@ -168,6 +175,7 @@ class ProfileFragment : Fragment() {
                 } else {
                     Log.e("Res_Logout", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

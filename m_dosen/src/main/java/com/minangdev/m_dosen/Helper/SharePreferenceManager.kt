@@ -24,17 +24,19 @@ class SharePreferenceManager {
     val SEMESTER : String = "semester"
     val IDSEMESTER : String = "idSemester"
     val TAHUNSEMESTER : String = "tahunSemester"
+    val IDUSER : String = "idUser"
 
     constructor(context: Context){
         this.context = context
         this.sharedPreferences = context.getSharedPreferences(this.PREFERANCENAME, Context.MODE_PRIVATE)
     }
 
-    fun SaveToken(token: String, unitId: String, fcmToken: String){
+    fun SaveToken(token: String, unitId: String, fcmToken: String, userId: String){
         val editor = sharedPreferences!!.edit()
         editor.putString(this.TOKEN, "Bearer "+token)
         editor.putString(this.UNITID, unitId)
         editor.putString(this.FCMID, fcmToken)
+        editor.putString(this.IDUSER, userId)
         editor.commit()
     }
 
@@ -44,6 +46,10 @@ class SharePreferenceManager {
 
     fun getUnitId(): String {
         return sharedPreferences!!.getString(this.UNITID, "").toString()
+    }
+
+    fun getUserId(): String{
+        return sharedPreferences!!.getString(this.IDUSER, "").toString()
     }
 
     fun getFCMTOKEN(): String{

@@ -1,6 +1,7 @@
 package com.minangdev.m_mahasiswa.API
 
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -47,6 +48,17 @@ interface ApiInterface {
         @Field("old_password") old_password: String,
         @Field("new_password") new_password: String,
         @Field("confirm_password") confirm_password: String
+    ): Call<ResponseBody>
+
+    @GET("/user/news")
+    fun announcements(
+            @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @GET("/user/news/{id}")
+    fun announcement(
+            @Header("Authorization") token: String,
+            @Path("id") id: String
     ): Call<ResponseBody>
 
     @POST("/user/logout")
@@ -122,6 +134,33 @@ interface ApiInterface {
     fun krsDelete(
             @Header("Authorization") token: String,
             @Path("krsdtId") krsdtId: String
+    ) : Call<ResponseBody>
+
+    @GET("/mahasiswa/bimbingan")
+    fun bimbinganList(
+            @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
+    @Multipart
+    @POST("/mahasiswa/bimbingan/send")
+    fun bimbinganSend(
+            @Header("Authorization") token: String,
+            @Part("receiverId") receiverId: RequestBody,
+            @Part("message") message: RequestBody,
+            @Part("topicPeriodId") topicPeriodId: RequestBody,
+            @Part img: MultipartBody.Part? = null,
+    ) : Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("/mahasiswa/bimbingan/create")
+    fun bimbinganCreate(
+            @Header("Authorization") token: String,
+            @Field("topicPeriodId") topicPeriodId: String,
+    ): Call<ResponseBody>
+
+    @GET("/user/topic/active")
+    fun topicActive(
+            @Header("Authorization") token: String
     ) : Call<ResponseBody>
 
 }

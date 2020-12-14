@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minangdev.m_mahasiswa.Adapter.TranskripMainAdapter
+import com.minangdev.m_mahasiswa.Helper.LoadingDialog
 import com.minangdev.m_mahasiswa.Helper.SharePreferenceManager
 import com.minangdev.m_mahasiswa.R
 import com.minangdev.m_mahasiswa.ViewModel.SKSViewModel
@@ -24,6 +25,7 @@ class TranskripFragment : Fragment() {
     private lateinit var transkripViewModel : TranskripViewModel
     private lateinit var sksViewModel : SKSViewModel
     private lateinit var transkripMainAdapter: TranskripMainAdapter
+    private lateinit var loadingDialog: LoadingDialog
     lateinit var token: String
 
     override fun onCreateView(
@@ -32,6 +34,7 @@ class TranskripFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.fragment_transkrip, container, false)
+        loadingDialog = LoadingDialog(activity!!)
         sharePreference = SharePreferenceManager(root.context)
         sharePreference.isLogin()
         token = sharePreference.getToken()
@@ -44,17 +47,21 @@ class TranskripFragment : Fragment() {
         root.rv_transkrip.adapter = transkripMainAdapter
         root.rv_transkrip.layoutManager = layoutManager
 
+        loadingDialog.showLoading()
         transkripViewModel.setData(token)
         transkripViewModel.getData().observe(this, Observer { datas ->
+            loadingDialog.hideLoading()
             transkripMainAdapter.setData(datas)
         })
 
+        loadingDialog.showLoading()
         sksViewModel.setData(token)
         val df = DecimalFormat("#.##")
         sksViewModel.getData().observe(this, Observer {data ->
             val ipk = data.getString("ipk").toFloat()
             tv_total_sks.text = "Total SKS : "+data.getString("total_sks")
             tv_ipk_transkrip.text = "IPK : "+df.format(ipk).toString()
+            loadingDialog.hideLoading()
         })
 
         return root

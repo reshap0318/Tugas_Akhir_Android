@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import com.minangdev.m_dosen.API.ApiBuilder
 import com.minangdev.m_dosen.API.ApiInterface
+import com.minangdev.m_dosen.Helper.LoadingDialog
 import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.R
 import kotlinx.android.synthetic.main.actionbar_onlyback.*
@@ -20,6 +21,7 @@ import retrofit2.Response
 class ChangePasswordActivity : AppCompatActivity() {
 
     lateinit var sharePreference : SharePreferenceManager
+    lateinit var loadingDialog: LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +38,11 @@ class ChangePasswordActivity : AppCompatActivity() {
         btn_appbar_back.setOnClickListener{
             onBackPressed()
         }
+        loadingDialog = LoadingDialog(this)
     }
 
     fun changePassword(token : String){
+        loadingDialog.showLoading()
         val oldPassword = old_password_change.editText?.text.toString().trim()
         val newPassword = new_password_change.editText?.text.toString().trim()
         val confirmPassword = confirm_password_change.editText?.text.toString().trim()
@@ -56,6 +60,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                 } else {
                     Log.e("Res_Change_Password", "Ada Error di server Code : " + response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

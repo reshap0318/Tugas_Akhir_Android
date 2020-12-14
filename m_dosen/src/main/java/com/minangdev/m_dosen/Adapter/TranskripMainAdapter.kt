@@ -25,7 +25,7 @@ class TranskripMainAdapter(private val context: Context) : RecyclerView.Adapter<
         fun onBind (jsonObject : JSONObject) = itemView.apply{
             val tahun = jsonObject.getJSONObject("semester").getString("tahun")
             val nama = jsonObject.getJSONObject("semester").getString("periode")
-            tv_semester_transkrip_bimbingan.text = "${nama} ${tahun}"
+//            tv_semester_transkrip_bimbingan.text = "${nama} ${tahun}"
 
         }
     }
@@ -37,6 +37,7 @@ class TranskripMainAdapter(private val context: Context) : RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         holder.onBind(datas.getJSONObject(position))
+        holder.itemView.tv_semester_transkrip_bimbingan.text = "Semester "+(position+1)
         setSubTranskrip(holder.itemView.rv_transkrip_sub_bimbingan, datas.getJSONObject(position).getJSONArray("matkul"))
     }
 
