@@ -24,10 +24,11 @@
     <TextView
         android:id="@+id/tv_label_notification"
         style="@style/myfont"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
+        android:ellipsize="end"
         android:text="Portal Akademik Dibuka"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

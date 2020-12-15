@@ -66,9 +66,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     val user_id = dataJson.getJSONObject("data").getString("user_id")
                     val sharePreferece = SharePreferenceManager(this@LoginActivity)
                     sharePreferece.SaveToken(token, unit_id, fcmToken, user_id)
-                    loadingDialog.hideLoading()
                     moveActifity()
-                } else if (response.code() == 422) {
+                }
+                else if (response.code() == 422) {
                         try {
                             val dataError = JSONObject(response.errorBody()?.string())
                             if(dataError.getJSONObject("errors").has("login")){
@@ -90,6 +90,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     Log.e("submitLogin", "Error Code : "+response.code().toString())
                 }
+                loadingDialog.hideLoading()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

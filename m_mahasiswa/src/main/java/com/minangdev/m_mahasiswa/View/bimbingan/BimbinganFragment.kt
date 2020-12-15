@@ -91,6 +91,8 @@ class BimbinganFragment : Fragment() {
         val intent = Intent(activity, BimbinganDetailActivity::class.java)
         intent.putExtra("receiverId", it.getString("to"))
         intent.putExtra("topicPeriodId",it.getString("topicPeriodId"))
+        intent.putExtra("receiverNama",it.getString("namaUser"))
+        intent.putExtra("receiverAvatar",it.getString("avataUser"))
         val topicPeriod = it.getString("topic") + " - " + it.getString("period")
         intent.putExtra("topicPeriod", topicPeriod)
         startActivity(intent)

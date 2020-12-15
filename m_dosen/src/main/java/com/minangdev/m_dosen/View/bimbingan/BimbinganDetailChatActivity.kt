@@ -1,4 +1,4 @@
-package com.minangdev.m_mahasiswa.View.bimbingan
+package com.minangdev.m_dosen.View.bimbingan
 
 import android.app.Activity
 import android.app.ProgressDialog
@@ -13,17 +13,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.minangdev.m_mahasiswa.API.ApiBuilder
-import com.minangdev.m_mahasiswa.API.ApiInterface
-import com.minangdev.m_mahasiswa.Adapter.BimbinganChatAdapter
-import com.minangdev.m_mahasiswa.Helper.SharePreferenceManager
-import com.minangdev.m_mahasiswa.Helper.UploadImage
-import com.minangdev.m_mahasiswa.R
-import com.minangdev.m_mahasiswa.View.MainActivity
-import com.minangdev.m_mahasiswa.View.profile.ProfileFragment
-import com.minangdev.m_mahasiswa.View.profile.ProfileFragment.Companion.REQUEST_CODE_IMAGE_PICKER
-import com.minangdev.m_mahasiswa.ViewModel.BimbinganViewModel
-import kotlinx.android.synthetic.main.activity_bimbingan_detail.*
+import com.minangdev.m_dosen.API.ApiBuilder
+import com.minangdev.m_dosen.API.ApiInterface
+import com.minangdev.m_dosen.Adapter.BimbinganChatAdapter
+import com.minangdev.m_dosen.Helper.SharePreferenceManager
+import com.minangdev.m_dosen.Helper.UploadImage
+import com.minangdev.m_dosen.R
+import com.minangdev.m_dosen.View.profile.ProfileFragment.Companion.REQUEST_CODE_IMAGE_PICKER
+import com.minangdev.m_dosen.ViewModel.BimbinganViewModel
+import kotlinx.android.synthetic.main.activity_bimbingan_detail_chat.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,7 +34,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-class BimbinganDetailActivity : AppCompatActivity() {
+class BimbinganDetailChatActivity : AppCompatActivity() {
 
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var bimbinganViewModel: BimbinganViewModel
@@ -50,17 +48,15 @@ class BimbinganDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bimbingan_detail)
+        setContentView(R.layout.activity_bimbingan_detail_chat)
 
         sharePreference = SharePreferenceManager(this)
         sharePreference.isLogin()
 
-        setSupportActionBar(toolbar_detail_bimbingan)
+        setSupportActionBar(toolbar_detail_chat_bimbingan)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar_detail_bimbingan.setNavigationOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra(MainActivity.EXTRA_FRAGMENT, 2)
-            startActivity(intent)
+        toolbar_detail_chat_bimbingan.setNavigationOnClickListener{
+            onBackPressed()
         }
         //init
         token = sharePreference.getToken()
@@ -72,43 +68,43 @@ class BimbinganDetailActivity : AppCompatActivity() {
         val name = intent.getStringExtra("receiverNama").toString()
         val avatar = intent.getStringExtra("receiverAvatar")
 
-        tv_nama_detail_bimbingan.text = name
+        tv_nama_detail_chat_bimbingan.text = name
         if(avatar != null){
             Glide.with(this)
                 .load(avatar)
                 .fitCenter()
                 .centerCrop()
-                .into(img_profile_detail_bimbingan)
+                .into(img_profile_detail_chat_bimbingan)
         }
 
         bimbinganViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(BimbinganViewModel::class.java)
         bimbinganChatAdapter = BimbinganChatAdapter(this, senderId)
 
-        rv_chat_detail_bimbingan.setHasFixedSize(true)
+        rv_chat_detail_chat_bimbingan.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(applicationContext)
         linearLayoutManager.stackFromEnd = true
-        rv_chat_detail_bimbingan.layoutManager = linearLayoutManager
-        rv_chat_detail_bimbingan.adapter = bimbinganChatAdapter
+        rv_chat_detail_chat_bimbingan.layoutManager = linearLayoutManager
+        rv_chat_detail_chat_bimbingan.adapter = bimbinganChatAdapter
 
         bimbinganViewModel.loadDetailChat(senderId, receiverId, topicPeriodId)
         bimbinganViewModel.detailChat().observe(this, Observer {
             bimbinganChatAdapter.setData(it)
         })
 
-        tv_topic_detail_bimbingan.text = topicPeriod
+        tv_topic_detail_chat_bimbingan.text = topicPeriod
 
-        chat_send_detail_bimbingan_btn.setOnClickListener{
+        chat_send_detail_chat_bimbingan_btn.setOnClickListener{
             sendingMessage()
         }
 
-        img_send_detail_bimbingan_btn.setOnClickListener{
+        img_send_detail_chat_bimbingan_btn.setOnClickListener{
             openImage()
         }
 
     }
 
     fun sendingMessage(){
-        val mMessage = tv_chat_detail_bimbingan.text.toString()
+        val mMessage = tv_chat_detail_chat_bimbingan.text.toString()
         val reqboReceiverId = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),receiverId)
         val reqboMmessage = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),mMessage)
         val reqboTopicPeriod = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),topicPeriodId)
@@ -117,13 +113,13 @@ class BimbinganDetailActivity : AppCompatActivity() {
         respondBody.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
-                    Toast.makeText(this@BimbinganDetailActivity, "Berhasil Mengirim Pesan", Toast.LENGTH_SHORT).show()
-                    tv_chat_detail_bimbingan.setText("")
+                    Toast.makeText(this@BimbinganDetailChatActivity, "Berhasil Mengirim Pesan", Toast.LENGTH_SHORT).show()
+                    tv_chat_detail_chat_bimbingan.setText("")
                 } else if (response.code() == 422) {
-                    Toast.makeText(this@BimbinganDetailActivity, "Pesan Tidak Boleh Kosong", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@BimbinganDetailChatActivity, "Pesan Tidak Boleh Kosong", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.e("submitLogin", "Error Code : " + response.code().toString())
-                    Log.e("sss",JSONObject(response.errorBody()?.string()).toString())
+                    Log.e("sss", JSONObject(response.errorBody()?.string()).toString())
                 }
             }
 
@@ -147,7 +143,7 @@ class BimbinganDetailActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK){
             when(requestCode){
-                ProfileFragment.REQUEST_CODE_IMAGE_PICKER -> {
+                REQUEST_CODE_IMAGE_PICKER -> {
                     sendingImg(data?.data)
                 }
             }
@@ -175,8 +171,8 @@ class BimbinganDetailActivity : AppCompatActivity() {
         respondBody.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
-                    Toast.makeText(this@BimbinganDetailActivity, "Berhasil Mengirim Pesan", Toast.LENGTH_SHORT).show()
-                    tv_chat_detail_bimbingan.setText("")
+                    Toast.makeText(this@BimbinganDetailChatActivity, "Berhasil Mengirim Pesan", Toast.LENGTH_SHORT).show()
+                    tv_chat_detail_chat_bimbingan.setText("")
                 } else {
                     Log.e("submitLogin", "Error Code : " + response.code().toString())
                 }

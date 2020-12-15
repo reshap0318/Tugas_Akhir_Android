@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.JsonObject
 import com.minangdev.m_dosen.R
 import kotlinx.android.synthetic.main.row_krs.view.*
 import org.json.JSONArray
@@ -12,10 +13,15 @@ import org.json.JSONObject
 class KrsAdapter(private val onItemClickListener : onItemClick) : RecyclerView.Adapter<KrsAdapter.viewHolder>() {
 
     var datas = JSONArray()
+    private var onLongClickListener : ((JSONObject, View) -> Unit)? = null
 
     fun setData(datas: JSONArray) {
         this.datas = datas
         notifyDataSetChanged()
+    }
+
+    fun setOnLongClick(onLongClickListener : (JSONObject, View) -> Unit){
+        this.onLongClickListener = onLongClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KrsAdapter.viewHolder {
@@ -64,6 +70,11 @@ class KrsAdapter(private val onItemClickListener : onItemClick) : RecyclerView.A
 
             setOnClickListener{
                 onItemClickListener(jsonObject)
+            }
+
+            setOnLongClickListener{
+                onLongClickListener?.invoke(jsonObject, this)
+                true
             }
         }
     }

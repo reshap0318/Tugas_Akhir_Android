@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/tv_nama_mahasiswa"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
@@ -36,6 +36,7 @@
         android:text="Reinaldo Shandev Pratama"
         android:textColor="@color/black"
         android:textSize="16sp"
+        android:ellipsize="end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/img_avatar_mahasiswa"

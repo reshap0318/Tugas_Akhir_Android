@@ -1,6 +1,7 @@
 package com.minangdev.m_dosen.API
 
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -70,6 +71,35 @@ interface ApiInterface {
             @Header("Authorization") token: String
     ) : Call<ResponseBody>
 
+    @Multipart
+    @POST("/dosen/bimbingan/send")
+    fun bimbinganSend(
+        @Header("Authorization") token: String,
+        @Part("receiverId") receiverId: RequestBody,
+        @Part("message") message: RequestBody,
+        @Part("topicPeriodId") topicPeriodId: RequestBody,
+        @Part img: MultipartBody.Part? = null,
+    ) : Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("/dosen/list-bimbingan/{mhsId}/create")
+    fun bimbinganCreate(
+        @Header("Authorization") token: String,
+        @Path("mhsId") mhsId: String,
+        @Field("topicPeriodId") topicPeriodId: String,
+    ): Call<ResponseBody>
+
+    @GET("/dosen/list-bimbingan/{mhsid}")
+    fun mahasiswaListBimbingan(
+        @Header("Authorization") token: String,
+        @Path("mhsid") mhsid: String
+    ) : Call<ResponseBody>
+
+    @GET("/user/topic/active")
+    fun topicActive(
+        @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
     @GET("/dosen/mahasiswa/{nim}")
     fun mahasiswaBimbinganDetail(
             @Header("Authorization") token: String,
@@ -120,18 +150,20 @@ interface ApiInterface {
             @Path("klsId") klsId: String
     ) : Call<ResponseBody>
 
-    @POST("/dosen/mahasiswa/{nim}/krs/{krsdtId}/chage-status/1")
+    @FormUrlEncoded
+    @POST("/dosen/mahasiswa/{nim}/krs/chage-status/1")
     fun mahasiswaKrsSetujui(
             @Header("Authorization") token: String,
             @Path("nim") nim: String,
-            @Path("krsdtId") krsdtId: String
+            @Field("krsdtId[]") krsdtId: ArrayList<String>
     ) : Call<ResponseBody>
 
-    @POST("/dosen/mahasiswa/{nim}/krs/{krsdtId}/chage-status/0")
+    @FormUrlEncoded
+    @POST("/dosen/mahasiswa/{nim}/krs/chage-status/0")
     fun mahasiswaKrsTolak(
             @Header("Authorization") token: String,
             @Path("nim") nim: String,
-            @Path("krsdtId") krsdtId: String
+            @Field("krsdtId[]") krsdtId: ArrayList<String>
     ) : Call<ResponseBody>
 
     @GET("/dosen/mahasiswa/1611522012/krs/isCanChange")

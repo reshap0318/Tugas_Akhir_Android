@@ -38,6 +38,7 @@ class BimbinganFragment : Fragment() {
 
         mahasiswaBimbinganAdapter = MahasiswaBimbinganAdapter {
             val intent = Intent(activity, BaseDetailBimbinganActivity::class.java)
+            intent.putExtra("mhsid", it.getString("id"))
             intent.putExtra("nim", it.getString("nim"))
             activity?.startActivity(intent)
         }

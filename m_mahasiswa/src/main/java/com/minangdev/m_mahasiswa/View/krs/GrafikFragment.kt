@@ -6,16 +6,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.minangdev.m_mahasiswa.Helper.LoadingDialog
 import com.minangdev.m_mahasiswa.Helper.SharePreferenceManager
 import com.minangdev.m_mahasiswa.R
 import com.minangdev.m_mahasiswa.ViewModel.TranskripViewModel
@@ -29,8 +34,9 @@ class GrafikFragment : Fragment() {
     private lateinit var root : View
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var transkripViewModel : TranskripViewModel
+    lateinit var loadingDialog: LoadingDialog
     lateinit var token: String
-    private val barLabel = ArrayList<String>()
+    private val labelForA= ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,118 +47,119 @@ class GrafikFragment : Fragment() {
         sharePreference = SharePreferenceManager(root.context)
         sharePreference.isLogin()
         token = sharePreference.getToken()
+        loadingDialog = LoadingDialog(activity!!)
 
         transkripViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
             TranskripViewModel::class.java
         )
+
+        loadingDialog.showLoading()
         transkripViewModel.setDataStaticA(token)
         transkripViewModel.getDataStaticA().observe(this, Observer { datas ->
-            showChartA(convertDataA(datas))
+            setListData(datas)
+            loadingDialog.hideLoading()
         })
 
+        loadingDialog.showLoading()
         transkripViewModel.setDataStaticB(token)
         transkripViewModel.getDataStaticB().observe(this, Observer { datas ->
-            showChartB(convertDataB(datas))
+            showChartA(datas, root.grafikA)
+            root.grafikA.invalidate()
+            loadingDialog.hideLoading()
         })
         return root
     }
 
-    fun convertDataA(datas: JSONArray): ArrayList<PieEntry> {
-        var mDataA = ArrayList<PieEntry>()
+    fun setListData(datas: JSONArray){
+        val showData = ArrayList<String>()
         for (i in 0 until datas.length()){
-            val dataJson = datas.getJSONObject(i)
-            val data = dataJson.getString("total")
-            val label =  dataJson.getString("krsdtKodeNilai")
-            val pieData = PieEntry(data.toFloat(), label)
-            mDataA.add(pieData)
+            val mData = datas.getJSONObject(i).getString("krsdtKodeNilai") + " : " + datas.getJSONObject(i).getString("total")
+            showData.add(mData)
         }
-        return mDataA
+        val listAdapter = ArrayAdapter(activity!!, android.R.layout.simple_list_item_1, showData)
+        root.list_nilai_grafik.adapter = listAdapter
     }
 
-    fun showChartA(mData: ArrayList<PieEntry>){
-        val pieDataSet = PieDataSet(mData, "")
-        val colors = ColorTemplate.VORDIPLOM_COLORS
-        pieDataSet.colors = colors.toList()
-        pieDataSet.setValueTextColor(Color.BLACK)
-        pieDataSet.valueTextSize = 13f
-        pieDataSet.setSliceSpace(0f)
-        pieDataSet.setSelectionShift(5f)
-        val data = PieData(pieDataSet)
-
-        root.grafikA.data = data
-        root.grafikA.legend.isEnabled = false
-//        root.grafikA.centerText = "NILAI"
-//        root.grafikA.setHighlightPerTapEnabled(true);
-//        root.grafikA.isHighlightPerTapEnabled = true;
-//        root.grafikA.setTouchEnabled(true);
-//        root.grafikA.isDrawHoleEnabled = true
-//        root.grafikA.isClickable = true;
-        root.grafikA.setHoleRadius(0f);
-        root.grafikA.setTransparentCircleRadius(0f);
-        root.grafikA.setRotationAngle(360 - 135f);
-        root.grafikA.setRotationEnabled(false);
-        root.grafikA.setHorizontalScrollBarEnabled(true);
-        root.grafikA.description.isEnabled = false
-        root.grafikA.setEntryLabelColor(Color.BLACK)
-        root.grafikA.animateY(3000)
-        root.grafikA.invalidate()
-
-    }
-
-    fun convertDataB(datas: JSONArray): ArrayList<BarEntry> {
-        var mDataB = ArrayList<BarEntry>()
+    fun convertDataA(datas: JSONArray): ArrayList<Entry> {
+        var mDataB = ArrayList<Entry>()
+        labelForA.clear()
         for (i in 0 until datas.length()){
             val dataJson = datas.getJSONObject(i)
             val x = dataJson.getString("ip_semester")
             val label =  dataJson.getString("semester_nama")
-            val barData = BarEntry(i.toFloat(), x.toFloat())
-            mDataB.add(barData)
-            barLabel.add(label)
+            val data = Entry(i.toFloat(), x.toFloat())
+            mDataB.add(data)
+            labelForA.add(label)
         }
         return mDataB
     }
 
-    fun showChartB(mData: ArrayList<BarEntry>){
-        val barDataSet = BarDataSet(mData, "")
-        val colors = ColorTemplate.VORDIPLOM_COLORS
-        barDataSet.colors = colors.toList()
-        barDataSet.setValueTextColor(Color.BLACK)
-        barDataSet.valueTextSize = 14f
-        val data = BarData(barDataSet)
+    fun showChartA(datas: JSONArray, lineChart: LineChart){
+        val mData = convertDataA(datas)
+        val lineDataSet = LineDataSet(mData, "")
+        val color = Color.WHITE
 
-        val xAxis = root.grafikB.xAxis
+        lineChart.isDragEnabled = true
+        lineChart.setScaleEnabled(false)
+        lineChart.description.isEnabled = false
+        lineChart.animateY(300)
+
+        val upper_limit = LimitLine(3.6F, "Good" )
+        upper_limit.lineWidth = 4f
+        upper_limit.enableDashedLine(10f, 10f, 0f)
+        upper_limit.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+        upper_limit.textSize = 15f
+
+        val lower_limit = LimitLine(2.1F, "Too Low" )
+        lower_limit.lineWidth = 4f
+        lower_limit.enableDashedLine(10f, 10f, 0f)
+        lower_limit.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
+        lower_limit.textSize = 15f
+
+        val leftAxis = lineChart.axisLeft
+        leftAxis.removeAllLimitLines()
+        leftAxis.addLimitLine(upper_limit)
+        leftAxis.addLimitLine(lower_limit)
+        leftAxis.axisMaximum = 4f
+//        leftAxis.axisMinimum = 0f
+        leftAxis.gridColor = color
+        leftAxis.enableGridDashedLine(10f, 10f, 0f)
+        leftAxis.setDrawLimitLinesBehindData(true)
+
+        lineChart.axisRight.isEnabled = false
+
+        val xAxis = lineChart.xAxis
+        xAxis.valueFormatter = (MyValueFormatter(labelForA))
+        xAxis.granularity = 1f
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.setDrawGridLines(true)
         xAxis.gridColor = Color.WHITE
-        xAxis.setGranularity(1f);
-        xAxis.setGranularityEnabled(true);
-        xAxis.valueFormatter = (MyValueFormatter(barLabel))
+        xAxis.setDrawGridLines(true)
 
-//        xAxis.setDrawGridLines(false) // hilangkan garis bawah
-//        root.grafikB.axisLeft.setDrawGridLines(false) //hilangkan garis kiri
-        root.grafikB.axisLeft.gridColor = Color.WHITE // rubah warna kiri jadi putih
-        root.grafikB.axisRight.isEnabled = false // hilangkan garis dan label kanan
+        lineDataSet.fillAlpha = 110
+        lineDataSet.setColor(color)
+        lineDataSet.lineWidth = 3f
+        lineDataSet.valueTextSize = 10f
 
-        root.grafikB.data = data
-        root.grafikB.setFitBars(true)
-        root.grafikB.description.isEnabled = false
-        root.grafikB.animateY(3000)
-        root.grafikB.invalidate()
+        val dataSets = ArrayList<ILineDataSet>()
+        dataSets.add(lineDataSet)
+
+        val finalData = LineData(dataSets)
+        lineChart.data = finalData
+
+
     }
 
-    class MyValueFormatter(private val xValsDateLabel: ArrayList<String>) : ValueFormatter() {
-
+    class MyValueFormatter(private val mValue: ArrayList<String>) : ValueFormatter() {
         override fun getFormattedValue(value: Float): String {
             return value.toString()
         }
 
         override fun getAxisLabel(value: Float, axis: AxisBase): String {
-            if (value.toInt() >= 0 && value.toInt() <= xValsDateLabel.size - 1) {
-                return xValsDateLabel[value.toInt()]
+            if (value.toInt() >= 0 && value.toInt() <= mValue.size - 1) {
+                return mValue[value.toInt()]
             } else {
                 return ("").toString()
             }
         }
     }
-
 }

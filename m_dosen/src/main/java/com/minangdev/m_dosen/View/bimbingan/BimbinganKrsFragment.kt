@@ -1,6 +1,8 @@
 package com.minangdev.m_dosen.View.bimbingan
 
 import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,6 +29,7 @@ import com.minangdev.m_dosen.ViewModel.MahasiswaBimbinganViewModel
 import com.minangdev.m_dosen.ViewModel.SemesterViewModel
 import kotlinx.android.synthetic.main.dialog_detail_kelas_krs.view.*
 import kotlinx.android.synthetic.main.fragment_bimbingan_krs.view.*
+import kotlinx.android.synthetic.main.row_krs.view.*
 import okhttp3.ResponseBody
 import org.json.JSONArray
 import retrofit2.Call
@@ -41,6 +44,7 @@ class BimbinganKrsFragment : Fragment() {
     var isCanAcc = false
     var dataSpinner = ArrayList<String>()
     var idSpinner = ArrayList<String>()
+    var idOnSelected = ArrayList<String>()
 
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var krsAdapter: KrsAdapter
@@ -96,6 +100,27 @@ class BimbinganKrsFragment : Fragment() {
             val mSemester = it.getString("semesterId")
             showDetailDialog(klsId, krsdtId, mSemester)
         }
+        krsAdapter.setOnLongClick{ jsonObject, view ->
+            val mSemester = jsonObject.getString("semesterId")
+            if(isCanAcc && mSemester.equals(semester)) {
+                val krsdtId = jsonObject.getString("idKrs")
+                if(view.row_krs_layout.background.constantState == resources.getDrawable(R.drawable.bg_row_blue).constantState || view.row_krs_layout.background.constantState == resources.getDrawable(R.drawable.bg_row_red).constantState){
+                    view.row_krs_layout.setBackgroundResource(R.drawable.bg_row_yellow)
+                    idOnSelected.add(krsdtId)
+                }else if(view.row_krs_layout.background.constantState == resources.getDrawable(R.drawable.bg_row_yellow).constantState){
+                    if(jsonObject.getString("status")=="0"){
+                        view.row_krs_layout.setBackgroundResource(R.drawable.bg_row_red)
+                    }else{
+                        view.row_krs_layout.setBackgroundResource(R.drawable.bg_row_blue)
+                    }
+                    idOnSelected.remove(krsdtId)
+                }
+                root.fab_change_status_krs.isVisible = idOnSelected.size>0
+            }
+            else{
+                Toast.makeText(activity, "This KRS Can't Be Change", Toast.LENGTH_SHORT).show()
+            }
+        }
         root.rv_bimbingan_krs.adapter = krsAdapter
         val layoutManager = LinearLayoutManager(activity)
         root.rv_bimbingan_krs.layoutManager = layoutManager
@@ -103,9 +128,34 @@ class BimbinganKrsFragment : Fragment() {
         loadingDialog.showLoading()
         krsViewModel.setDataSemester(token, nim!!, semester)
         krsViewModel.getDataSemester().observe(this, Observer { data ->
+            idOnSelected.clear()
+            root.fab_change_status_krs.isVisible = idOnSelected.size>0
             krsAdapter.setData(data.getJSONArray("krs"))
             loadingDialog.hideLoading()
         })
+
+        root.fab_change_status_krs.setOnClickListener{
+            var mMenu : Array<String> = arrayOf("Setujui", "Tolak")
+            AlertDialog.Builder(root.context)
+                    .setTitle("Select Option")
+                    .setItems(mMenu, DialogInterface.OnClickListener { dialog, which ->
+                        if(idOnSelected.size>0){
+                            when(which){
+                                0 -> {
+                                    //setujui
+                                    setujuiKrs()
+                                }
+                                1 -> {
+                                    //tolak
+                                    tolakKrs()
+
+                                }
+                                else -> false
+                            }
+                        }
+                    })
+                    .show()
+        }
 
         return root
     }
@@ -125,11 +175,11 @@ class BimbinganKrsFragment : Fragment() {
         loadingDialog.showLoading()
         mDetailDialogView.btn_tolak_krs.setOnClickListener{
             mDetailAlertDialog.hide()
-            tolakKrs(krsdtid)
+            tolakOneKrs(krsdtid)
         }
         mDetailDialogView.btn_setujui_krs.setOnClickListener{
             mDetailAlertDialog.hide()
-            setujuiKrs(krsdtid)
+            setujuiOneKrs(krsdtid)
         }
         if(isCanAcc && mSemester.equals(semester)){
             mDetailDialogView.btn_setujui_krs.isVisible = true
@@ -181,15 +231,22 @@ class BimbinganKrsFragment : Fragment() {
         })
     }
 
-    private fun tolakKrs(krsdtId: String){
+    private fun tolakOneKrs(krsdtId: String){
+        idOnSelected.clear()
+        idOnSelected.add(krsdtId)
+        tolakKrs()
+    }
+
+    private fun tolakKrs(){
         loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
-        val profile = apiBuilder.mahasiswaKrsTolak(token, nim!!, krsdtId)
+        val profile = apiBuilder.mahasiswaKrsTolak(token, nim!!, idOnSelected)
         profile.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
                     Toast.makeText(activity, "Berhasil Menolak KRS", Toast.LENGTH_SHORT).show()
                     krsViewModel.setDataSemester(token, nim!!, semester)
+                    idOnSelected.clear()
                 } else {
                     Toast.makeText(activity, "Gagal Menolak KRS", Toast.LENGTH_SHORT).show()
                     Log.e("Res_KRSTolak", "Ada Error di server Code : " + response.code().toString())
@@ -204,15 +261,22 @@ class BimbinganKrsFragment : Fragment() {
         });
     }
 
-    private fun setujuiKrs(krsdtId: String){
+    private fun setujuiOneKrs(krsdtId: String){
+        idOnSelected.clear()
+        idOnSelected.add(krsdtId)
+        setujuiKrs()
+    }
+
+    private fun setujuiKrs(){
         loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
-        val profile = apiBuilder.mahasiswaKrsSetujui(token, nim!!, krsdtId)
+        val profile = apiBuilder.mahasiswaKrsSetujui(token, nim!!, idOnSelected)
         profile.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
                     Toast.makeText(activity, "Berhasil Menyetujui KRS", Toast.LENGTH_SHORT).show()
                     krsViewModel.setDataSemester(token, nim!!, semester)
+                    idOnSelected.clear()
                 } else {
                     Toast.makeText(activity, "Gagal Menyetujui KRS", Toast.LENGTH_SHORT).show()
                     Log.e("Res_KRSSetuju", "Ada Error di server Code : " + response.code().toString())

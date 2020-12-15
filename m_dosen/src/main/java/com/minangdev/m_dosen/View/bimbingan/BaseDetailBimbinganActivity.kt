@@ -33,14 +33,13 @@ class BaseDetailBimbinganActivity : AppCompatActivity() {
 //            startActivity(intent)
             onBackPressed()
         }
-
-        nim = intent.getStringExtra("nim").toString()
-        setupViewPager(detail_bimbingan_view_pager)
-
         sharePreference = SharePreferenceManager(this)
         sharePreference.isLogin()
         token = sharePreference.getToken()
 
+        nim = intent.getStringExtra("nim").toString()
+        val mhsid = intent.getStringExtra("mhsid").toString()
+        setupViewPager(detail_bimbingan_view_pager, mhsid)
 
         mahasiswaBimbinganViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MahasiswaBimbinganViewModel::class.java)
         mahasiswaBimbinganViewModel.setDataDetail(token, nim!!)
@@ -63,9 +62,9 @@ class BaseDetailBimbinganActivity : AppCompatActivity() {
 
     }
 
-    fun setupViewPager(viewPager: ViewPager){
+    fun setupViewPager(viewPager: ViewPager, mhsid: String){
         val adapter = BimbinganPagerAdapter(supportFragmentManager)
-        adapter.addFragment(BimbinganDetailFragment.newInstance(nim), "Bimbingan")
+        adapter.addFragment(BimbinganDetailFragment.newInstance(nim, mhsid), "Bimbingan")
         adapter.addFragment(BimbinganKrsFragment.newInstance(nim), "KRS")
         adapter.addFragment(BimbinganTranskripFragment.newInstance(nim), "Transkrip")
         adapter.addFragment(BimbinganGraficFragment.newInstance(nim), "Grafic")
