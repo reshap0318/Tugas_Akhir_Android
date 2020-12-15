@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTa"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".View.annaouncement.FormAnnouncementActivity"></activity>
 
         <service

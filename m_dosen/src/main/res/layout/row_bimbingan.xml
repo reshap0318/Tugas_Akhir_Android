@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/row_blue">
+    android:background="@drawable/bg_row_blue">
 
     <ImageView
         android:id="@+id/icon_bimbingan"
-        android:layout_width="23.27dp"
-        android:layout_height="28.36dp"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
         android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="2dp"
         android:src="@drawable/baseline_label_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,23 +23,29 @@
     <TextView
         android:id="@+id/tv_label_bimbingan"
         style="@style/myfont"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        android:ellipsize="end"
         android:text="Bimbingan KRS - Semester Ganjil 2020"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/icon_bimbingan"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/icon_date_bimbingan"
-        android:layout_width="9.29dp"
-        android:layout_height="10.33dp"
-        android:layout_marginBottom="3dp"
+        android:layout_width="11dp"
+        android:layout_height="12dp"
+        android:alpha=".6"
         android:src="@drawable/baseline_date_range_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_date_bimbingan"
         app:layout_constraintStart_toEndOf="@+id/icon_bimbingan"
-        app:tint="@color/white"
-        android:alpha = ".6"/>
+        app:layout_constraintTop_toTopOf="@+id/tv_date_bimbingan"
+        app:tint="@color/white" />
 
     <TextView
         android:id="@+id/tv_date_bimbingan"
@@ -46,39 +53,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
         android:layout_marginBottom="2dp"
         android:alpha=".6"
         android:text="Agustus 17, 2020"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_date_bimbingan" />
+        app:layout_constraintStart_toEndOf="@+id/icon_date_bimbingan"
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_bimbingan" />
 
     <ImageView
         android:id="@+id/icon_chat_bimbingan"
-        android:layout_width="10.65dp"
-        android:layout_height="10.65dp"
+        android:layout_width="11dp"
+        android:layout_height="12dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginBottom="3dp"
-        android:alpha = ".6"
+        android:alpha=".6"
         android:src="@drawable/baseline_chat_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_total_chat_bimbingan"
         app:layout_constraintStart_toEndOf="@+id/tv_date_bimbingan"
+        app:layout_constraintTop_toTopOf="@+id/tv_total_chat_bimbingan"
         app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/tv_chat_bimbingan"
+        android:id="@+id/tv_total_chat_bimbingan"
         style="@style/myfont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
         android:layout_marginBottom="2dp"
         android:alpha=".6"
         android:text="31"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_chat_bimbingan" />
+        app:layout_constraintStart_toEndOf="@+id/icon_chat_bimbingan"
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_bimbingan" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

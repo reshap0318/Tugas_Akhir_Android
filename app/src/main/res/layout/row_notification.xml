@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,8 +10,8 @@
 
     <ImageView
         android:id="@+id/icon_notification"
-        android:layout_width="27.27dp"
-        android:layout_height="32.36dp"
+        android:layout_width="32.27dp"
+        android:layout_height="37.36dp"
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="2dp"
@@ -27,23 +28,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:text="Portal Akademik Dibuka"
-        android:textSize="16sp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/default_value"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/icon_notification"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/icon_date_notification"
-        android:layout_width="9.29dp"
-        android:layout_height="10.33dp"
+        android:layout_width="11.29dp"
+        android:layout_height="12.33dp"
         android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
+        android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
         android:alpha=".6"
         android:src="@drawable/baseline_date_range_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/icon_notification"
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_notification"
         app:tint="@color/white" />
 
     <TextView
@@ -52,25 +56,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
         android:layout_marginBottom="2dp"
         android:alpha=".6"
-        android:text="Agustus 17, 2020"
-        android:textSize="10sp"
+        android:text="@string/default_value"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_date_notification" />
+        app:layout_constraintStart_toEndOf="@+id/icon_date_notification"
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_notification" />
 
     <ImageView
         android:id="@+id/icon_time_notification"
-        android:layout_width="10.65dp"
-        android:layout_height="10.65dp"
+        android:layout_width="12.65dp"
+        android:layout_height="12.65dp"
         android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
+        android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
         android:alpha=".6"
         android:src="@drawable/baseline_access_time_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_date_notification"
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_notification"
         app:tint="@color/white" />
 
     <TextView
@@ -79,11 +84,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
         android:layout_marginBottom="2dp"
         android:alpha=".6"
-        android:text="13:00 WIB"
-        android:textSize="10sp"
+        android:text="@string/default_value"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/icon_time_notification" />
+        app:layout_constraintStart_toEndOf="@+id/icon_time_notification"
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_notification" />
 </androidx.constraintlayout.widget.ConstraintLayout>

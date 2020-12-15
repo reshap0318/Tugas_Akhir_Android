@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/green_primary"
+    tools:context=".View.bimbingan.BimbinganDetailActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/barlayout_detail_bimbingan"
+        android:background="@color/green_sencond"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_detail_bimbingan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_collapseMode="pin"
+            app:contentInsetStartWithNavigation="0dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_profile_detail_bimbingan"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:src="@drawable/avatar_sample"
+                    android:tint="@color/white"
+                    app:civ_border_color="#FFFFFF"
+                    app:civ_border_width="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_nama_detail_bimbingan"
+                    style="@style/myfont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_toRightOf="@+id/img_profile_detail_bimbingan"
+                    android:text="Reinaldo Shandev Pratama"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/img_profile_detail_bimbingan"
+                    app:layout_constraintTop_toTopOf="@+id/img_profile_detail_bimbingan" />
+
+                <TextView
+                    android:id="@+id/tv_topic_detail_bimbingan"
+                    style="@style/myfont"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:alpha=".6"
+                    android:ellipsize="end"
+                    android:text="Bimbingan Belajar"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/img_profile_detail_bimbingan"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_nama_detail_bimbingan" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_chat_detail_bimbingan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/barlayout_detail_bimbingan"
+        android:layout_above="@id/send_chat_detail_bimbingan_layout"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp" />
+
+    <RelativeLayout
+        android:id="@+id/send_chat_detail_bimbingan_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:id="@+id/img_send_detail_bimbingan_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/baseline_perm_media_24"
+            android:backgroundTint="#FF323131"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"/>
+
+        <EditText
+            android:id="@+id/tv_chat_detail_bimbingan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="Write Message Here...."
+            android:textColor="#FF323131"
+            android:textColorHint="#5E5D5D"
+            android:layout_toRightOf="@id/img_send_detail_bimbingan_btn"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/chat_send_detail_bimbingan_btn"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            />
+
+        <ImageView
+            android:id="@+id/chat_send_detail_bimbingan_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_action_name"
+            android:backgroundTint="@color/black"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

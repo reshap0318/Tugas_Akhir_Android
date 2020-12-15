@@ -5,7 +5,6 @@
     <string name="reset_password">Reset Password</string>
     <string name="title_home">Home</string>
     <string name="profile">Profile</string>
-    <string name="topic">Topic</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="announcement">Announcement</string>
@@ -17,4 +16,9 @@
     <string name="semester_ganjil_logo">Semester Ganjil</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="logout">Logout</string>
+    <string name="topic">Topic</string>
+    <string name="cancel">Cancel</string>
+    <string name="period">Period</string>
+    <string name="default_value">-</string>
 </resources>

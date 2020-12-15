@@ -8,16 +8,10 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_announcement"
-        android:icon="@drawable/baseline_announcement_24"
+        android:id="@+id/navigation_bimbingan"
+        android:icon="@drawable/baseline_assignment_24"
         android:iconTint="@color/white"
-        android:title="@string/announcement" />
-
-    <item
-        android:id="@+id/navigation_resource"
-        android:icon="@drawable/baseline_supervisor_account_24"
-        android:iconTint="@color/white"
-        android:title="@string/resource" />
+        android:title="@string/bimbingan" />
 
     <item
         android:id="@+id/navigation_profile"

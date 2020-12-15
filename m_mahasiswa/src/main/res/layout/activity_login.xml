@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/logo_unand" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login"
+        android:id="@+id/login_admin"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,6 +44,7 @@
         app:startIconTint="@color/green_primary">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_login_admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -55,7 +56,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/old_password"
+        android:id="@+id/password_admin"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,11 +74,12 @@
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login"
+        app:layout_constraintTop_toBottomOf="@+id/login_admin"
         app:startIconDrawable="@drawable/baseline_vpn_key_24"
         app:startIconTint="@color/green_primary">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password_admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:font="@font/roboto"
@@ -94,13 +96,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:font="@font/roboto"
         android:text="@string/reset_password"
         android:textColor="@color/black"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/old_password" />
+        app:layout_constraintTop_toBottomOf="@+id/password_admin" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_login"
@@ -118,6 +120,6 @@
         app:iconGravity="textEnd"
         app:iconTint="@color/green_primary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/old_password" />
+        app:layout_constraintTop_toBottomOf="@+id/password_admin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
