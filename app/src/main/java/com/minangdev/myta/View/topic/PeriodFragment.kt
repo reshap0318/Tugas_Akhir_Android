@@ -84,8 +84,8 @@ class PeriodFragment : Fragment() {
                         Toast.makeText(activity, pesan, Toast.LENGTH_SHORT).show()
                         if (!pesan.equals("No Data Syn")) {
                             loadData()
-                            loadingDialog.hideLoading()
                         }
+                        loadingDialog.hideLoading()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }

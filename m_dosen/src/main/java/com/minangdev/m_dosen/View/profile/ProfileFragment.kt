@@ -1,6 +1,7 @@
 package com.minangdev.m_dosen.View.profile
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -22,24 +23,34 @@ import com.minangdev.m_dosen.Helper.UploadImage
 import com.minangdev.m_dosen.R
 import com.minangdev.m_dosen.View.ChangePasswordActivity
 import com.minangdev.m_dosen.ViewModel.ProfileViewModel
+import kotlinx.android.synthetic.main.dialog_change_email.view.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.lang.Exception
 
 
 class ProfileFragment : Fragment() {
 
     private lateinit var profileViewModel : ProfileViewModel
     private lateinit var sharePreference : SharePreferenceManager
+
+    private lateinit var mCreate : AlertDialog
     lateinit var loadingDialog: LoadingDialog
+
+    private lateinit var mCreateDialogView : View
     private lateinit var root : View
+
     lateinit var token: String
+
+    var email: String? = ""
     companion object {
         const val REQUEST_CODE_IMAGE_PICKER = 101
     }
@@ -52,6 +63,7 @@ class ProfileFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_profile, container, false)
         sharePreference = SharePreferenceManager(root.context)
         sharePreference.isLogin()
+        initChangePassword()
 
         root.btn_ganti_password_profile.setOnClickListener { view ->
             val intent = Intent(activity, ChangePasswordActivity::class.java)
@@ -64,6 +76,12 @@ class ProfileFragment : Fragment() {
 
         root.btn_logout_profile.setOnClickListener{
             logout()
+        }
+
+        root.btn_ganti_email.setOnClickListener{
+            mCreateDialogView.email_form_profile.error = ""
+            mCreateDialogView.email_form_profile.editText?.setText(email)
+            mCreate.show()
         }
 
         profileSetData(name="", nip="")
@@ -84,6 +102,11 @@ class ProfileFragment : Fragment() {
             val name = data.getString("name")
             val nip = data.getString("username")
             val img = data.getString("avatar")
+            email = if (data.getString("email").equals("null")){
+                ""
+            }else{
+                data.getString("email")
+            }
             profileSetData(name=name, nip=nip, img=img)
             loadingDialog.hideLoading()
         })
@@ -183,5 +206,54 @@ class ProfileFragment : Fragment() {
             }
 
         });
+    }
+
+    fun initChangePassword(){
+        mCreateDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_change_email, null)
+        val mCreateDialog = AlertDialog.Builder(activity)
+                .setView(mCreateDialogView)
+        mCreate = mCreateDialog.create()
+        mCreateDialogView.btn_cancel_form_profile.setOnClickListener{
+            mCreate.dismiss()
+        }
+        mCreateDialogView.btn_simpan_form_profile.setOnClickListener{
+            val email = mCreateDialogView.email_form_profile.editText?.text.toString()
+            updateEmail(email)
+        }
+    }
+
+    fun updateEmail(email: String){
+        loadingDialog.showLoading()
+        val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
+        val topic = apiBuilder.changeProfile(token, email)
+        topic.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == 200) {
+                    try {
+                        Toast.makeText(activity, "Berhasil Merubah Email", Toast.LENGTH_SHORT).show()
+                        loadData()
+                        mCreate.dismiss()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else if (response.code() == 422) {
+                    val dataError = JSONObject(response.errorBody()?.string())
+                    if(dataError.getJSONObject("errors").has("email")){
+                        val emailError = dataError.getJSONObject("errors").getJSONArray("email")
+                        for (i in 0 until emailError.length()) {
+                            mCreateDialogView.email_form_profile.error = emailError.getString(i).toString()
+                        }
+                    }
+                } else {
+                    Log.e("Resp_ProfileE", "Ada Error di server Code : " + response.code().toString())
+                }
+                loadingDialog.hideLoading()
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("Fail_ProfileE", "onFailure: ERROR > " + t.toString());
+            }
+
+        })
     }
 }

@@ -30,7 +30,6 @@ interface ApiInterface {
     @PATCH("/user/change-profile")
     fun changeProfile(
         @Header("Authorization") token: String,
-        @Field("name") name: String,
         @Field("email") email: String
     ): Call<ResponseBody>
 
@@ -79,6 +78,13 @@ interface ApiInterface {
         @Part("message") message: RequestBody,
         @Part("topicPeriodId") topicPeriodId: RequestBody,
         @Part img: MultipartBody.Part? = null,
+    ) : Call<ResponseBody>
+
+    @POST("/dosen/bimbingan/cetak/{receiverId}/{topicPeriodId}")
+    fun bimbinganCetak(
+            @Header("Authorization") token: String,
+            @Path("receiverId") receiverId: String,
+            @Path("topicPeriodId") topicPeriodId: String,
     ) : Call<ResponseBody>
 
     @FormUrlEncoded

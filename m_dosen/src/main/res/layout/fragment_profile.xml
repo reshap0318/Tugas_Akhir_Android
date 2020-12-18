@@ -59,7 +59,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="165dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -85,6 +85,21 @@
             app:layout_constraintTop_toBottomOf="@+id/btn_ganti_avatar" />
 
         <ImageView
+            android:id="@+id/btn_ganti_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/btn_change_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_ganti_password_profile" />
+
+        <ImageView
             android:id="@+id/btn_ganti_avatar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -98,6 +113,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

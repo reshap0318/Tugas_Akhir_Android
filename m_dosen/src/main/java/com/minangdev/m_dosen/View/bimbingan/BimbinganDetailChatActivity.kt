@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +35,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.lang.Exception
 
 class BimbinganDetailChatActivity : AppCompatActivity() {
 
@@ -103,6 +106,22 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.download_chat_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.download_chat -> {
+                downloadBimbingan()
+                return true
+            }
+            else -> return true
+        }
+    }
+
     fun sendingMessage(){
         val mMessage = tv_chat_detail_chat_bimbingan.text.toString()
         val reqboReceiverId = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),receiverId)
@@ -119,7 +138,6 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
                     Toast.makeText(this@BimbinganDetailChatActivity, "Pesan Tidak Boleh Kosong", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.e("submitLogin", "Error Code : " + response.code().toString())
-                    Log.e("sss", JSONObject(response.errorBody()?.string()).toString())
                 }
             }
 
@@ -196,5 +214,27 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
             returnCursor.close()
         }
         return name
+    }
+
+    fun downloadBimbingan(){
+        val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
+        val respondBody = apiBuilder.bimbinganCetak(token, receiverId, topicPeriodId)
+        respondBody.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == 200) {
+                    Toast.makeText(this@BimbinganDetailChatActivity, "File Sent to Your Email", Toast.LENGTH_SHORT).show()
+                    tv_chat_detail_chat_bimbingan.setText("")
+                } else if (response.code() == 422) {
+                    Toast.makeText(this@BimbinganDetailChatActivity, "Set Email Before Use This Fiture", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e("submitLogin", "Error Code : " + response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString())
+            }
+
+        })
     }
 }
