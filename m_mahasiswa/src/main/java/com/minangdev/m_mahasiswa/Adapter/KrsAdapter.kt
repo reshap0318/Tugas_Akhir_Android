@@ -35,6 +35,7 @@ class KrsAdapter(private val onItemClickListener : onItemClick) : RecyclerView.A
         fun onBind (jsonObject : JSONObject) = view.apply{
             tv_kode_matkul_krs.text = jsonObject.getJSONObject("kelas").getString("kode_matkul")+" - "+jsonObject.getJSONObject("kelas").getString("sks_matkul") + " SKS"
             tv_nama_matkul_krs.text = jsonObject.getJSONObject("kelas").getString("nama_matkul")
+            tv_sks_matkul_krs.text = jsonObject.getJSONObject("kelas").getString("sks_matkul") + " SKS"
             val nilai = if(jsonObject.getString("nilai").equals("null")){
                 "-"
             }else{
@@ -44,9 +45,9 @@ class KrsAdapter(private val onItemClickListener : onItemClick) : RecyclerView.A
             var status = "Disetujui"
             if(jsonObject.getString("status")=="0"){
                 status = "DiTolak"
-                row_krs_layout.setBackgroundResource(R.drawable.bg_red_krs_tolak)
+                row_krs_layout.setBackgroundResource(R.drawable.bgkrsred)
             }else{
-                row_krs_layout.setBackgroundResource(R.drawable.bg_row_blue)
+                row_krs_layout.setBackgroundResource(R.drawable.bgrowmahasiswa)
             }
             var jadwal = ""
             val jadwalJson = jsonObject.getJSONObject("kelas").getJSONArray("jadwal")

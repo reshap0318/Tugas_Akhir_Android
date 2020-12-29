@@ -50,9 +50,11 @@ class KrsAdapter(private val onItemClickListener : onItemClick) : RecyclerView.A
             var status = "Disetujui"
             if(jsonObject.getString("status")=="0"){
                 status = "DiTolak"
-                row_krs_layout.setBackgroundResource(R.drawable.bg_row_red)
+                row_krs_layout.setBackgroundResource(R.drawable.bgkrsred)
+                layout_nilai_krs.setBackgroundResource(R.drawable.baseline_circle_red)
             }else{
-                row_krs_layout.setBackgroundResource(R.drawable.bg_row_blue)
+                row_krs_layout.setBackgroundResource(R.drawable.bgrowmahasiswa)
+                layout_nilai_krs.setBackgroundResource(R.drawable.baseline_circle_green)
             }
             tv_status_krs_bimbingan.text = status
             var jadwal = ""

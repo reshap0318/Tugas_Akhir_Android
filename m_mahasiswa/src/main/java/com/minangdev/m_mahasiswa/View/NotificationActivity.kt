@@ -48,7 +48,10 @@ class NotificationActivity : AppCompatActivity() {
             loadingDialog.hideLoading()
         })
 
-        btn_appbar_back.setOnClickListener{
+        mToolbarBlank.setTitle("Notification")
+        setSupportActionBar(mToolbarBlank)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        mToolbarBlank.setNavigationOnClickListener{
             onBackPressed()
         }
 

@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.firebase.database.*
 import com.minangdev.m_dosen.API.ApiBuilder
 import com.minangdev.m_dosen.API.ApiInterface
 import com.minangdev.m_dosen.Adapter.BimbinganChatAdapter
@@ -42,6 +43,7 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var bimbinganViewModel: BimbinganViewModel
     private lateinit var bimbinganChatAdapter: BimbinganChatAdapter
+    private lateinit var ref: DatabaseReference
 
     private lateinit var token: String
     private lateinit var senderId: String
@@ -103,6 +105,7 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
         img_send_detail_chat_bimbingan_btn.setOnClickListener{
             openImage()
         }
+        readChat()
 
     }
 
@@ -124,6 +127,10 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
 
     fun sendingMessage(){
         val mMessage = tv_chat_detail_chat_bimbingan.text.toString()
+        if(mMessage==""){
+            Toast.makeText(this, "Pesan Tidak Boleh Kosong", Toast.LENGTH_LONG).show()
+            return
+        }
         val reqboReceiverId = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),receiverId)
         val reqboMmessage = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),mMessage)
         val reqboTopicPeriod = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),topicPeriodId)
@@ -236,5 +243,31 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
             }
 
         })
+    }
+    var readListner: ValueEventListener? = null
+    fun readChat(){
+        ref = FirebaseDatabase.getInstance().getReference("Chat")
+        readListner = ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (i in snapshot.children){
+                    val data: HashMap<String, String> = i.value as HashMap<String, String>
+                    if(data.get("receiver").equals(senderId) && data.get("sender").equals(receiverId)){
+                        val hashMap = HashMap<String, Any>()
+                        hashMap["isRead"] = 1
+                        i.ref.updateChildren(hashMap)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        ref.removeEventListener(readListner!!)
     }
 }

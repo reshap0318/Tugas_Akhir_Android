@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.MyTa" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/green_sencond</item>
         <item name="colorPrimaryVariant">@color/green_sencond</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -21,7 +21,7 @@
 
     <style name="myfont" parent="@style/TextAppearance.AppCompat">
         <item name="font">@font/roboto</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">

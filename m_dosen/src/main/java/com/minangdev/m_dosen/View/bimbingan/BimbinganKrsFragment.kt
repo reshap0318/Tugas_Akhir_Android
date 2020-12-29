@@ -104,14 +104,14 @@ class BimbinganKrsFragment : Fragment() {
             val mSemester = jsonObject.getString("semesterId")
             if(isCanAcc && mSemester.equals(semester)) {
                 val krsdtId = jsonObject.getString("idKrs")
-                if(view.row_krs_layout.background.constantState == resources.getDrawable(R.drawable.bg_row_blue).constantState || view.row_krs_layout.background.constantState == resources.getDrawable(R.drawable.bg_row_red).constantState){
-                    view.row_krs_layout.setBackgroundResource(R.drawable.bg_row_yellow)
+                if(view.row_krs_layout.background.constantState == resources.getDrawable(R.drawable.bgrowmahasiswa).constantState || view.row_krs_layout.background.constantState == resources.getDrawable(R.drawable.bgkrsred).constantState){
+                    view.row_krs_layout.setBackgroundResource(R.drawable.bgkrsselected)
                     idOnSelected.add(krsdtId)
-                }else if(view.row_krs_layout.background.constantState == resources.getDrawable(R.drawable.bg_row_yellow).constantState){
+                }else if(view.row_krs_layout.background.constantState == resources.getDrawable(R.drawable.bgkrsselected).constantState){
                     if(jsonObject.getString("status")=="0"){
-                        view.row_krs_layout.setBackgroundResource(R.drawable.bg_row_red)
+                        view.row_krs_layout.setBackgroundResource(R.drawable.bgkrsred)
                     }else{
-                        view.row_krs_layout.setBackgroundResource(R.drawable.bg_row_blue)
+                        view.row_krs_layout.setBackgroundResource(R.drawable.bgrowmahasiswa)
                     }
                     idOnSelected.remove(krsdtId)
                 }

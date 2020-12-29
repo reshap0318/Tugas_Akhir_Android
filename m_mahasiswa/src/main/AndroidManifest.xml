@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTa"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.bimbingan.BimbinganDetailActivity"></activity>
+        <activity android:name=".View.bimbingan.BimbinganGroupActivity"></activity>
+        <activity android:name=".View.bimbingan.BimbinganDetailActivity" />
         <activity android:name=".View.krs.AddKrsActivity" />
 
         <service

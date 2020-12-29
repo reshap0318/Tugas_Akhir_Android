@@ -42,11 +42,13 @@ class BimbinganChatAdapter(
         var show_text_message : TextView? = null
         var img_view : ImageView? = null
         var text_seen : TextView? = null
+        var text_time : TextView? = null
 
         init {
             show_text_message = itemView.findViewById(R.id.tv_show_text_message)
             img_view = itemView.findViewById(R.id.img_message)
             text_seen = itemView.findViewById(R.id.tv_text_seen)
+            text_time= itemView.findViewById(R.id.tv_text_time)
         }
     }
 
@@ -61,21 +63,31 @@ class BimbinganChatAdapter(
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
         val oneData = mData.getJSONObject(position)
+
         if(oneData.getString("message").equals("sent you an image") && !oneData.getString("img").equals("")){
             val img = oneData.getString("img")
             holder.img_view!!.isVisible = true
             holder.show_text_message!!.isVisible = false
             Glide.with(mContext)
-                    .load(img)
-                    .fitCenter()
-                    .centerCrop()
-                    .into(holder.img_view!!)
-        }else{
+                .load(img)
+                .fitCenter()
+                .centerCrop()
+                .into(holder.img_view!!)
+            val lp1 = holder.text_time!!.layoutParams as RelativeLayout.LayoutParams?
+            lp1!!.addRule(RelativeLayout.BELOW, R.id.img_message)
+            holder.text_time!!.layoutParams = lp1
+        }
+        else{
+            holder.img_view!!.isVisible = false
+            holder.show_text_message!!.isVisible = true
+            val lp1 = holder.text_time!!.layoutParams as RelativeLayout.LayoutParams?
+            lp1!!.addRule(RelativeLayout.BELOW, R.id.tv_show_text_message)
+            holder.text_time!!.layoutParams = lp1
             holder.show_text_message!!.text = oneData.getString("message")
         }
 
         if (position == mData.length()-1){
-            if(oneData.getString("isRead").equals(1)){
+            if(oneData.getString("isRead").equals("1")){
                 holder.text_seen!!.text = "Seen"
             }else{
                 holder.text_seen!!.text = "Sent"
@@ -85,9 +97,25 @@ class BimbinganChatAdapter(
                 lp!!.addRule(RelativeLayout.BELOW, R.id.img_message)
                 holder.text_seen!!.layoutParams = lp
             }
+            if(oneData.getString("sender").equals(userId)){
+                val lp = holder.text_time!!.layoutParams as RelativeLayout.LayoutParams?
+                lp!!.addRule(RelativeLayout.START_OF, R.id.tv_text_seen)
+                holder.text_time!!.layoutParams = lp
+            }
+            if(oneData.getString("sender").equals(userId)){
+                holder.text_seen!!.isVisible = true
+            }
+
         }else{
+            if(oneData.getString("sender").equals(userId)){
+                val lp = holder.text_time!!.layoutParams as RelativeLayout.LayoutParams?
+                lp!!.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+                lp!!.addRule(RelativeLayout.ALIGN_PARENT_END)
+                holder.text_time!!.layoutParams = lp
+            }
             holder.text_seen!!.isVisible = false
         }
+        holder.text_time!!.text = oneData.getString("time")
     }
 
     override fun getItemCount(): Int {

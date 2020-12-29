@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green_primary"
+    android:background="@color/mbackground"
     tools:context=".View.profile.ProfileFragment">
 
 
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/profile_bg"
+        android:background="@drawable/bgprofile"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,6 +36,7 @@
         <TextView
             android:id="@+id/tv_name_profile"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -49,6 +50,7 @@
         <TextView
             android:id="@+id/tv_nip_profile"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/defaultValue"
@@ -59,6 +61,7 @@
         <TextView
             android:id="@+id/tv_semester"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -90,6 +93,7 @@
         <TextView
             android:id="@+id/tv_sks_total"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -119,6 +123,7 @@
         <TextView
             android:id="@+id/tv_ipk"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -150,11 +155,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/profile_bg_menu"
+        android:background="@drawable/bgchangepass"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -165,11 +170,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/btn_change_password"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/btnchangepassword"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -180,15 +185,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/btn_change_avatar"
+            android:src="@drawable/btnchangeavatar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_ganti_email" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -205,6 +209,7 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         app:backgroundTint="@color/row_red"
+        android:background="@drawable/bgbtnsuccess"
         app:icon="@drawable/baseline_login_24"
         app:iconGravity="textEnd"
         app:iconTint="@color/white"

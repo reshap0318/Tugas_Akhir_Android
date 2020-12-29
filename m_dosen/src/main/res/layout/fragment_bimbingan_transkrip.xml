@@ -4,26 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/green_primary"
+    android:background="@color/mbackground"
     android:orientation="vertical"
     tools:context=".View.bimbingan.BimbinganTranskripFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/row_blue">
+        android:background="@drawable/bgrowmahasiswa">
 
         <TextView
             android:id="@+id/tv_total_sks"
             style="@style/myfont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="Total SKS : 106"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -35,9 +35,9 @@
             style="@style/myfont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
             android:text="IPK : 3.64"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

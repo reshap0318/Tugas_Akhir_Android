@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/green_primary">
+    android:background="@drawable/bgdialog">
+
+    <TextView
+        style="@style/myfont"
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Change Email"
+        android:textColor="#6A88F5"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_form_profile"
@@ -14,16 +29,19 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:hint="Email"
-        app:hintTextColor="@color/white"
+        android:textColorHint="@color/green_primary"
+        app:hintTextColor="@color/green_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_email_form_profile"
             style="@style/myfont"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textColorHint="@color/green_primary" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -34,10 +52,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@color/row_blue"
+        android:background="@drawable/bgbtnsuccess"
+        app:backgroundTint="@null"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_cancel_form_profile"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_form_profile"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -48,10 +67,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@color/row_red"
+        android:background="@drawable/bgbtnsuccess"
+        app:backgroundTint="@color/row_red"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_simpan_form_profile"
         app:layout_constraintTop_toBottomOf="@+id/email_form_profile"
         app:layout_constraintVertical_bias="0.0" />
 

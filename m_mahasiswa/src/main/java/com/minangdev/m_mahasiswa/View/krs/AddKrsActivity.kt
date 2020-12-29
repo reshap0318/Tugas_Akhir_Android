@@ -93,7 +93,11 @@ class AddKrsActivity : AppCompatActivity() {
             loadingDialog.hideLoading()
         })
 
-        btn_appbar_back.setOnClickListener{
+        mToolbarBlank.setTitle("Add KRS")
+        setSupportActionBar(mToolbarBlank)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        mToolbarBlank.setNavigationOnClickListener{
+//            onBackPressed()
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra(MainActivity.EXTRA_FRAGMENT, 3)
             startActivity(intent)

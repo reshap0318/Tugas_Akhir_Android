@@ -3,6 +3,8 @@ package com.minangdev.m_dosen.View
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(mToolbarMain)
 
         sharePreference = SharePreferenceManager(this)
         sharePreference.isLogin()
@@ -37,10 +40,7 @@ class MainActivity : AppCompatActivity() {
         setSemesterActive()
 
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        menu_notification.setOnClickListener{
-            val intent = Intent(this, NotificationActivity::class.java)
-            startActivity(intent)
-        }
+
         val idFragment = intent.getIntExtra(EXTRA_FRAGMENT, 0)
         if(idFragment>0){
             changeFragment(idFragment)
@@ -48,6 +48,23 @@ class MainActivity : AppCompatActivity() {
             changeFragment(1)
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.notification_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.notification -> {
+                val intent = Intent(this, NotificationActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            else -> return true
+        }
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->

@@ -5,15 +5,16 @@
     android:id="@+id/row_transkrip_sub_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    android:background="@drawable/bg_row_blue">
+    android:layout_marginBottom="4dp"
+    android:background="@drawable/bgrowtranskripdtblue">
 
     <TextView
         android:id="@+id/tv_matkul_transkrip"
         style="@style/myfont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="3dp"
         android:layout_marginEnd="4dp"
         android:ellipsize="end"
         android:text="Dasar - Dasar Pemograman"
@@ -29,7 +30,8 @@
         style="@style/myfont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="3dp"
         android:text="JSI001 - 3 SKS"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,14 +39,14 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_matkul_transkrip" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
+        android:id="@+id/layout_nilai_sub"
         android:layout_width="23dp"
         android:layout_height="23dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:background="@drawable/baseline_circle"
+        android:background="@drawable/baseline_circle_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -67,4 +69,5 @@
             app:layout_constraintTop_toTopOf="parent"></TextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

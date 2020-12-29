@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/green_primary"
+    android:background="@color/mbackground"
     tools:context=".View.bimbingan.BimbinganDetailChatActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -47,6 +47,7 @@
                 <TextView
                     android:id="@+id/tv_nama_detail_chat_bimbingan"
                     style="@style/myfont"
+                    android:textColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -63,14 +64,17 @@
                 <TextView
                     android:id="@+id/tv_topic_detail_chat_bimbingan"
                     style="@style/myfont"
+                    android:textColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="3dp"
                     android:alpha=".6"
                     android:ellipsize="end"
                     android:text="Bimbingan Belajar"
                     android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/img_profile_detail_chat_bimbingan"
                     app:layout_constraintTop_toBottomOf="@+id/tv_nama_detail_chat_bimbingan" />

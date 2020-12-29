@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/green_primary"
+    android:background="@color/mbackground"
     tools:context=".View.krs.AddKrsActivity">
 
     <include layout="@layout/actionbar_onlyback"/>
@@ -16,11 +16,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/row_blue">
+        android:background="@color/green_sencond">
 
         <TextView
             android:id="@+id/total_sks_add_krs"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -33,6 +34,7 @@
         <TextView
             android:id="@+id/tv_total_sks_add_krs"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -48,6 +50,7 @@
         <TextView
             android:id="@+id/sks_active_add_krs"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -62,6 +65,7 @@
         <TextView
             android:id="@+id/tv_sks_active_add_krs"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -77,6 +81,7 @@
         <TextView
             android:id="@+id/max_sks_add_krs"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -89,6 +94,7 @@
         <TextView
             android:id="@+id/tv_max_sks_add_krs"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

@@ -23,11 +23,14 @@ class TranskripSubAdapter(private val context: Context, private val datas: JSONA
                 nilai = jsonObject.getString("nilaiAngka")
             }
             if(nilai.equals("E") || nilai.equals("D") || nilai.equals("C-")){
-                row_transkrip_sub_layout.setBackgroundResource(R.drawable.bg_red_transkrip_e_cmin)
+                row_transkrip_sub_layout.setBackgroundResource(R.drawable.bgrowtranskripdtred)
+                layout_nilai_sub.setBackgroundResource(R.drawable.baseline_circle_red)
             }else if(nilai.equals("C") || nilai.equals("C+") || nilai.equals("B-")){
-                row_transkrip_sub_layout.setBackgroundResource(R.drawable.bg_yellow_transkrip_c_bmin)
+                row_transkrip_sub_layout.setBackgroundResource(R.drawable.bgrowtranskripdtyellow)
+                layout_nilai_sub.setBackgroundResource(R.drawable.baseline_circle_yellow)
             }else{
-                row_transkrip_sub_layout.setBackgroundResource(R.drawable.bg_row_blue)
+                row_transkrip_sub_layout.setBackgroundResource(R.drawable.bgrowtranskripdtblue)
+                layout_nilai_sub.setBackgroundResource(R.drawable.baseline_circle_blue)
             }
             tv_nilai_matkul_transkrip.text = nilai
         }

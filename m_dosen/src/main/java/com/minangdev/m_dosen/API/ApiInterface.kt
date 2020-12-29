@@ -65,6 +65,11 @@ interface ApiInterface {
         @Path("nim") nim: String
     ) : Call<ResponseBody>
 
+    @GET("/dosen/bimbingan/last-seen")
+    fun bimbinganLastSeen(
+            @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
     @GET("/dosen/bimbingan")
     fun mahasiswaBimbingan(
             @Header("Authorization") token: String
@@ -94,6 +99,22 @@ interface ApiInterface {
         @Path("mhsId") mhsId: String,
         @Field("topicPeriodId") topicPeriodId: String,
     ): Call<ResponseBody>
+
+    @GET("/dosen/bimbingan/group-chat")
+    fun bimbinganListGroup(
+        @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
+    @Multipart
+    @POST("/dosen/bimbingan/send-group-chat")
+    fun bimbinganSendGroup(
+        @Header("Authorization") token: String,
+        @Part("receiverId") receiverId: RequestBody,
+        @Part("message") message: RequestBody,
+        @Part("topicPeriodId") topicPeriodId: RequestBody,
+        @Part("groupchanel") groupchanel: RequestBody,
+        @Part img: MultipartBody.Part? = null,
+    ) : Call<ResponseBody>
 
     @GET("/dosen/list-bimbingan/{mhsid}")
     fun mahasiswaListBimbingan(

@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.firebase.database.*
 import com.minangdev.m_mahasiswa.API.ApiBuilder
 import com.minangdev.m_mahasiswa.API.ApiInterface
 import com.minangdev.m_mahasiswa.Adapter.BimbinganChatAdapter
@@ -28,6 +29,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,6 +43,7 @@ class BimbinganDetailActivity : AppCompatActivity() {
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var bimbinganViewModel: BimbinganViewModel
     private lateinit var bimbinganChatAdapter: BimbinganChatAdapter
+    private lateinit var ref: DatabaseReference
 
     private lateinit var token: String
     private lateinit var senderId: String
@@ -104,11 +107,16 @@ class BimbinganDetailActivity : AppCompatActivity() {
         img_send_detail_bimbingan_btn.setOnClickListener{
             openImage()
         }
+        readChat()
 
     }
 
     fun sendingMessage(){
         val mMessage = tv_chat_detail_bimbingan.text.toString()
+        if(mMessage==""){
+            Toast.makeText(this@BimbinganDetailActivity, "Pesan Tidak Boleh Kosong", Toast.LENGTH_LONG).show()
+            return
+        }
         val reqboReceiverId = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),receiverId)
         val reqboMmessage = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),mMessage)
         val reqboTopicPeriod = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),topicPeriodId)
@@ -120,7 +128,7 @@ class BimbinganDetailActivity : AppCompatActivity() {
                     Toast.makeText(this@BimbinganDetailActivity, "Berhasil Mengirim Pesan", Toast.LENGTH_SHORT).show()
                     tv_chat_detail_bimbingan.setText("")
                 } else if (response.code() == 422) {
-                    Toast.makeText(this@BimbinganDetailActivity, "Pesan Tidak Boleh Kosong", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@BimbinganDetailActivity, "Pesan Tidak Boleh Kosong", Toast.LENGTH_LONG).show()
                 } else {
                     Log.e("submitLogin", "Error Code : " + response.code().toString())
                     Log.e("sss",JSONObject(response.errorBody()?.string()).toString())
@@ -200,5 +208,33 @@ class BimbinganDetailActivity : AppCompatActivity() {
             returnCursor.close()
         }
         return name
+    }
+
+    var readListner: ValueEventListener? = null
+
+    fun readChat(){
+        ref = FirebaseDatabase.getInstance().getReference("Chat")
+        readListner = ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (i in snapshot.children){
+                    val data: HashMap<String, String> = i.value as HashMap<String, String>
+                    if(data.get("receiver").equals(senderId) && data.get("sender").equals(receiverId)){
+                        val hashMap = HashMap<String, Any>()
+                        hashMap["isRead"] = 1
+                        i.ref.updateChildren(hashMap)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        ref.removeEventListener(readListner!!)
     }
 }

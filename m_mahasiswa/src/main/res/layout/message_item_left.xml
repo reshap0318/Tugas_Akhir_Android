@@ -1,32 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="295dp"
     android:layout_height="wrap_content"
     android:padding="9dp">
 
     <TextView
         android:id="@+id/tv_show_text_message"
+        style="@style/myfont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="testing chat"
-        android:textSize="18sp"
+        android:background="@drawable/bg_chat_left"
         android:padding="8dp"
-        style="@style/myfont"
-        android:background="@drawable/bg_chat_left"/>
+        android:text="testing chat"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/img_message"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_text_seen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_show_text_message"
+        android:layout_marginTop="2dp"
+        android:alpha=".7"
         android:text="seen"
-        android:layout_below="@+id/tv_show_text_message"/>
+        android:textColor="@color/black"
+        android:textSize="9sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_show_text_message"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="0dp"
+        android:layout_toEndOf="@+id/tv_text_seen"
+        android:alpha=".7"
+        android:text="25-12-2020.12:05"
+        android:textColor="@color/black"
+        android:textSize="9sp" />
 
 </RelativeLayout>

@@ -22,7 +22,7 @@
             style="@style/myfont"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:background="@drawable/bg_chat_right"/>
 
         <ImageView
@@ -39,9 +39,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="seen"
+            android:textSize="9sp"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/black"
+            android:alpha=".7"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/tv_show_text_message"/>
+
+        <TextView
+            android:id="@+id/tv_text_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_show_text_message"
+            android:textSize="9sp"
+            android:textColor="@color/black"
+            android:alpha=".7"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/tv_text_seen"
+            android:text="25-12-2020.12:05" />
 
     </RelativeLayout>
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/green_primary"
+    android:background="@color/mbackground"
     tools:context=".View.home.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,6 +46,7 @@
         <TextView
             android:id="@+id/tv_name_home"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -59,6 +60,7 @@
         <TextView
             android:id="@+id/tv_nip_home"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"

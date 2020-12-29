@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
@@ -20,6 +21,7 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.minangdev.m_mahasiswa.Adapter.TotalNilaiAdapter
 import com.minangdev.m_mahasiswa.Helper.LoadingDialog
 import com.minangdev.m_mahasiswa.Helper.SharePreferenceManager
 import com.minangdev.m_mahasiswa.R
@@ -33,6 +35,7 @@ class GrafikFragment : Fragment() {
 
     private lateinit var root : View
     private lateinit var sharePreference : SharePreferenceManager
+    private lateinit var totalNilaiAdapter: TotalNilaiAdapter
     private lateinit var transkripViewModel : TranskripViewModel
     lateinit var loadingDialog: LoadingDialog
     lateinit var token: String
@@ -49,6 +52,10 @@ class GrafikFragment : Fragment() {
         token = sharePreference.getToken()
         loadingDialog = LoadingDialog(activity!!)
 
+        totalNilaiAdapter = TotalNilaiAdapter { }
+        root.rv_list_nilai_grafik.adapter = totalNilaiAdapter
+        root.rv_list_nilai_grafik.layoutManager = GridLayoutManager(activity, 3)
+
         transkripViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
             TranskripViewModel::class.java
         )
@@ -56,7 +63,7 @@ class GrafikFragment : Fragment() {
         loadingDialog.showLoading()
         transkripViewModel.setDataStaticA(token)
         transkripViewModel.getDataStaticA().observe(this, Observer { datas ->
-            setListData(datas)
+            totalNilaiAdapter.setData(datas)
             loadingDialog.hideLoading()
         })
 
@@ -68,16 +75,6 @@ class GrafikFragment : Fragment() {
             loadingDialog.hideLoading()
         })
         return root
-    }
-
-    fun setListData(datas: JSONArray){
-        val showData = ArrayList<String>()
-        for (i in 0 until datas.length()){
-            val mData = datas.getJSONObject(i).getString("krsdtKodeNilai") + " : " + datas.getJSONObject(i).getString("total")
-            showData.add(mData)
-        }
-        val listAdapter = ArrayAdapter(activity!!, android.R.layout.simple_list_item_1, showData)
-        root.list_nilai_grafik.adapter = listAdapter
     }
 
     fun convertDataA(datas: JSONArray): ArrayList<Entry> {
@@ -97,11 +94,16 @@ class GrafikFragment : Fragment() {
     fun showChartA(datas: JSONArray, lineChart: LineChart){
         val mData = convertDataA(datas)
         val lineDataSet = LineDataSet(mData, "")
-        val color = Color.WHITE
+        val color = Color.GREEN
 
         lineChart.isDragEnabled = true
         lineChart.setScaleEnabled(false)
         lineChart.description.isEnabled = false
+        lineChart.setNoDataText("No Data Found")
+//        lineChart.setDrawGridBackground(true)
+        lineChart.setDrawBorders(true)
+        lineChart.setBorderColor(R.color.green_sencond)
+        lineChart.setBorderWidth(2f)
         lineChart.animateY(300)
 
         val upper_limit = LimitLine(3.6F, "Good" )
@@ -132,13 +134,21 @@ class GrafikFragment : Fragment() {
         xAxis.valueFormatter = (MyValueFormatter(labelForA))
         xAxis.granularity = 1f
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.gridColor = Color.WHITE
+        xAxis.gridColor = Color.BLACK
         xAxis.setDrawGridLines(true)
 
         lineDataSet.fillAlpha = 110
         lineDataSet.setColor(color)
         lineDataSet.lineWidth = 3f
-        lineDataSet.valueTextSize = 10f
+        lineDataSet.valueTextSize = 12f
+        lineDataSet.setDrawCircleHole(true)
+        lineDataSet.setCircleColor(Color.BLACK)
+        lineDataSet.circleHoleColor = Color.BLACK
+        lineDataSet.circleRadius = 4f
+        lineDataSet.circleHoleRadius = 3f
+
+        val legend = lineChart.legend
+        legend.isEnabled = false
 
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(lineDataSet)
