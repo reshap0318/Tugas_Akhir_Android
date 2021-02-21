@@ -58,6 +58,7 @@ class BimbinganTranskripFragment : Fragment() {
         transkripViewModel.getData().observe(this, Observer { datas ->
             transkripMainAdapter.setData(datas)
             loadingDialog.hideLoading()
+            root.refresh_transkrip.isRefreshing = false
         })
 
         sksViewModel.setData(token, nim!!)
@@ -67,6 +68,10 @@ class BimbinganTranskripFragment : Fragment() {
             root.tv_total_sks.text = "Total SKS : "+data.getString("total_sks")
             root.tv_ipk_transkrip.text = "IPK : "+df.format(ipk).toString()
         })
+
+        root.refresh_transkrip.setOnRefreshListener {
+            transkripViewModel.setData(token, nim!!)
+        }
 
         return root
     }

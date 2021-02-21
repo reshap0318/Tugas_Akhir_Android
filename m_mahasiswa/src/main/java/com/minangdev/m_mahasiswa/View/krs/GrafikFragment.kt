@@ -110,12 +110,14 @@ class GrafikFragment : Fragment() {
         upper_limit.lineWidth = 4f
         upper_limit.enableDashedLine(10f, 10f, 0f)
         upper_limit.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+        upper_limit.lineColor = Color.BLUE
         upper_limit.textSize = 15f
 
         val lower_limit = LimitLine(2.1F, "Too Low" )
         lower_limit.lineWidth = 4f
         lower_limit.enableDashedLine(10f, 10f, 0f)
         lower_limit.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
+        lower_limit.lineColor = Color.RED
         lower_limit.textSize = 15f
 
         val leftAxis = lineChart.axisLeft

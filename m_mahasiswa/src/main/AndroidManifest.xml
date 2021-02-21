@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTa"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.bimbingan.BimbinganGroupActivity"></activity>
+        <activity android:name=".View.notification.BaseNotificationActivity"></activity>
+        <activity android:name=".View.notification.BaseNotificationActifity" />
+        <activity android:name=".View.bimbingan.BimbinganGroupActivity" />
         <activity android:name=".View.bimbingan.BimbinganDetailActivity" />
         <activity android:name=".View.krs.AddKrsActivity" />
 
@@ -28,7 +30,7 @@
 
         <activity android:name=".View.ChangePasswordActivity" />
         <activity android:name=".View.NotificationActivity" />
-        <activity android:name=".View.NotificationDetailActivity" />
+        <activity android:name=".View.notification.NotificationDetailActivity" />
         <activity android:name=".View.MainActivity" />
         <activity android:name=".View.LoginActivity">
             <intent-filter>

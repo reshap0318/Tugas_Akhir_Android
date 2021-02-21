@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.database.*
 import com.minangdev.m_mahasiswa.API.ApiBuilder
 import com.minangdev.m_mahasiswa.API.ApiInterface
@@ -86,6 +87,17 @@ class BimbinganDetailActivity : AppCompatActivity() {
 
         bimbinganViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(BimbinganViewModel::class.java)
         bimbinganChatAdapter = BimbinganChatAdapter(this, senderId)
+        bimbinganChatAdapter.setOnLongClick { jsonObject->
+            MaterialAlertDialogBuilder(this)
+            .setTitle("Delete This Chat??")
+            .setNegativeButton("No") { dialog, which ->
+
+            }
+            .setPositiveButton("Yes") { dialog, which ->
+                deleteRow(jsonObject.getString("id"))
+            }
+            .show()
+        }
 
         rv_chat_detail_bimbingan.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(applicationContext)
@@ -109,6 +121,25 @@ class BimbinganDetailActivity : AppCompatActivity() {
         }
         readChat()
 
+    }
+
+    private fun deleteRow(id: String) {
+        val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
+        val respondBody = apiBuilder.bimbinganDelete(token, id)
+        respondBody.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == 200) {
+                    Toast.makeText(this@BimbinganDetailActivity, "Berhasil Menghapus Data", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e("deleteChat", "Error Code : " + response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString())
+            }
+
+        })
     }
 
     fun sendingMessage(){

@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.minangdev.m_dosen.API.ApiBuilder
 import com.minangdev.m_dosen.API.ApiInterface
 import com.minangdev.m_dosen.Helper.LoadingDialog
@@ -75,7 +76,15 @@ class ProfileFragment : Fragment() {
         }
 
         root.btn_logout_profile.setOnClickListener{
-            logout()
+            MaterialAlertDialogBuilder(context!!)
+            .setTitle("Are You Sure Logout??")
+            .setNegativeButton("No") { dialog, which ->
+
+            }
+            .setPositiveButton("Yes") { dialog, which ->
+                logout()
+            }
+            .show()
         }
 
         root.btn_ganti_email.setOnClickListener{

@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.message_item_left.view.*
 import kotlinx.android.synthetic.main.message_item_right.view.*
 import org.json.JSONArray
+import org.json.JSONObject
 
 class BimbinganChatAdapter(
         mContext : Context,
@@ -25,6 +26,7 @@ class BimbinganChatAdapter(
 
     private val mContext: Context
     private val userId: String
+    private var onLongClickListener : ((JSONObject) -> Unit)? = null
 
     var mData = JSONArray()
 
@@ -36,6 +38,10 @@ class BimbinganChatAdapter(
     fun setData(datas: JSONArray) {
         this.mData = datas
         notifyDataSetChanged()
+    }
+
+    fun setOnLongClick(onLongClickListener : (JSONObject) -> Unit){
+        this.onLongClickListener = onLongClickListener
     }
 
     inner class viewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -99,8 +105,6 @@ class BimbinganChatAdapter(
                 val lp = holder.text_time!!.layoutParams as RelativeLayout.LayoutParams?
                 lp!!.addRule(RelativeLayout.START_OF, R.id.tv_text_seen)
                 holder.text_time!!.layoutParams = lp
-            }
-            if(oneData.getString("sender").equals(userId)){
                 holder.text_seen!!.isVisible = true
             }
         }else{
@@ -111,6 +115,14 @@ class BimbinganChatAdapter(
                 holder.text_time!!.layoutParams = lp
             }
             holder.text_seen!!.isVisible = false
+        }
+
+
+        if(oneData.getString("sender").equals(userId)){
+            holder.itemView.setOnLongClickListener{
+                onLongClickListener?.invoke(oneData)
+                true
+            }
         }
         holder.text_time!!.text = oneData.getString("time")
     }

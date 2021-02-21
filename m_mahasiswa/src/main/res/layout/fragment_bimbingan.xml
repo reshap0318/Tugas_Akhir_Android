@@ -47,7 +47,7 @@
                 android:layout_marginEnd="16dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto"
-                android:text="Reinaldo Shandev Pratama"
+                android:text="@string/defaultValue"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -66,7 +66,7 @@
                 android:layout_marginBottom="11dp"
                 android:alpha=".8"
                 android:fontFamily="@font/roboto"
-                android:text="belajar"
+                android:text="@string/defaultValue"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -76,15 +76,21 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_chat_bimbingan"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_bimbingan"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="2dp"
-            tools:listitem="@layout/row_bimbingan" />
+            android:layout_marginBottom="2dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_chat_bimbingan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/row_bimbingan" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 

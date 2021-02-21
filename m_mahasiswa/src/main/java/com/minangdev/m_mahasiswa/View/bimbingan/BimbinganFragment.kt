@@ -74,6 +74,7 @@ class BimbinganFragment : Fragment() {
         bimbinganViewModel.getListData().observe(this, Observer {
             bimbinganAdapter.setData(it)
             loadingDialog.hideLoading()
+            root.refresh_bimbingan.isRefreshing = false
         })
 
         loadDataTopic()
@@ -104,6 +105,11 @@ class BimbinganFragment : Fragment() {
             }
             loadingDialog.hideLoading()
         })
+
+        root.refresh_bimbingan.setOnRefreshListener {
+            bimbinganViewModel.setGroupData(token)
+            bimbinganViewModel.loadListData(token)
+        }
 
         return root
     }

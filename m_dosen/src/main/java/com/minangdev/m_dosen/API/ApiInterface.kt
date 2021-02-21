@@ -85,11 +85,24 @@ interface ApiInterface {
         @Part img: MultipartBody.Part? = null,
     ) : Call<ResponseBody>
 
+    @DELETE("/dosen/bimbingan/{bimbinganId}/delete")
+    fun bimbinganDelete(
+            @Header("Authorization") token: String,
+            @Path("bimbinganId") bimbinganId: String
+    ) : Call<ResponseBody>
+
     @POST("/dosen/bimbingan/cetak/{receiverId}/{topicPeriodId}")
     fun bimbinganCetak(
             @Header("Authorization") token: String,
             @Path("receiverId") receiverId: String,
             @Path("topicPeriodId") topicPeriodId: String,
+    ) : Call<ResponseBody>
+
+    @POST("/dosen/bimbingan/cetak-period/{receiverId}/{periodId}")
+    fun bimbinganCetakPeriod(
+            @Header("Authorization") token: String,
+            @Path("receiverId") receiverId: String,
+            @Path("periodId") periodId: String,
     ) : Call<ResponseBody>
 
     @FormUrlEncoded
@@ -124,6 +137,11 @@ interface ApiInterface {
 
     @GET("/user/topic/active")
     fun topicActive(
+        @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
+    @GET("/user/period")
+    fun period(
         @Header("Authorization") token: String
     ) : Call<ResponseBody>
 

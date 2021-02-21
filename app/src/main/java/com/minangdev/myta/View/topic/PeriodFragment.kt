@@ -58,6 +58,10 @@ class PeriodFragment : Fragment() {
 
         periodViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(PeriodViewModel::class.java)
         loadData()
+
+        root.refresh_period.setOnRefreshListener {
+            periodViewModel.setListData(token)
+        }
         return root
     }
 
@@ -67,6 +71,7 @@ class PeriodFragment : Fragment() {
         periodViewModel.getListData().observe(this, Observer { datas ->
             periodAdapter.setData(datas)
             loadingDialog.hideLoading()
+            root.refresh_period.isRefreshing = false
         })
     }
 

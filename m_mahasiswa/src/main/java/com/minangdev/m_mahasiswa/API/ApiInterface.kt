@@ -151,6 +151,12 @@ interface ApiInterface {
             @Part img: MultipartBody.Part? = null,
     ) : Call<ResponseBody>
 
+    @DELETE("/mahasiswa/bimbingan/{bimbinganId}/delete")
+    fun bimbinganDelete(
+            @Header("Authorization") token: String,
+            @Path("bimbinganId") bimbinganId: String
+    ) : Call<ResponseBody>
+
     @GET("/mahasiswa/bimbingan/group-chat")
     fun bimbinganListGroup(
         @Header("Authorization") token: String

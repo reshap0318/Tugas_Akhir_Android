@@ -70,6 +70,7 @@ class HomeFragment : Fragment() {
         bimbinganViewModel.getLastSeenData().observe(this, Observer {
             bimbinganAdapter.setData(it)
             loadingDialog.hideLoading()
+            root.refresh_last_seen_bimbingan_home.isRefreshing = false
         })
 
         loadingDialog.showLoading()
@@ -89,6 +90,10 @@ class HomeFragment : Fragment() {
             }
             loadingDialog.hideLoading()
         })
+
+        root.refresh_last_seen_bimbingan_home.setOnRefreshListener {
+            bimbinganViewModel.loadLastSeenData(token)
+        }
 
         return root
     }

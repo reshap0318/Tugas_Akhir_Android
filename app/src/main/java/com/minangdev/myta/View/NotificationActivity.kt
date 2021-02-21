@@ -15,6 +15,7 @@ import com.minangdev.myta.ViewModel.AnnouncementViewHolder
 import com.minangdev.myta.ViewModel.FirebaseViewModel
 import kotlinx.android.synthetic.main.actionbar_onlyback.*
 import kotlinx.android.synthetic.main.activity_notification.*
+import kotlinx.android.synthetic.main.fragment_period.view.*
 
 class NotificationActivity : AppCompatActivity() {
 
@@ -56,6 +57,11 @@ class NotificationActivity : AppCompatActivity() {
         announcementViewHolder.getListData().observe(this, Observer { datas ->
             notificationAdapter.setData(datas)
             loadingDialog.hideLoading()
+            refresh_notification.isRefreshing = false
         })
+
+        refresh_notification.setOnRefreshListener {
+            announcementViewHolder.setListData(token)
+        }
     }
 }

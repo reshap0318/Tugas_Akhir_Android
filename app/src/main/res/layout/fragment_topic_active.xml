@@ -7,13 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".View.topic.TopicActiveFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_topic_active"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_topic_active"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/row_one" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_topic_active"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/row_one" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_topic_active"

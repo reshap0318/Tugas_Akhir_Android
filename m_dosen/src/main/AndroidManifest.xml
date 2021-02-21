@@ -13,9 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTa"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.bimbingan.BimbinganDetailGroupActivity"></activity>
+        <activity android:name=".View.notification.BaseNotificationActivity"></activity>
+        <activity android:name=".View.bimbingan.BimbinganDetailGroupActivity" />
         <activity android:name=".View.bimbingan.BimbinganDetailChatActivity" />
-        <activity android:name=".View.NotificationDetailActivity" />
+        <activity android:name=".View.notification.NotificationDetailActivity" />
         <activity android:name=".View.bimbingan.BaseDetailBimbinganActivity" />
 
         <service

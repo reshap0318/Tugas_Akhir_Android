@@ -97,6 +97,9 @@ class TopicFragment : Fragment() {
         topicViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(TopicViewModel::class.java)
         loadingDialog = LoadingDialog(activity!!)
         loadData()
+        root.refresh_topic.setOnRefreshListener {
+            topicViewModel.setListData(token)
+        }
         return root
     }
 
@@ -195,6 +198,7 @@ class TopicFragment : Fragment() {
         topicViewModel.getListData().observe(this, Observer { datas ->
             topicAdapter.setData(datas)
             loadingDialog.hideLoading()
+            root.refresh_topic.isRefreshing = false
         })
     }
 

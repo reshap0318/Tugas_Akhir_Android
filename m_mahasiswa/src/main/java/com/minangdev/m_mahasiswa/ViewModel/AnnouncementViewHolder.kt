@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.database.*
 import com.minangdev.m_mahasiswa.API.ApiBuilder
 import com.minangdev.m_mahasiswa.API.ApiInterface
 import okhttp3.ResponseBody
@@ -16,8 +17,10 @@ import java.lang.Exception
 
 class AnnouncementViewHolder: ViewModel() {
 
+    lateinit var ref: DatabaseReference
     private val listData = MutableLiveData<JSONArray>()
     private val data = MutableLiveData<JSONObject>()
+    private val listAnotherData = MutableLiveData<JSONArray>()
 
     fun setListData(token : String){
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
@@ -45,6 +48,8 @@ class AnnouncementViewHolder: ViewModel() {
         })
     }
 
+    fun getListData() : LiveData<JSONArray> = listData
+
     fun setData(token: String, id: String){
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
         val announcement = apiBuilder.announcement(token, id)
@@ -71,8 +76,30 @@ class AnnouncementViewHolder: ViewModel() {
         })
     }
 
-    fun getListData() : LiveData<JSONArray> = listData
-
     fun getData() : LiveData<JSONObject> = data
+
+    fun setAnother(fcmToken: String){
+        ref = FirebaseDatabase.getInstance().getReference("Users").child(fcmToken).child("Notification")
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val mData = JSONArray()
+                if (snapshot!!.exists()) {
+                    for (i in snapshot.children) {
+                        val data: HashMap<String, String> = i.value as HashMap<String, String>
+                        val ndata = JSONObject(data as Map<*, *>)
+                        mData.put(ndata)
+                    }
+                }
+                listAnotherData.postValue(mData)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("AnotherNotification", error.message)
+            }
+
+        })
+    }
+
+    fun getAnotherData(): LiveData<JSONArray> = listAnotherData
 
 }

@@ -78,11 +78,11 @@ class MainActivity : AppCompatActivity() {
                 addFragment(fragment)
                 true
             }
-            R.id.navigation_announcement -> {
-                val fragment = AnnouncementFragment()
-                addFragment(fragment)
-                true
-            }
+//            R.id.navigation_announcement -> {
+//                val fragment = AnnouncementFragment()
+//                addFragment(fragment)
+//                true
+//            }
             R.id.navigation_topic -> {
                 val fragment = BaseFragment()
                 addFragment(fragment)
@@ -103,10 +103,10 @@ class MainActivity : AppCompatActivity() {
                 bottom_navigation.selectedItemId = R.id.navigation_home
                 true
             }
-            2 -> {
-                bottom_navigation.selectedItemId = R.id.navigation_announcement
-                true
-            }
+//            2 -> {
+//                bottom_navigation.selectedItemId = R.id.navigation_announcement
+//                true
+//            }
             3 -> {
                 bottom_navigation.selectedItemId = R.id.navigation_topic
                 true
@@ -115,7 +115,10 @@ class MainActivity : AppCompatActivity() {
                 bottom_navigation.selectedItemId = R.id.navigation_profile
                 true
             }
-            else -> false
+            else -> {
+                bottom_navigation.selectedItemId = R.id.navigation_home
+                true
+            }
         }
     }
 

@@ -50,8 +50,9 @@ class TranskripFragment : Fragment() {
         loadingDialog.showLoading()
         transkripViewModel.setData(token)
         transkripViewModel.getData().observe(this, Observer { datas ->
-            loadingDialog.hideLoading()
             transkripMainAdapter.setData(datas)
+            loadingDialog.hideLoading()
+            root.refresh_transkrip.isRefreshing = false
         })
 
         loadingDialog.showLoading()
@@ -63,6 +64,11 @@ class TranskripFragment : Fragment() {
             tv_ipk_transkrip.text = "IPK : "+df.format(ipk).toString()
             loadingDialog.hideLoading()
         })
+
+        root.refresh_transkrip.setOnRefreshListener {
+            transkripViewModel.setData(token)
+            sksViewModel.setData(token)
+        }
 
         return root
     }

@@ -130,6 +130,7 @@ class BimbinganKrsFragment : Fragment() {
         krsViewModel.getDataSemester().observe(this, Observer { data ->
             idOnSelected.clear()
             root.fab_change_status_krs.isVisible = idOnSelected.size>0
+            root.tv_bimbingan_sks_krs.text = "SKS : "+data.getJSONObject("sks").getString("sks_diambil")+"/"+data.getJSONObject("sks").getString("jatah_sks")
             krsAdapter.setData(data.getJSONArray("krs"))
             loadingDialog.hideLoading()
         })

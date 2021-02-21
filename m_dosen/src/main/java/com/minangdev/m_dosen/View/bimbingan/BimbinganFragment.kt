@@ -59,6 +59,7 @@ class BimbinganFragment : Fragment() {
         mahasiswaBimbinganViewModel.getData().observe(this, Observer { datas ->
           mahasiswaBimbinganAdapter.setData(datas)
           loadingDialog.hideLoading()
+          root.refresh_bimbingan.isRefreshing = false
           mDataList = datas
         })
 
@@ -86,6 +87,10 @@ class BimbinganFragment : Fragment() {
             }
 
         })
+
+        root.refresh_bimbingan.setOnRefreshListener {
+            mahasiswaBimbinganViewModel.setData(token)
+        }
 
         return root
     }

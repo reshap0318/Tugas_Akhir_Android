@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,12 +16,10 @@ import com.minangdev.m_mahasiswa.Adapter.KrsAdapter
 import com.minangdev.m_mahasiswa.Helper.LoadingDialog
 import com.minangdev.m_mahasiswa.Helper.SharePreferenceManager
 import com.minangdev.m_mahasiswa.R
-import com.minangdev.m_mahasiswa.View.NotificationActivity
+import com.minangdev.m_mahasiswa.View.notification.BaseNotificationActivity
 import com.minangdev.m_mahasiswa.ViewModel.*
 import kotlinx.android.synthetic.main.dialog_detail_kelas.view.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
-import kotlinx.android.synthetic.main.fragment_krs.view.*
 import kotlinx.android.synthetic.main.row_notification.view.*
 
 class HomeFragment : Fragment() {
@@ -88,15 +85,12 @@ class HomeFragment : Fragment() {
         krsViewModel.getDataSemester().observe(this, Observer { datas ->
             krsAdapter.setData(datas.getJSONArray("krs"))
             loadingDialog.hideLoading()
+            root.refresh_krs_home.isRefreshing = false
         })
 
         root.tv_announcement_home.setOnClickListener{
-            val intent = Intent(activity, NotificationActivity::class.java)
+            val intent = Intent(activity, BaseNotificationActivity::class.java)
             startActivity(intent)
-        }
-
-        root.tv_krs_home.setOnClickListener{
-            Toast.makeText(activity, "Belum Berfungsi", Toast.LENGTH_SHORT).show()
         }
 
         root.row_notification_home.isVisible = false
@@ -107,12 +101,16 @@ class HomeFragment : Fragment() {
             if(datas.length()>0){
                 root.row_notification_home.isVisible = true
                 root.label_notification_home.isVisible = true
-                root.tv_label_notification.text = datas.getJSONObject(0).getString("title")
-                root.tv_date_notification.text = datas.getJSONObject(0).getString("tanggal")
-                root.tv_time_notification.text = datas.getJSONObject(0).getString("waktu")
+                root.tv_label_notification.text = datas.getJSONObject(datas.length()-1).getString("title")
+                root.tv_date_notification.text = datas.getJSONObject(datas.length()-1).getString("tanggal")
+                root.tv_time_notification.text = datas.getJSONObject(datas.length()-1).getString("waktu")
                 loadingDialog.hideLoading()
             }
         })
+
+        root.refresh_krs_home.setOnRefreshListener {
+            krsViewModel.setDataSemester(token, semesterActive!!)
+        }
 
         return root
     }

@@ -15,6 +15,7 @@ import com.minangdev.m_mahasiswa.R
 import com.minangdev.m_mahasiswa.View.bimbingan.BimbinganFragment
 import com.minangdev.m_mahasiswa.View.home.HomeFragment
 import com.minangdev.m_mahasiswa.View.krs.BaseKrsFragment
+import com.minangdev.m_mahasiswa.View.notification.BaseNotificationActivity
 import com.minangdev.m_mahasiswa.View.profile.ProfileFragment
 import com.minangdev.m_mahasiswa.ViewModel.SemesterViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.notification -> {
-                val intent = Intent(this, NotificationActivity::class.java)
+                val intent = Intent(this, BaseNotificationActivity::class.java)
                 startActivity(intent)
                 return true
             }
