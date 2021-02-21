@@ -104,6 +104,10 @@ class TopicActiveFragment : Fragment() {
         root.rv_topic_active.layoutManager = layoutManager
         loadingDialog = LoadingDialog(activity!!)
         loadData()
+
+        root.refresh_topic_active.setOnRefreshListener {
+            topicViewModel.setListDataActive(token)
+        }
         return root
     }
 
@@ -190,6 +194,7 @@ class TopicActiveFragment : Fragment() {
         topicViewModel.getListDataActive().observe(this, Observer { datas ->
             topicAdapter.setData(datas)
             loadingDialog.hideLoading()
+            root.refresh_topic_active.isRefreshing = false
         })
     }
 

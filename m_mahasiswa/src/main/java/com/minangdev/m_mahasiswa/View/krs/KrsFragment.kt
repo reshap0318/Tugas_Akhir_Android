@@ -94,7 +94,7 @@ class KrsFragment : Fragment() {
         loadingDialog.showLoading()
         krsViewModel.setDataSemester(token, semesterActive)
         krsViewModel.getDataSemester().observe(this, Observer { datas ->
-            root.tv_sks_krs.text = datas.getJSONObject("sks").getString("sks_diambil")+"/"+datas.getJSONObject("sks").getString("jatah_sks")
+            root.tv_sks_krs.text = "SKS : "+datas.getJSONObject("sks").getString("sks_diambil")+"/"+datas.getJSONObject("sks").getString("jatah_sks")
             krsAdapter.setData(datas.getJSONArray("krs"))
             loadingDialog.hideLoading()
         })

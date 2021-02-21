@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green_primary"
+    android:background="@color/white"
     tools:context=".View.annaouncement.FormAnnouncementActivity">
 
     <include
@@ -30,7 +30,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/title"
-                app:hintTextColor="@color/white"
+                app:hintTextColor="@color/green_primary"
+                android:textColorHint="@color/green_primary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -38,6 +39,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_title_form_announcement"
                     style="@style/myfont"
+                    android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -54,36 +56,40 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:hint="@string/description"
-                app:hintTextColor="@color/white"
+                app:hintTextColor="@color/green_primary"
+                android:textColorHint="@color/green_primary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_form_announcement">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:justificationMode="inter_word"
                     android:id="@+id/et_description_form_announcement"
                     style="@style/myfont"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="top|left"/>
+                    android:gravity="top|left"
+                    android:textColor="@color/black" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_simpan_form_announcement"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
-                android:background="@color/row_blue"
+                android:background="@drawable/bgbtnsuccess"
                 android:text="@string/save"
+                app:backgroundTint="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description_form_announcement" />
 
             <TextView
+                style="@style/myfont"
+                android:textColor="@color/black"
                 android:id="@+id/tv_sending_news"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,6 +101,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/description_form_announcement" />
 
             <TextView
+                style="@style/myfont"
+                android:textColor="@color/black"
                 android:id="@+id/tv_date_news"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -17,6 +17,7 @@ import java.lang.Exception
 class TopicViewModel : ViewModel() {
 
     private val listData = MutableLiveData<JSONArray>()
+    private val listDataPeriod = MutableLiveData<JSONArray>()
 
     fun setData(token: String){
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
@@ -45,5 +46,33 @@ class TopicViewModel : ViewModel() {
     }
 
     fun getData(): LiveData<JSONArray> = listData
+
+    fun setDataPeriod(token: String){
+        val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
+        val profile = apiBuilder.period(token)
+        profile.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if(response.code()==200){
+                    try {
+                        val result = response.body()?.string()
+                        val responseObject = JSONObject(result)
+                        val items = responseObject.getJSONArray("data")
+                        listDataPeriod.postValue(items)
+                    }catch (e: Exception){
+                        e.printStackTrace()
+                    }
+                }else{
+                    Log.e("Res_Period", "Ada Error di server Code : "+response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("Res_Period", "onFailure: ERROR > " + t.toString());
+            }
+
+        });
+    }
+
+    fun getDataPeriod(): LiveData<JSONArray> = listDataPeriod
 
 }

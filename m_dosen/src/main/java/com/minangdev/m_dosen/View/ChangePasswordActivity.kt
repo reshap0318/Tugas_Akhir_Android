@@ -35,7 +35,10 @@ class ChangePasswordActivity : AppCompatActivity() {
             changePassword(token)
         }
 
-        btn_appbar_back.setOnClickListener{
+        mToolbarBlank.setTitle("Change Password")
+        setSupportActionBar(mToolbarBlank)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        mToolbarBlank.setNavigationOnClickListener{
             onBackPressed()
         }
         loadingDialog = LoadingDialog(this)

@@ -82,6 +82,7 @@ class AddKrsActivity : AppCompatActivity() {
         kelasViewModel.getDatas().observe(this, Observer { datas ->
             addKrsAdapter.setData(datas)
             loadingDialog.hideLoading()
+            refresh_add_krs.isRefreshing = false
         })
 
         loadingDialog.showLoading()
@@ -93,10 +94,19 @@ class AddKrsActivity : AppCompatActivity() {
             loadingDialog.hideLoading()
         })
 
-        btn_appbar_back.setOnClickListener{
+        mToolbarBlank.setTitle("Add KRS")
+        setSupportActionBar(mToolbarBlank)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        mToolbarBlank.setNavigationOnClickListener{
+//            onBackPressed()
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra(MainActivity.EXTRA_FRAGMENT, 3)
             startActivity(intent)
+        }
+
+        refresh_add_krs.setOnRefreshListener {
+            sksViewModel.setData(token)
+            kelasViewModel.setDatas(token)
         }
 
     }

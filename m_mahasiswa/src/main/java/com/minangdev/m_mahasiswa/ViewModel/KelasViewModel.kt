@@ -35,12 +35,12 @@ class KelasViewModel : ViewModel() {
                         e.printStackTrace()
                     }
                 }else{
-                    Log.e("Res_transkrip", "Ada Error di server Code : "+response.code().toString())
+                    Log.e("Res_kelas", "Ada Error di server Code : "+response.code().toString())
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("Fail_transkrip", "onFailure: ERROR > " + t.toString());
+                Log.e("Fail_kelas", "onFailure: ERROR > " + t.toString());
             }
 
         });

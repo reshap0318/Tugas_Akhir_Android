@@ -21,7 +21,6 @@ import com.minangdev.myta.Helper.LoadingDialog
 import com.minangdev.myta.Helper.SharePreferenceManager
 import com.minangdev.myta.R
 import com.minangdev.myta.ViewModel.AnnouncementViewHolder
-import kotlinx.android.synthetic.main.dialog_form_announcement.view.*
 import kotlinx.android.synthetic.main.fragment_announcement.view.*
 import okhttp3.ResponseBody
 import org.json.JSONObject

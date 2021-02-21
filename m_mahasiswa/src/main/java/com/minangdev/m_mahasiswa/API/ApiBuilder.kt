@@ -7,12 +7,12 @@ import java.util.concurrent.TimeUnit
 
 object ApiBuilder {
     // #kampus : http://192.168.0.181:8000 #home : http://192.168.100.81:8000 #heroku : https://akhir-tugas.herokuapp.com/
-    private const val BASE_URL = "http://192.168.0.182:8000"
+    private const val BASE_URL = "http://10.44.7.31:8000"
 
     private val okHttp = OkHttpClient.Builder().apply {
-        readTimeout(20, TimeUnit.SECONDS)
-        writeTimeout(20, TimeUnit.SECONDS)
-        connectTimeout(20, TimeUnit.SECONDS)
+        readTimeout(60, TimeUnit.SECONDS)
+        writeTimeout(60, TimeUnit.SECONDS)
+        connectTimeout(60, TimeUnit.SECONDS)
     }
 
     private val builder = Retrofit.Builder().baseUrl(BASE_URL)

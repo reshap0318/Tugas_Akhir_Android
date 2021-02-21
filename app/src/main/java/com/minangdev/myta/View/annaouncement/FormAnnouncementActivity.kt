@@ -46,11 +46,13 @@ class FormAnnouncementActivity : AppCompatActivity() {
         val sharePreference = SharePreferenceManager(this)
         sharePreference.isLogin()
 
-        token = sharePreference.getToken()
-
-        btn_appbar_back.setOnClickListener{
+        setSupportActionBar(mToolbarBlank)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        mToolbarBlank.setNavigationOnClickListener{
             onBackPressed()
         }
+
+        token = sharePreference.getToken()
 
         action = intent.getStringExtra(EXTRA_ACTION)!!
         id = intent.getStringExtra(EXTRA_ID).toString()
@@ -60,11 +62,18 @@ class FormAnnouncementActivity : AppCompatActivity() {
         loadingDialog = LoadingDialog(this)
 
         if(action == "detail"){
+            supportActionBar!!.setTitle("Detail Announcement")
+            et_description_form_announcement.isEnabled = false
+            et_description_form_announcement.isFocusable = false
+            et_title_form_announcement.isEnabled = false
+            et_title_form_announcement.isFocusable = false
             getDetail()
         }
         else if(action == "edit"){
+            supportActionBar!!.setTitle("Edit Announcement")
             edit()
         }else if(action == "create"){
+            supportActionBar!!.setTitle("Create Announcement")
             et_description_form_announcement.minLines = 16
         }
 

@@ -5,22 +5,26 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/green_primary"
+    android:background="@color/mbackground"
     tools:context=".View.bimbingan.BimbinganKrsFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/sp_semester_krs_bimmbingan"
         android:layout_width="match_parent"
         style="@style/SelectInputLayoutStyle"
+        app:boxStrokeColor="@color/text_input_box_stroke"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        app:hintTextColor="@color/white"
+        app:hintTextColor="@color/green_primary"
+        android:textColorHint="@color/green_primary"
         android:hint="Semester">
 
         <AutoCompleteTextView
             android:id="@+id/sp_semester_krs_tv_bimmbingan"
+            style="@style/myfont"
+            android:textColor="@color/green_primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
@@ -32,6 +36,28 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:gravity="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_bimbingan_sks_krs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/green_sencond"
+            android:gravity="right"
+            android:padding="5dp"
+            android:text="SKS : -/-"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

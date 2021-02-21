@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginStart="15dp"
+    android:background="@drawable/bgrownotification">
+
+    <ImageView
+        android:id="@+id/icon_another_notification"
+        android:layout_width="35dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="3dp"
+        android:src="@drawable/baseline_notifications_none_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_label_another_notification"
+        style="@style/myfont"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="8dp"
+        android:justificationMode="inter_word"
+        android:text="@string/default_value"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_another_notification"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--
+    use for textalign justify
+    android:justificationMode="inter_word"
+    -->
+
+    <TextView
+        android:id="@+id/tv_body_another_notification"
+        style="@style/myfont"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:justificationMode="inter_word"
+        android:text="@string/default_value"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_another_notification"
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_another_notification" />
+
+    <ImageView
+        android:id="@+id/icon_date_another_notification"
+        android:layout_width="11.29dp"
+        android:layout_height="12.33dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="10dp"
+        android:alpha=".55"
+        android:src="@drawable/baseline_date_range_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_another_notification"
+        app:layout_constraintTop_toBottomOf="@+id/tv_body_another_notification"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_date_another_notification"
+        style="@style/myfont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:alpha=".55"
+        android:text="@string/default_value"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/icon_date_another_notification"
+        app:layout_constraintTop_toBottomOf="@+id/tv_body_another_notification" />
+
+    <ImageView
+        android:id="@+id/icon_time_another_notification"
+        android:layout_width="12.65dp"
+        android:layout_height="12.65dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="3dp"
+        android:alpha=".55"
+        android:src="@drawable/baseline_access_time_24"
+        app:layout_constraintStart_toEndOf="@+id/tv_date_another_notification"
+        app:layout_constraintTop_toBottomOf="@+id/tv_body_another_notification"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_time_another_notification"
+        style="@style/myfont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:alpha=".55"
+        android:text="@string/default_value"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/icon_time_another_notification"
+        app:layout_constraintTop_toBottomOf="@+id/tv_body_another_notification" />
+</androidx.constraintlayout.widget.ConstraintLayout>

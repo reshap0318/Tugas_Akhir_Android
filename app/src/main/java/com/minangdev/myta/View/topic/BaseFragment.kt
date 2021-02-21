@@ -26,7 +26,7 @@ class BaseFragment : Fragment() {
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = SectionsPagerAdapter(getChildFragmentManager())
         adapter.addFragment(TopicActiveFragment(), "Active")
-        adapter.addFragment(TopicFragment(), "Topic")
+        adapter.addFragment(TopicFragment(), "Jenis")
         adapter.addFragment(PeriodFragment(), "Period")
         viewPager.adapter = adapter
         viewPager.offscreenPageLimit = 3

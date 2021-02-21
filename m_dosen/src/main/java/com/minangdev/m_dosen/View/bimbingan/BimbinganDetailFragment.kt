@@ -21,6 +21,7 @@ import com.minangdev.m_dosen.Helper.SharePreferenceManager
 import com.minangdev.m_dosen.R
 import com.minangdev.m_dosen.ViewModel.BimbinganViewModel
 import com.minangdev.m_dosen.ViewModel.TopicViewModel
+import kotlinx.android.synthetic.main.activity_bimbingan_detail_chat.*
 import kotlinx.android.synthetic.main.fragment_bimbingan_detail.view.*
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -39,6 +40,9 @@ class BimbinganDetailFragment : Fragment() {
 
     var nameTopicActiveList = ArrayList<String>()
     var idTopicActiveList = ArrayList<String>()
+
+    var namePeriodList = ArrayList<String>()
+    var idPeriodList = ArrayList<String>()
 
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var bimbinganAdapter: BimbinganAdapter
@@ -81,6 +85,7 @@ class BimbinganDetailFragment : Fragment() {
             bimbinganViewModel.getListData().observe(this, Observer {
                 bimbinganAdapter.setData(it)
                 loadingDialog.hideLoading()
+                root.refresh_bimbingan_detail.isRefreshing = false
             })
         }else{
             loadingDialog.hideLoading()
@@ -100,6 +105,28 @@ class BimbinganDetailFragment : Fragment() {
             }
         }
 
+        loadDataPeriod()
+        root.fab_print_chat_bimbingan.setOnClickListener{
+            if(mhsId != ""){
+                val mMenuDialog = AlertDialog.Builder(activity).setItems(namePeriodList.toTypedArray(),
+                        DialogInterface.OnClickListener{ dialog, which ->
+                            printPeriod(idPeriodList.get(which))
+                        }
+                )
+                mMenuDialog.show()
+            }else{
+                Toast.makeText(activity, "This User Not Found In Database Pengembangan", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        root.refresh_bimbingan_detail.setOnRefreshListener {
+            if(mhsId != ""){
+                bimbinganViewModel.loadListData(token, mhsId!!)
+            }else{
+                Toast.makeText(activity, "This User Not Found In Database Pengembangan", Toast.LENGTH_SHORT).show()
+                root.refresh_bimbingan_detail.isRefreshing = false
+            }
+        }
 
         return root
     }
@@ -128,6 +155,20 @@ class BimbinganDetailFragment : Fragment() {
         })
     }
 
+    fun loadDataPeriod(){
+        topicViewModel.setDataPeriod(token)
+        topicViewModel.getDataPeriod().observe(this, Observer {
+            namePeriodList = ArrayList<String>()
+            Log.e("aaaaa", it.toString())
+            idPeriodList = ArrayList<String>()
+            for (i in 0 until it.length()) {
+                val mData = it.getJSONObject(i)
+                namePeriodList.add(mData.getString("name"))
+                idPeriodList.add(mData.getString("id"))
+            }
+        })
+    }
+
     fun createBimbingan(topicPeriodId : String){
         loadingDialog.showLoading()
         val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
@@ -152,6 +193,29 @@ class BimbinganDetailFragment : Fragment() {
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("Fail_BimbinganC", "onFailure: ERROR > " + t.toString());
+            }
+
+        });
+    }
+
+    fun printPeriod(periodId: String){
+        loadingDialog.showLoading()
+        val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
+        val responseBody = apiBuilder.bimbinganCetakPeriod(token, mhsId!!, periodId)
+        responseBody.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == 200) {
+                    Toast.makeText(activity, "File Sent to Your Email", Toast.LENGTH_SHORT).show()
+                } else if (response.code() == 422) {
+                    Toast.makeText(activity, "Set Email Before Use This Fiture", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e("R_donwloadPeriod", "Error Code : " + response.code().toString())
+                }
+                loadingDialog.hideLoading()
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("Fail_donwloadPeriod", "onFailure: ERROR > " + t.toString());
             }
 
         });

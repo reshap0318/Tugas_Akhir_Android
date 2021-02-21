@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.minangdev.m_mahasiswa.API.ApiBuilder
 import com.minangdev.m_mahasiswa.API.ApiInterface
 import com.minangdev.m_mahasiswa.Adapter.BimbinganAdapter
@@ -22,6 +23,7 @@ import com.minangdev.m_mahasiswa.R
 import com.minangdev.m_mahasiswa.ViewModel.BimbinganViewModel
 import com.minangdev.m_mahasiswa.ViewModel.TopicViewModel
 import kotlinx.android.synthetic.main.fragment_bimbingan.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -72,6 +74,7 @@ class BimbinganFragment : Fragment() {
         bimbinganViewModel.getListData().observe(this, Observer {
             bimbinganAdapter.setData(it)
             loadingDialog.hideLoading()
+            root.refresh_bimbingan.isRefreshing = false
         })
 
         loadDataTopic()
@@ -82,6 +85,30 @@ class BimbinganFragment : Fragment() {
                     }
             )
             mMenuDialog.show()
+        }
+
+
+        loadingDialog.showLoading()
+        bimbinganViewModel.setGroupData(token)
+        bimbinganViewModel.getGroupData().observe(this, Observer { item ->
+            root.tv_nama_group_home.text = item.getString("groupName")
+            root.tv_topik_group_bimbingan_home.text = "Chanel " + item.getString("groupChanel")
+            Glide.with(root)
+                    .load(item.getString("groupAvatar"))
+                    .fitCenter()
+                    .centerCrop()
+                    .into(root.img_avatar_group_home)
+            root.row_group_chat_home.setOnClickListener {
+                val intent = Intent(activity, BimbinganGroupActivity::class.java)
+                intent.putExtra("data", item.toString())
+                startActivity(intent)
+            }
+            loadingDialog.hideLoading()
+        })
+
+        root.refresh_bimbingan.setOnRefreshListener {
+            bimbinganViewModel.setGroupData(token)
+            bimbinganViewModel.loadListData(token)
         }
 
         return root

@@ -27,10 +27,10 @@ class BaseDetailBimbinganActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_detail_bimbingan)
-        btn_appbar_back.setOnClickListener{
-//            val intent = Intent(this, MainActivity::class.java)
-//            intent.putExtra(MainActivity.EXTRA_FRAGMENT, 2)
-//            startActivity(intent)
+        mToolbarBlank.setTitle("Bimbingan")
+        setSupportActionBar(mToolbarBlank)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        mToolbarBlank.setNavigationOnClickListener{
             onBackPressed()
         }
         sharePreference = SharePreferenceManager(this)

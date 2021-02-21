@@ -7,17 +7,17 @@
         android:iconTint="@color/white"
         android:title="@string/title_home" />
 
-    <item
-        android:id="@+id/navigation_announcement"
-        android:icon="@drawable/baseline_announcement_24"
-        android:iconTint="@color/white"
-        android:title="@string/announcement" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_announcement"-->
+<!--        android:icon="@drawable/baseline_announcement_24"-->
+<!--        android:iconTint="@color/white"-->
+<!--        android:title="@string/announcement" />-->
 
     <item
         android:id="@+id/navigation_topic"
         android:icon="@drawable/baseline_supervisor_account_24"
         android:iconTint="@color/white"
-        android:title="@string/topic" />
+        android:title="Setting" />
 
     <item
         android:id="@+id/navigation_profile"

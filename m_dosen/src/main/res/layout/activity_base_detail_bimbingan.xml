@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/mbackground"
     tools:context=".View.bimbingan.BaseDetailBimbinganActivity">
 
     <include layout="@layout/actionbar_onlyback"/>
@@ -37,7 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/default_value"
-            android:textSize="25sp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="21sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +49,7 @@
         <TextView
             android:id="@+id/tv_nim_mahasiswa_bimbingan"
             style="@style/myfont"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"

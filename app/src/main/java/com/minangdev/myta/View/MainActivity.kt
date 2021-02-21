@@ -3,6 +3,8 @@ package com.minangdev.myta.View
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,6 +21,7 @@ import com.minangdev.myta.View.topic.TopicFragment
 import com.minangdev.myta.ViewModel.SemesterViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.actionbar_main.*
+import kotlinx.android.synthetic.main.actionbar_onlyback.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,13 +40,11 @@ class MainActivity : AppCompatActivity() {
         sharePreference.isLogin()
         token = sharePreference.getToken()
 
+        setSupportActionBar(mToolbarMain)
+
         setSemesterActive()
 
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        menu_notification.setOnClickListener{
-            val intent = Intent(this, NotificationActivity::class.java)
-            startActivity(intent)
-        }
         val idFragment = intent.getIntExtra(EXTRA_FRAGMENT, 0)
         if(idFragment>0){
             changeFragment(idFragment)
@@ -53,6 +54,23 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.notification_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.notification -> {
+                val intent = Intent(this, NotificationActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            else -> return true
+        }
+    }
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
@@ -60,11 +78,11 @@ class MainActivity : AppCompatActivity() {
                 addFragment(fragment)
                 true
             }
-            R.id.navigation_announcement -> {
-                val fragment = AnnouncementFragment()
-                addFragment(fragment)
-                true
-            }
+//            R.id.navigation_announcement -> {
+//                val fragment = AnnouncementFragment()
+//                addFragment(fragment)
+//                true
+//            }
             R.id.navigation_topic -> {
                 val fragment = BaseFragment()
                 addFragment(fragment)
@@ -85,10 +103,10 @@ class MainActivity : AppCompatActivity() {
                 bottom_navigation.selectedItemId = R.id.navigation_home
                 true
             }
-            2 -> {
-                bottom_navigation.selectedItemId = R.id.navigation_announcement
-                true
-            }
+//            2 -> {
+//                bottom_navigation.selectedItemId = R.id.navigation_announcement
+//                true
+//            }
             3 -> {
                 bottom_navigation.selectedItemId = R.id.navigation_topic
                 true
@@ -97,7 +115,10 @@ class MainActivity : AppCompatActivity() {
                 bottom_navigation.selectedItemId = R.id.navigation_profile
                 true
             }
-            else -> false
+            else -> {
+                bottom_navigation.selectedItemId = R.id.navigation_home
+                true
+            }
         }
     }
 
@@ -117,4 +138,5 @@ class MainActivity : AppCompatActivity() {
             sharePreference.setSemesterActive(data)
         })
     }
+
 }

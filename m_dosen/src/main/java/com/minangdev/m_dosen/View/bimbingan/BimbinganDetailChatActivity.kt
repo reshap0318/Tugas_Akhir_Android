@@ -8,11 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.database.*
 import com.minangdev.m_dosen.API.ApiBuilder
 import com.minangdev.m_dosen.API.ApiInterface
 import com.minangdev.m_dosen.Adapter.BimbinganChatAdapter
@@ -33,12 +37,14 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.lang.Exception
 
 class BimbinganDetailChatActivity : AppCompatActivity() {
 
     private lateinit var sharePreference : SharePreferenceManager
     private lateinit var bimbinganViewModel: BimbinganViewModel
     private lateinit var bimbinganChatAdapter: BimbinganChatAdapter
+    private lateinit var ref: DatabaseReference
 
     private lateinit var token: String
     private lateinit var senderId: String
@@ -80,6 +86,18 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
         bimbinganViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(BimbinganViewModel::class.java)
         bimbinganChatAdapter = BimbinganChatAdapter(this, senderId)
 
+        bimbinganChatAdapter.setOnLongClick { jsonObject->
+            MaterialAlertDialogBuilder(this)
+            .setTitle("Delete This Chat??")
+            .setNegativeButton("No") { dialog, which ->
+
+            }
+            .setPositiveButton("Yes") { dialog, which ->
+                deleteRow(jsonObject.getString("id"))
+            }
+            .show()
+        }
+
         rv_chat_detail_chat_bimbingan.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(applicationContext)
         linearLayoutManager.stackFromEnd = true
@@ -100,11 +118,51 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
         img_send_detail_chat_bimbingan_btn.setOnClickListener{
             openImage()
         }
+        readChat()
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.download_chat_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.download_chat -> {
+                downloadBimbingan()
+                return true
+            }
+            else -> return true
+        }
+    }
+
+    private fun deleteRow(id: String) {
+        val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
+        val respondBody = apiBuilder.bimbinganDelete(token, id)
+        respondBody.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == 200) {
+                    Toast.makeText(this@BimbinganDetailChatActivity, "Berhasil Menghapus Data", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e("deleteChat", "Error Code : " + response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString())
+            }
+
+        })
     }
 
     fun sendingMessage(){
         val mMessage = tv_chat_detail_chat_bimbingan.text.toString()
+        if(mMessage==""){
+            Toast.makeText(this, "Pesan Tidak Boleh Kosong", Toast.LENGTH_LONG).show()
+            return
+        }
         val reqboReceiverId = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),receiverId)
         val reqboMmessage = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),mMessage)
         val reqboTopicPeriod = RequestBody.create("multipart/form-data".toMediaTypeOrNull(),topicPeriodId)
@@ -119,7 +177,6 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
                     Toast.makeText(this@BimbinganDetailChatActivity, "Pesan Tidak Boleh Kosong", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.e("submitLogin", "Error Code : " + response.code().toString())
-                    Log.e("sss", JSONObject(response.errorBody()?.string()).toString())
                 }
             }
 
@@ -196,5 +253,53 @@ class BimbinganDetailChatActivity : AppCompatActivity() {
             returnCursor.close()
         }
         return name
+    }
+
+    fun downloadBimbingan(){
+        val apiBuilder = ApiBuilder.buildService(ApiInterface::class.java)
+        val respondBody = apiBuilder.bimbinganCetak(token, receiverId, topicPeriodId)
+        respondBody.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == 200) {
+                    Toast.makeText(this@BimbinganDetailChatActivity, "File Sent to Your Email", Toast.LENGTH_SHORT).show()
+                    tv_chat_detail_chat_bimbingan.setText("")
+                } else if (response.code() == 422) {
+                    Toast.makeText(this@BimbinganDetailChatActivity, "Set Email Before Use This Fiture", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e("donwloadChat", "Error Code : " + response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString())
+            }
+
+        })
+    }
+    var readListner: ValueEventListener? = null
+    fun readChat(){
+        ref = FirebaseDatabase.getInstance().getReference("Chat")
+        readListner = ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (i in snapshot.children){
+                    val data: HashMap<String, String> = i.value as HashMap<String, String>
+                    if(data.get("receiver").equals(senderId) && data.get("sender").equals(receiverId)){
+                        val hashMap = HashMap<String, Any>()
+                        hashMap["isRead"] = 1
+                        i.ref.updateChildren(hashMap)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        ref.removeEventListener(readListner!!)
     }
 }

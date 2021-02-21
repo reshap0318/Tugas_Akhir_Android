@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 
 object ApiBuilder {
     // #kampus : http://192.168.0.181:8000 #home : http://192.168.100.81:8000 #heroku : https://akhir-tugas.herokuapp.com/
-    private const val BASE_URL = "http://192.168.0.182:8000"
+    private const val BASE_URL = "http://192.168.100.81:8000"
 
     private val okHttp = OkHttpClient.Builder().apply {
         readTimeout(20, TimeUnit.SECONDS)

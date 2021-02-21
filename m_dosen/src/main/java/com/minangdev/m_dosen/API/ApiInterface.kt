@@ -30,7 +30,6 @@ interface ApiInterface {
     @PATCH("/user/change-profile")
     fun changeProfile(
         @Header("Authorization") token: String,
-        @Field("name") name: String,
         @Field("email") email: String
     ): Call<ResponseBody>
 
@@ -66,6 +65,11 @@ interface ApiInterface {
         @Path("nim") nim: String
     ) : Call<ResponseBody>
 
+    @GET("/dosen/bimbingan/last-seen")
+    fun bimbinganLastSeen(
+            @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
     @GET("/dosen/bimbingan")
     fun mahasiswaBimbingan(
             @Header("Authorization") token: String
@@ -81,6 +85,26 @@ interface ApiInterface {
         @Part img: MultipartBody.Part? = null,
     ) : Call<ResponseBody>
 
+    @DELETE("/dosen/bimbingan/{bimbinganId}/delete")
+    fun bimbinganDelete(
+            @Header("Authorization") token: String,
+            @Path("bimbinganId") bimbinganId: String
+    ) : Call<ResponseBody>
+
+    @POST("/dosen/bimbingan/cetak/{receiverId}/{topicPeriodId}")
+    fun bimbinganCetak(
+            @Header("Authorization") token: String,
+            @Path("receiverId") receiverId: String,
+            @Path("topicPeriodId") topicPeriodId: String,
+    ) : Call<ResponseBody>
+
+    @POST("/dosen/bimbingan/cetak-period/{receiverId}/{periodId}")
+    fun bimbinganCetakPeriod(
+            @Header("Authorization") token: String,
+            @Path("receiverId") receiverId: String,
+            @Path("periodId") periodId: String,
+    ) : Call<ResponseBody>
+
     @FormUrlEncoded
     @POST("/dosen/list-bimbingan/{mhsId}/create")
     fun bimbinganCreate(
@@ -88,6 +112,22 @@ interface ApiInterface {
         @Path("mhsId") mhsId: String,
         @Field("topicPeriodId") topicPeriodId: String,
     ): Call<ResponseBody>
+
+    @GET("/dosen/bimbingan/group-chat")
+    fun bimbinganListGroup(
+        @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
+    @Multipart
+    @POST("/dosen/bimbingan/send-group-chat")
+    fun bimbinganSendGroup(
+        @Header("Authorization") token: String,
+        @Part("receiverId") receiverId: RequestBody,
+        @Part("message") message: RequestBody,
+        @Part("topicPeriodId") topicPeriodId: RequestBody,
+        @Part("groupchanel") groupchanel: RequestBody,
+        @Part img: MultipartBody.Part? = null,
+    ) : Call<ResponseBody>
 
     @GET("/dosen/list-bimbingan/{mhsid}")
     fun mahasiswaListBimbingan(
@@ -97,6 +137,11 @@ interface ApiInterface {
 
     @GET("/user/topic/active")
     fun topicActive(
+        @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
+    @GET("/user/period")
+    fun period(
         @Header("Authorization") token: String
     ) : Call<ResponseBody>
 

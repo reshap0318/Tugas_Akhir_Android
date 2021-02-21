@@ -151,6 +151,28 @@ interface ApiInterface {
             @Part img: MultipartBody.Part? = null,
     ) : Call<ResponseBody>
 
+    @DELETE("/mahasiswa/bimbingan/{bimbinganId}/delete")
+    fun bimbinganDelete(
+            @Header("Authorization") token: String,
+            @Path("bimbinganId") bimbinganId: String
+    ) : Call<ResponseBody>
+
+    @GET("/mahasiswa/bimbingan/group-chat")
+    fun bimbinganListGroup(
+        @Header("Authorization") token: String
+    ) : Call<ResponseBody>
+
+    @Multipart
+    @POST("/mahasiswa/bimbingan/send-group-chat")
+    fun bimbinganSendGroup(
+            @Header("Authorization") token: String,
+            @Part("receiverId") receiverId: RequestBody,
+            @Part("message") message: RequestBody,
+            @Part("topicPeriodId") topicPeriodId: RequestBody,
+            @Part("groupchanel") groupchanel: RequestBody,
+            @Part img: MultipartBody.Part? = null,
+    ) : Call<ResponseBody>
+
     @FormUrlEncoded
     @POST("/mahasiswa/bimbingan/create")
     fun bimbinganCreate(

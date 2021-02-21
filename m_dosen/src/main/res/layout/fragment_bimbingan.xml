@@ -6,22 +6,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/green_primary"
+    android:background="@color/mbackground"
     tools:context=".View.bimbingan.BimbinganFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/serach_bimbingan"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="@color/white"
-        app:endIconDrawable="@drawable/baseline_search_24"
         app:endIconMode="custom"
+        app:endIconDrawable="@drawable/baseline_search_24"
         app:endIconTint="@color/green_primary"
+        app:hintTextColor="@color/green_primary"
+        android:textColorHint="@color/green_primary"
         app:hintEnabled="false"
         app:shapeAppearance="@style/Rounded.EditText">
 
@@ -29,16 +29,15 @@
             android:id="@+id/et_search_bimbingan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:font="@font/roboto"
             android:hint="@string/search"
-            android:textColor="@color/black"
             android:actionViewClass="android.widget.SearchView"
             android:maxLines="1"
             android:ellipsize="end"
             android:layout_centerVertical="true"
             android:inputType="textCapCharacters"
-            android:textColorHint="@color/green_primary" />
+            android:textColor="@color/black"
+            android:textColorHint="@color/green_primary"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,13 +52,22 @@
 <!--        android:queryHint="Search Here"-->
 <!--        android:searchIcon="@drawable/baseline_search_24" />-->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_bimbingan"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_bimbingan"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        tools:listitem="@layout/row_mahasiswa" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bimbingan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/row_mahasiswa" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 </LinearLayout>

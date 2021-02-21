@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.minangdev.myta.API.ApiBuilder
 import com.minangdev.myta.API.ApiInterface
 import com.minangdev.myta.Helper.LoadingDialog
@@ -64,7 +65,15 @@ class ProfileFragment : Fragment() {
         }
 
         root.btn_logout_profile.setOnClickListener{
-            logout()
+            MaterialAlertDialogBuilder(context!!)
+            .setTitle("Are You Sure Logout??")
+            .setNegativeButton("No") { dialog, which ->
+
+            }
+            .setPositiveButton("Yes") { dialog, which ->
+                logout()
+            }
+            .show()
         }
 
         profileSetData(name="", nip="")
